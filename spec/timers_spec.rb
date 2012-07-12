@@ -16,7 +16,7 @@ describe Timers do
     (Time.now - started_at).should be_within(Q).of interval
   end
 
-  it "it calculates the interval until the next timer should fire" do
+  it "calculates the interval until the next timer should fire" do
     interval = 0.1
 
     subject.after(interval)
@@ -37,7 +37,7 @@ describe Timers do
   end
 
   describe "recurring timers" do
-    it "should continue to fire the timers at each interval" do
+    it "continues to fire the timers at each interval" do
       result = []
 
       subject.every(Q * 2) { result << :foo }
