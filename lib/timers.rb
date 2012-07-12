@@ -1,5 +1,5 @@
 require 'set'
-require "timers/version"
+require 'timers/version'
 
 # Low precision timers implemented in pure Ruby
 class Timers
