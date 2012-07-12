@@ -3,6 +3,10 @@ require "timers/version"
 
 # Low precision timers implemented in pure Ruby
 class Timers
+  extend  Forwardable
+  include Enumerable
+  def_delegators :@timers, :add, :delete, :each, :empty?
+
   def initialize
     @timers = SortedSet.new
   end
@@ -41,20 +45,8 @@ class Timers
     end
   end
 
-  # Insert a timer into the active timers
-  def insert(timer)
-    @timers.add(timer)
-  end
-
-  # Remove a given timer from the set we're monitoring
-  def cancel(timer)
-    @timers.delete timer
-  end
-
-  # Are there any timers pending?
-  def empty?
-    @timers.empty?
-  end
+  alias_method :insert, :add
+  alias_method :cancel, :delete
 
   # An individual timer set to fire a given proc at a given time
   class Timer
