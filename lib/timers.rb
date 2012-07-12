@@ -1,9 +1,10 @@
+require 'set'
 require "timers/version"
 
 # Low precision timers implemented in pure Ruby
 class Timers
   def initialize
-    @timers = []
+    @timers = SortedSet.new
   end
 
   # Call the given block after the given interval
@@ -36,14 +37,15 @@ class Timers
 
     time = Time.now + Timer::QUANTUM
     while not empty? and time > @timers.first.time
-      timer = @timers.shift
+      timer = @timers.first
+      @timers.delete timer
       timer.call
     end
   end
 
   # Insert a timer into the active timers
   def insert(timer)
-    @timers.insert(index(timer), timer)
+    @timers.add(timer)
   end
 
   # Remove a given timer from the set we're monitoring
@@ -54,21 +56,6 @@ class Timers
   # Are there any timers pending?
   def empty?
     @timers.empty?
-  end
-
-  # Index where a timer would be located in the sorted timers array
-  def index(timer)
-    l, r = 0, @timers.size - 1
-
-    while l <= r
-      m = (r + l) / 2
-      if timer < @timers.at(m)
-        r = m - 1
-      else
-        l = m + 1
-      end
-    end
-    l
   end
 
   # An individual timer set to fire a given proc at a given time
