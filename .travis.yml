@@ -6,7 +6,5 @@ rvm:
   - jruby-18mode
   - jruby-19mode
   - jruby-head
-
-# Sporadically failing :(
-#  - rbx-18mode
-#  - rbx-19mode
+  - rbx-18mode
+  - rbx-19mode

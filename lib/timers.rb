@@ -9,20 +9,18 @@ class Timers
 
   # Call the given block after the given interval
   def after(interval, &block)
-    Timer.new(self, interval, false, block)
+    Timer.new(self, interval, false, &block)
   end
 
   # Call the given block periodically at the given interval
   def every(interval, &block)
-    Timer.new(self, interval, true, block)
+    Timer.new(self, interval, true, &block)
   end
 
   # Wait for the next timer and fire it
   def wait
     return if @timers.empty?
-
-    interval = wait_interval
-    sleep interval if interval >= Timer::QUANTUM
+    sleep wait_interval
     fire
   end
 
@@ -35,7 +33,7 @@ class Timers
   def fire
     return if @timers.empty?
 
-    time = Time.now + Timer::QUANTUM
+    time = Time.now
     while not empty? and time > @timers.first.time
       timer = @timers.first
       @timers.delete timer
@@ -61,15 +59,9 @@ class Timers
   # An individual timer set to fire a given proc at a given time
   class Timer
     include Comparable
-
-    # The timer system is guaranteed (at least by the specs) to be this precise
-    # during normal operation. Long blocking calls within actors will delay the
-    # firing of timers
-    QUANTUM = 0.02
-
     attr_reader :interval, :time, :recurring
 
-    def initialize(timers, interval, recurring, block)
+    def initialize(timers, interval, recurring = false, &block)
       @timers, @interval, @recurring = timers, interval, recurring
       @block = block
 

@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Timers do
-  Q = Timers::Timer::QUANTUM
+  # Level of accuracy enforced by the tests (50ms)
+  Q = 0.05
 
   it "sleeps until the next timer" do
     interval = 0.1
@@ -46,7 +47,6 @@ describe Timers do
       result.should == [:foo]
 
       sleep Q * 3
-      subject.fire
       subject.fire
       result.should == [:foo, :foo]
     end
