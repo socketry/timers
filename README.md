@@ -1,6 +1,6 @@
 Timers
 ======
-[![Build Status](http://travis-ci.org/tarcieri/timers.png)](http://travis-ci.org/tarcieri/timers)
+[![Build Status](https://secure.travis-ci.org/tarcieri/timers.png?branch=master)](http://travis-ci.org/tarcieri/timers)
 
 Pure Ruby timer collections. Schedule several procs to fire after configurable
 delays or at periodic intervals.
