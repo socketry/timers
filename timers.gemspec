@@ -15,5 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Timers::VERSION
 
+  gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
 end
