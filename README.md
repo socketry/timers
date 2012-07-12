@@ -15,6 +15,8 @@ Usage
 Create a new timer group with `Timers.new`:
 
 ```ruby
+require 'timers'
+
 timers = Timers.new
 ```
 
