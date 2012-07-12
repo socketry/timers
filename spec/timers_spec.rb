@@ -40,13 +40,13 @@ describe Timers do
     it "should continue to fire the timers at each interval" do
       result = []
 
-      subject.every(Q * 3) { result << :foo }
+      subject.every(Q * 2) { result << :foo }
 
       sleep Q * 3
       subject.fire
       result.should == [:foo]
 
-      sleep Q * 3
+      sleep Q * 5
       subject.fire
       result.should == [:foo, :foo]
     end
