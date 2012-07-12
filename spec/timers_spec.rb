@@ -5,7 +5,7 @@ describe Timers do
   Q = 0.05
 
   it "sleeps until the next timer" do
-    interval = 0.1
+    interval   = Q * 2
     started_at = Time.now
 
     fired = false

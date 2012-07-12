@@ -33,8 +33,8 @@ class Timers
   def fire
     return if @timers.empty?
 
-    time = Time.now
-    while not empty? and time > @timers.first.time
+    time = Time.now + 0.001
+    while not empty? and time >= @timers.first.time
       timer = @timers.first
       @timers.delete timer
       timer.call
