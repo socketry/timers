@@ -14,6 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "timers"
   gem.require_paths = ["lib"]
   gem.version       = Timers::VERSION
-  
+
   gem.add_development_dependency 'rspec'
 end

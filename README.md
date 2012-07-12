@@ -33,7 +33,7 @@ Once you've scheduled a timer, you can wait until the next timer fires with `Tim
 
 ```ruby
 # Waits 5 seconds
-timers.wait 
+timers.wait
 
 # The script will now print "Take five"
 ```

@@ -10,7 +10,7 @@ class Timers
   def after(interval, &block)
     Timer.new(self, interval, false, block)
   end
-  
+
   # Call the given block periodically at the given interval
   def every(interval, &block)
     Timer.new(self, interval, true, block)
@@ -70,7 +70,7 @@ class Timers
     end
     l
   end
-  
+
   # An individual timer set to fire a given proc at a given time
   class Timer
     include Comparable
