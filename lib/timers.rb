@@ -86,5 +86,25 @@ class Timers
       @block.call
     end
     alias_method :call, :fire
+
+    # Inspect a timer
+    def inspect
+      str = "#<Timers::Timer:#{object_id.to_s(16)} "
+      now = Time.now
+
+      if @time
+        if @time >= now
+          str << "fires in #{@time - now} seconds"
+        else
+          str << "fired #{now - @time} seconds ago"
+        end
+
+        str << ", recurs every #{interval}" if recurring
+      else
+        str << "dead"
+      end
+
+      str << ">"
+    end
   end
 end
