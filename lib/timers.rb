@@ -34,14 +34,14 @@ class Timers
   end
 
   # Fire all timers that are ready
-  def fire
+  def fire(now = Time.now)
     return if @timers.empty?
 
-    time = Time.now + 0.001
+    time = now + 0.001
     while not empty? and time >= @timers.first.time
       timer = @timers.first
       @timers.delete timer
-      timer.call
+      timer.fire(now)
     end
   end
 
@@ -49,7 +49,7 @@ class Timers
     raise TypeError, "not a Timers::Timer" unless timer.is_a? Timers::Timer
     @timers.add(timer)
   end
-  
+
   alias_method :cancel, :delete
 
   # An individual timer set to fire a given proc at a given time
@@ -60,6 +60,7 @@ class Timers
     def initialize(timers, interval, recurring = false, &block)
       @timers, @interval, @recurring = timers, interval, recurring
       @block = block
+      @time  = nil
 
       reset
     end
@@ -74,15 +75,15 @@ class Timers
     end
 
     # Reset this timer
-    def reset
-      @timers.cancel self if defined?(@time)
-      @time = Time.now + @interval
-      @timers.insert self
+    def reset(now = Time.now)
+      @timers.cancel self if @time
+      @time = now + @interval
+      @timers.add self
     end
 
     # Fire the block
-    def fire
-      reset if recurring
+    def fire(now = Time.now)
+      reset(now) if recurring
       @block.call
     end
     alias_method :call, :fire
