@@ -23,22 +23,21 @@ class Timers
 
   # Wait for the next timer and fire it
   def wait
-    return if @timers.empty?
+    return if empty?
     sleep wait_interval
     fire
   end
 
   # Interval to wait until when the next timer will fire
-  def wait_interval
-    @timers.first.time - Time.now unless empty?
+  def wait_interval(now = Time.now)
+    return if empty?
+    @timers.first.time - now
   end
 
   # Fire all timers that are ready
   def fire(now = Time.now)
-    return if @timers.empty?
-
-    time = now + 0.001
-    while not empty? and time >= @timers.first.time
+    time = now + 0.001 # Fudge 1ms in case of clock imprecision
+    while !empty? && time >= @timers.first.time
       timer = @timers.first
       @timers.delete timer
       timer.fire(now)
