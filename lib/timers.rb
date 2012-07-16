@@ -1,4 +1,5 @@
 require 'set'
+require 'forwardable'
 require 'timers/version'
 
 # Low precision timers implemented in pure Ruby
