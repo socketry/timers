@@ -1,15 +1,13 @@
-require 'set'
+require 'rbtree'
 require 'forwardable'
 require 'timers/version'
 
 # Low precision timers implemented in pure Ruby
 class Timers
   include Enumerable
-  extend  Forwardable
-  def_delegators :@timers, :delete, :each, :empty?
 
   def initialize
-    @timers = SortedSet.new
+    @timers = RBTree.new
   end
 
   # Call the given block after the given interval
@@ -31,26 +29,39 @@ class Timers
 
   # Interval to wait until when the next timer will fire
   def wait_interval(now = Time.now)
-    timer = @timers.first
-    return unless timer
-    timer.time - now
+    time, _ = @timers.first
+    return unless time
+    time - now
   end
 
   # Fire all timers that are ready
   def fire(now = Time.now)
     time = now + 0.001 # Fudge 1ms in case of clock imprecision
-    while (timer = @timers.first) && (time >= timer.time)
-      @timers.delete timer
-      timer.fire(now)
+    while (time_and_timer = @timers.first) && (time >= time_and_timer[0])
+      @timers.delete time_and_timer[0]
+      time_and_timer[1].fire(now)
     end
   end
 
   def add(timer)
     raise TypeError, "not a Timers::Timer" unless timer.is_a? Timers::Timer
-    @timers.add(timer)
+    @timers[timer.time] = timer
+  end
+
+  def delete(timer)
+    @timers.delete timer.time
   end
 
   alias_method :cancel, :delete
+
+  def each
+    return to_enum  unless block_given?
+    @timers.each_value{|v| yield v}
+  end
+
+  def empty?
+    @timers.empty?
+  end
 
   # An individual timer set to fire a given proc at a given time
   class Timer
