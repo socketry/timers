@@ -16,11 +16,23 @@ describe Timers do
     (Time.now - started_at).should be_within(Q).of interval
   end
 
+  it "fires instantly when next timer is in the past" do
+    fired = false
+    subject.after(Q) { fired = true }
+    sleep(Q * 2)
+    subject.wait
+
+    fired.should be_true
+  end
+
   it "calculates the interval until the next timer should fire" do
     interval = 0.1
 
     subject.after(interval)
     subject.wait_interval.should be_within(Q).of interval
+
+    sleep(interval)
+    subject.wait_interval.should be(0)
   end
 
   it "fires timers in the correct order" do
