@@ -33,7 +33,8 @@ class Timers
   def wait_interval(now = Time.now)
     timer = @timers.first
     return unless timer
-    timer.time - now
+    interval = timer.time - now
+    interval > 0 ? interval : 0
   end
 
   # Fire all timers that are ready
