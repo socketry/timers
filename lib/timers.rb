@@ -16,6 +16,16 @@ class Timers
   def after(interval, &block)
     Timer.new(self, interval, false, &block)
   end
+  
+  # Call the given block after the given interval has expired. +interval+
+  # is measured in milliseconds.
+  #
+  #  Timer.new.after_milliseconds(25) { puts "fired!" }
+  #
+  def after_milliseconds(interval, &block)
+    after(interval / 1000.0, &block)
+  end
+  alias_method :after_ms, :after_milliseconds
 
   # Call the given block periodically at the given interval
   def every(interval, &block)

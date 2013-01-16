@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Timers do
-  # Level of accuracy enforced by the tests (50ms)
+  # Level of accuracy enforced by most tests (50ms)
   Q = 0.05
 
   it "sleeps until the next timer" do
@@ -61,6 +61,20 @@ describe Timers do
       sleep Q * 5
       subject.fire
       result.should == [:foo, :foo]
+    end
+  end
+  
+  describe "millisecond timers" do
+    it "fires after their short interval has expired" do
+      interval_ms = 25
+      started_at = Time.now
+
+      fired = false
+      subject.after_milliseconds(interval_ms) { fired = true }
+      subject.wait
+
+      fired.should be_true
+      (Time.now - started_at).should be_within(0.01).of (interval_ms / 1000.0)
     end
   end
 end
