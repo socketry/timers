@@ -65,16 +65,13 @@ describe Timers do
   end
   
   describe "millisecond timers" do
-    it "fires after their short interval has expired" do
+    it "calculates the proper interval to wait until firing" do
       interval_ms = 25
-      started_at = Time.now
 
-      fired = false
-      subject.after_milliseconds(interval_ms) { fired = true }
-      subject.wait
+      subject.after_milliseconds(interval_ms)
+      expected_elapse = subject.wait_interval
 
-      fired.should be_true
-      (Time.now - started_at).should be_within(0.01).of (interval_ms / 1000.0)
+      subject.wait_interval.should == (interval_ms / 1000.0)
     end
   end
 end
