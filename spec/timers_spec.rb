@@ -71,7 +71,7 @@ describe Timers do
       subject.after_milliseconds(interval_ms)
       expected_elapse = subject.wait_interval
 
-      subject.wait_interval.should == (interval_ms / 1000.0)
+      subject.wait_interval.should be_within(Q).of (interval_ms / 1000.0)
     end
   end
 end
