@@ -1,3 +1,7 @@
+1.1.0
+-----
+* Timers#after_milliseconds and #after_ms for waiting in milliseconds
+
 1.0.2
 -----
 * Handle overdue timers correctly
