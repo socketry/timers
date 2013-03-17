@@ -66,6 +66,24 @@ loop do
 end
 ```
 
+You can also pause and continue individual timers, or all timers:
+
+```ruby
+paused_timer = timers.every(5) { puts "I was paused" }
+
+paused_timer.pause
+10.times { timers.wait } # will not fire paused timer
+
+paused_timer.continue
+10.times { timers.wait } # will fire timer
+
+timers.pause
+10.times { timers.wait } # will not fire any timers
+
+timers.continue
+10.times { timers.wait } # will fire all timers
+```
+
 License
 -------
 
