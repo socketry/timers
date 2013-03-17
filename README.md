@@ -1,6 +1,8 @@
 Timers
 ======
+[![Gem Version](https://badge.fury.io/rb/timers.png)](http://rubygems.org/gems/timers)
 [![Build Status](https://secure.travis-ci.org/tarcieri/timers.png?branch=master)](http://travis-ci.org/tarcieri/timers)
+[![Code Climate](https://codeclimate.com/github/tarcieri/timers.png)](https://codeclimate.com/github/tarcieri/timers)
 
 Pure Ruby timer collections. Schedule several procs to fire after configurable
 delays or at periodic intervals.
