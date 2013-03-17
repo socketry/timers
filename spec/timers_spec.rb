@@ -71,7 +71,29 @@ describe Timers do
       subject.after_milliseconds(interval_ms)
       expected_elapse = subject.wait_interval
 
-      subject.wait_interval.should be_within(Q).of (interval_ms / 1000.0)
+      subject.wait_interval.should be_within(Q).of(interval_ms / 1000.0)
+    end
+  end
+
+  describe "pause and continue timers" do
+    before(:each) do
+      interval   = Q * 2
+      started_at = Time.now
+
+      @fired = false
+      @timer = subject.every(interval) { @fired = true }
+      @timer.pause
+    end
+
+    it "does not fire when paused" do
+      subject.wait
+      @fired.should be_false
+    end
+
+    it "fires when continued after pause" do
+      @timer.continue
+      subject.wait
+      @fired.should be_true
     end
   end
 end
