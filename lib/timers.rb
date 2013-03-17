@@ -10,6 +10,7 @@ class Timers
 
   def initialize
     @timers = SortedSet.new
+    @paused_timers = SortedSet.new
   end
 
   # Call the given block after the given interval
@@ -61,6 +62,28 @@ class Timers
     @timers.add(timer)
   end
 
+  def pause(timer = nil)
+    return pause_all if timer.nil?
+    raise TypeError, "not a Timers::Timer" unless timer.is_a? Timers::Timer
+    @timers.delete timer
+    @paused_timers.add timer
+  end
+
+  def pause_all
+    @timers.each {|timer| timer.pause}
+  end
+
+  def continue(timer = nil)
+    return continue_all if timer.nil?
+    raise TypeError, "not a Timers::Timer" unless timer.is_a? Timers::Timer
+    @paused_timers.delete timer
+    @timers.add timer
+  end
+
+  def continue_all
+    @paused_timers.each {|timer| timer.continue}
+  end
+
   alias_method :cancel, :delete
 
   # An individual timer set to fire a given proc at a given time
@@ -98,6 +121,16 @@ class Timers
       @block.call
     end
     alias_method :call, :fire
+
+    # Pause this timer
+    def pause
+      @timers.pause self
+    end
+
+    # Continue this timer
+    def continue
+      @timers.continue self
+    end
 
     # Inspect a timer
     def inspect
