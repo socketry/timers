@@ -62,16 +62,26 @@ class Timers
     @timers.add(timer)
   end
 
-  def pause(timer)
+  def pause(timer = nil)
+    return pause_all if timer.nil?
     raise TypeError, "not a Timers::Timer" unless timer.is_a? Timers::Timer
     @timers.delete timer
     @paused_timers.add timer
   end
 
-  def continue(timer)
+  def pause_all
+    @timers.each {|timer| timer.pause}
+  end
+
+  def continue(timer = nil)
+    return continue_all if timer.nil?
     raise TypeError, "not a Timers::Timer" unless timer.is_a? Timers::Timer
     @paused_timers.delete timer
     @timers.add timer
+  end
+
+  def continue_all
+    @paused_timers.each {|timer| timer.continue}
   end
 
   alias_method :cancel, :delete
