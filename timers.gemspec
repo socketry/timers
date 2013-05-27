@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["tony.arcieri@gmail.com"]
   gem.description   = "Pure Ruby one-shot and periodic timers"
   gem.summary       = "Schedule procs to run after a certain time, or at periodic intervals, using any API that accepts a timeout"
-  gem.homepage      = "https://github.com/tarcieri/timers"
+  gem.homepage      = "https://github.com/celluloid/timers"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
