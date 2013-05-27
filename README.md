@@ -1,16 +1,16 @@
 Timers
 ======
 [![Gem Version](https://badge.fury.io/rb/timers.png)](http://rubygems.org/gems/timers)
-[![Build Status](https://secure.travis-ci.org/tarcieri/timers.png?branch=master)](http://travis-ci.org/tarcieri/timers)
-[![Code Climate](https://codeclimate.com/github/tarcieri/timers.png)](https://codeclimate.com/github/tarcieri/timers)
-[![Coverage Status](https://coveralls.io/repos/tarcieri/timers/badge.png?branch=master)](https://coveralls.io/r/tarcieri/timers)
+[![Build Status](https://secure.travis-ci.org/celluloid/timers.png?branch=master)](http://travis-ci.org/celluloid/timers)
+[![Code Climate](https://codeclimate.com/github/celluloid/timers.png)](https://codeclimate.com/github/celluloid/timers)
+[![Coverage Status](https://coveralls.io/repos/celluloid/timers/badge.png?branch=master)](https://coveralls.io/r/celluloid/timers)
 
 Pure Ruby timer collections. Schedule several procs to fire after configurable
 delays or at periodic intervals.
 
 This gem is especially useful when you are faced with an API that accepts a
 single timeout but you want to run multiple timers on top of it. An example of
-such a library is [nio4r](https://github.com/tarcieri/nio4r), a cross-platform
+such a library is [nio4r](https://github.com/celluloid/nio4r), a cross-platform
 Ruby library for using system calls like epoll and kqueue.
 
 Usage
