@@ -108,6 +108,11 @@ class Timers
       @timers.cancel self
     end
 
+    # Extend this timer
+    def extend(seconds)
+      @time += seconds
+    end
+
     # Reset this timer
     def reset(now = Time.now)
       @timers.cancel self if @time

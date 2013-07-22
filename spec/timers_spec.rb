@@ -116,4 +116,12 @@ describe Timers do
       @fired2.should be_true
     end
   end
+
+  describe "extend timer" do 
+    it "adds appropriate amount of time to timer" do 
+        timer = subject.after(10).extend(5)
+        (timer - Time.now).should be_within(Q).of(15)
+    end
+  end
+
 end
