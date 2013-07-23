@@ -114,9 +114,9 @@ class Timers
 
     # Extend this timer
     def delay(seconds)
-        @timers.delete self 
-        @time += seconds
-        @timers.add self
+      @timers.delete self 
+      @time += seconds
+      @timers.add self
     end
 
     # Reset this timer

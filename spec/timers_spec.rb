@@ -119,34 +119,34 @@ describe Timers do
 
   describe "delay timer" do 
     it "adds appropriate amount of time to timer" do 
-        timer = subject.after(10)
-        timer.delay(5)
-        (timer.time - Time.now).should be_within(Q).of(15)
+      timer = subject.after(10)
+      timer.delay(5)
+      (timer.time - Time.now).should be_within(Q).of(15)
     end
   end
 
   describe "delay timer collection" do 
     it "delay on set adds appropriate amount of time to all timers" do 
-        timer = subject.after(10)
-        timer2 = subject.after(20)
-        subject.delay(5)
-        (timer.time - Time.now).should be_within(Q).of(15)
-        (timer2.time - Time.now).should be_within(Q).of(25)
+      timer = subject.after(10)
+      timer2 = subject.after(20)
+      subject.delay(5)
+      (timer.time - Time.now).should be_within(Q).of(15)
+      (timer2.time - Time.now).should be_within(Q).of(25)
     end
   end  
   describe "on delaying a timer" do 
-      it "fires timers in the correct order" do
-        result = []
+    it "fires timers in the correct order" do
+      result = []
 
-        second = subject.after(Q * 2) { result << :two }
-        third = subject.after(Q * 3) { result << :three }
-        first = subject.after(Q * 1) { result << :one }
-        first.delay(Q * 3)
+      second = subject.after(Q * 2) { result << :two }
+      third = subject.after(Q * 3) { result << :three }
+      first = subject.after(Q * 1) { result << :one }
+      first.delay(Q * 3)
 
-        sleep Q * 5
-        subject.fire
+      sleep Q * 5
+      subject.fire
 
-        result.should == [:two, :three, :one]
-      end
+      result.should == [:two, :three, :one]
+    end
   end
 end
