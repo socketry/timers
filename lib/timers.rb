@@ -84,6 +84,10 @@ class Timers
     @paused_timers.each {|timer| timer.continue}
   end
 
+  def delay(seconds)
+    @timers.each {|timer| timer.delay(seconds)}
+  end
+
   alias_method :cancel, :delete
 
   # An individual timer set to fire a given proc at a given time
@@ -106,6 +110,13 @@ class Timers
     # Cancel this timer
     def cancel
       @timers.cancel self
+    end
+
+    # Extend this timer
+    def delay(seconds)
+      @timers.delete self 
+      @time += seconds
+      @timers.add self
     end
 
     # Reset this timer
