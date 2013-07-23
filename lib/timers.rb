@@ -84,8 +84,8 @@ class Timers
     @paused_timers.each {|timer| timer.continue}
   end
 
-  def add_time(seconds)
-    @timers.each {|timer| timer.add_time(seconds)}
+  def delay(seconds)
+    @timers.each {|timer| timer.delay(seconds)}
   end
 
   alias_method :cancel, :delete
@@ -113,7 +113,7 @@ class Timers
     end
 
     # Extend this timer
-    def add_time(seconds)
+    def delay(seconds)
         @timers.delete self 
         @time += seconds
         @timers.add self

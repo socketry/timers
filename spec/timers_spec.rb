@@ -117,31 +117,31 @@ describe Timers do
     end
   end
 
-  describe "extend timer" do 
+  describe "delay timer" do 
     it "adds appropriate amount of time to timer" do 
         timer = subject.after(10)
-        timer.add_time(5)
+        timer.delay(5)
         (timer.time - Time.now).should be_within(Q).of(15)
     end
   end
 
-  describe "collection extend" do 
-    it "extend on set adds appropriate amount of time to all timers" do 
+  describe "delay timer collection" do 
+    it "delay on set adds appropriate amount of time to all timers" do 
         timer = subject.after(10)
         timer2 = subject.after(20)
-        subject.add_time(5)
+        subject.delay(5)
         (timer.time - Time.now).should be_within(Q).of(15)
         (timer2.time - Time.now).should be_within(Q).of(25)
     end
   end  
-  describe "on extending time" do 
+  describe "on delaying a timer" do 
       it "fires timers in the correct order" do
         result = []
 
         second = subject.after(Q * 2) { result << :two }
         third = subject.after(Q * 3) { result << :three }
         first = subject.after(Q * 1) { result << :one }
-        first.add_time(Q * 3)
+        first.delay(Q * 3)
 
         sleep Q * 5
         subject.fire
