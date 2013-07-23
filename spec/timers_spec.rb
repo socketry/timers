@@ -124,4 +124,14 @@ describe Timers do
     end
   end
 
+  describe "collection extend" do 
+    it "extend on set adds appropriate amount of time to all timers" do 
+        timer = subject.after(10)
+        timer2 = subject.after(20)
+        subject.extend(5)
+        (timer.time - Time.now).should be_within(Q).of(15)
+        (timer2.time - Time.now).should be_within(Q).of(25)
+    end
+  end  
+
 end

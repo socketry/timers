@@ -84,6 +84,11 @@ class Timers
     @paused_timers.each {|timer| timer.continue}
   end
 
+  def extend_all(seconds)
+    @timers.each {|timer| timer.extend(seconds)}
+  end
+  alias_method :extend, :extend_all
+
   alias_method :cancel, :delete
 
   # An individual timer set to fire a given proc at a given time
