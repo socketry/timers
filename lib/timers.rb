@@ -84,10 +84,9 @@ class Timers
     @paused_timers.each {|timer| timer.continue}
   end
 
-  def extend_all(seconds)
-    @timers.each {|timer| timer.extend(seconds)}
+  def add_time(seconds)
+    @timers.each {|timer| timer.add_time(seconds)}
   end
-  alias_method :extend, :extend_all
 
   alias_method :cancel, :delete
 
@@ -114,8 +113,10 @@ class Timers
     end
 
     # Extend this timer
-    def extend(seconds)
-      @time += seconds
+    def add_time(seconds)
+        @timers.delete self 
+        @time += seconds
+        @timers.add self
     end
 
     # Reset this timer
