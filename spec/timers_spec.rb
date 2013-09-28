@@ -12,8 +12,8 @@ describe Timers do
     subject.after(interval) { fired = true }
     subject.wait
 
-    fired.should be_true
-    (Time.now - started_at).should be_within(Q).of interval
+    expect(fired).to be_true
+    expect(Time.now - started_at).to be_within(Q).of interval
   end
 
   it "fires instantly when next timer is in the past" do
@@ -22,17 +22,17 @@ describe Timers do
     sleep(Q * 2)
     subject.wait
 
-    fired.should be_true
+    expect(fired).to be_true
   end
 
   it "calculates the interval until the next timer should fire" do
     interval = 0.1
 
     subject.after(interval)
-    subject.wait_interval.should be_within(Q).of interval
+    expect(subject.wait_interval).to be_within(Q).of interval
 
     sleep(interval)
-    subject.wait_interval.should be(0)
+    expect(subject.wait_interval).to be(0)
   end
 
   it "fires timers in the correct order" do
@@ -45,7 +45,7 @@ describe Timers do
     sleep Q * 4
     subject.fire
 
-    result.should == [:one, :two, :three]
+    expect(result).to eq [:one, :two, :three]
   end
 
   describe "recurring timers" do
@@ -56,11 +56,11 @@ describe Timers do
 
       sleep Q * 3
       subject.fire
-      result.should == [:foo]
+      expect(result).to eq [:foo]
 
       sleep Q * 5
       subject.fire
-      result.should == [:foo, :foo]
+      expect(result).to eq [:foo, :foo]
     end
   end
   
@@ -71,7 +71,7 @@ describe Timers do
       subject.after_milliseconds(interval_ms)
       expected_elapse = subject.wait_interval
 
-      subject.wait_interval.should be_within(Q).of(interval_ms / 1000.0)
+      expect(subject.wait_interval).to be_within(Q).of(interval_ms / 1000.0)
     end
   end
 
@@ -89,7 +89,7 @@ describe Timers do
     it "does not fire when paused" do
       @timer.pause
       subject.wait
-      @fired.should be_false
+      expect(@fired).to be_false
     end
 
     it "fires when continued after pause" do
@@ -97,14 +97,14 @@ describe Timers do
       subject.wait
       @timer.continue
       subject.wait
-      @fired.should be_true
+      expect(@fired).to be_true
     end
 
     it "can pause all timers at once" do
       subject.pause
       subject.wait
-      @fired.should be_false
-      @fired2.should be_false
+      expect(@fired).to be_false
+      expect(@fired2).to be_false
     end
 
     it "can continue all timers at once" do
@@ -112,8 +112,8 @@ describe Timers do
       subject.wait
       subject.continue
       subject.wait
-      @fired.should be_true
-      @fired2.should be_true
+      expect(@fired).to be_true
+      expect(@fired2).to be_true
     end
   end
 
@@ -121,7 +121,7 @@ describe Timers do
     it "adds appropriate amount of time to timer" do 
       timer = subject.after(10)
       timer.delay(5)
-      (timer.time - Time.now).should be_within(Q).of(15)
+      expect(timer.time - Time.now).to be_within(Q).of(15)
     end
   end
 
@@ -130,8 +130,8 @@ describe Timers do
       timer = subject.after(10)
       timer2 = subject.after(20)
       subject.delay(5)
-      (timer.time - Time.now).should be_within(Q).of(15)
-      (timer2.time - Time.now).should be_within(Q).of(25)
+      expect(timer.time - Time.now).to be_within(Q).of(15)
+      expect(timer2.time - Time.now).to be_within(Q).of(25)
     end
   end  
   describe "on delaying a timer" do 
@@ -146,7 +146,7 @@ describe Timers do
       sleep Q * 5
       subject.fire
 
-      result.should == [:two, :three, :one]
+      expect(result).to eq [:two, :three, :one]
     end
   end
 end
