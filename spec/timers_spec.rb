@@ -63,7 +63,7 @@ describe Timers do
       expect(result).to eq [:foo, :foo]
     end
   end
-  
+
   describe "millisecond timers" do
     it "calculates the proper interval to wait until firing" do
       interval_ms = 25
@@ -117,24 +117,24 @@ describe Timers do
     end
   end
 
-  describe "delay timer" do 
-    it "adds appropriate amount of time to timer" do 
+  describe "delay timer" do
+    it "adds appropriate amount of time to timer" do
       timer = subject.after(10)
       timer.delay(5)
       expect(timer.time - Time.now).to be_within(Q).of(15)
     end
   end
 
-  describe "delay timer collection" do 
-    it "delay on set adds appropriate amount of time to all timers" do 
+  describe "delay timer collection" do
+    it "delay on set adds appropriate amount of time to all timers" do
       timer = subject.after(10)
       timer2 = subject.after(20)
       subject.delay(5)
       expect(timer.time - Time.now).to be_within(Q).of(15)
       expect(timer2.time - Time.now).to be_within(Q).of(25)
     end
-  end  
-  describe "on delaying a timer" do 
+  end
+  describe "on delaying a timer" do
     it "fires timers in the correct order" do
       result = []
 
