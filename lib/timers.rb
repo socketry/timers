@@ -17,7 +17,7 @@ class Timers
   def after(interval, &block)
     Timer.new(self, interval, false, &block)
   end
-  
+
   # Call the given block after the given interval has expired. +interval+
   # is measured in milliseconds.
   #
@@ -114,7 +114,7 @@ class Timers
 
     # Extend this timer
     def delay(seconds)
-      @timers.delete self 
+      @timers.delete self
       @time += seconds
       @timers.add self
     end
