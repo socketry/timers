@@ -1,3 +1,7 @@
+HEAD
+----
+* Switch to Hitimes for high precision monotonic counters
+
 1.1.0
 -----
 * Timers#after_milliseconds and #after_ms for waiting in milliseconds

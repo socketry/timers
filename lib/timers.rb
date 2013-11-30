@@ -1,8 +1,8 @@
 require 'set'
 require 'forwardable'
 require 'timers/version'
+require 'hitimes'
 
-# Low precision timers implemented in pure Ruby
 class Timers
   include Enumerable
   extend  Forwardable
@@ -11,6 +11,8 @@ class Timers
   def initialize
     @timers = SortedSet.new
     @paused_timers = SortedSet.new
+    @interval = Hitimes::Interval.new
+    @interval.start
   end
 
   # Call the given block after the given interval
@@ -41,19 +43,19 @@ class Timers
   end
 
   # Interval to wait until when the next timer will fire
-  def wait_interval(now = Time.now)
+  def wait_interval(offset = self.offset)
     timer = @timers.first
     return unless timer
-    interval = timer.offset - Float(now)
+    interval = timer.offset - Float(offset)
     interval > 0 ? interval : 0
   end
 
   # Fire all timers that are ready
-  def fire(now = Time.now)
-    time = Float(now) + 0.001 # Fudge 1ms in case of clock imprecision
+  def fire(offset = self.offset)
+    time = Float(offset) + 0.001 # Fudge 1ms in case of clock imprecision
     while (timer = @timers.first) && (time >= timer.offset)
       @timers.delete timer
-      timer.fire(now)
+      timer.fire(offset)
     end
   end
 
@@ -90,6 +92,10 @@ class Timers
 
   alias_method :cancel, :delete
 
+  def offset
+    @interval.to_f
+  end
+
   # An individual timer set to fire a given proc at a given time
   class Timer
     include Comparable
@@ -120,15 +126,15 @@ class Timers
     end
 
     # Reset this timer
-    def reset(now = Time.now)
+    def reset(offset = @timers.offset)
       @timers.cancel self if @time
-      @offset = Float(now) + @interval
+      @offset = Float(offset) + @interval
       @timers.add self
     end
 
     # Fire the block
-    def fire(now = Time.now)
-      reset(now) if recurring
+    def fire(offset = @timers.offset)
+      reset(offset) if recurring
       @block.call
     end
     alias_method :call, :fire
@@ -146,13 +152,13 @@ class Timers
     # Inspect a timer
     def inspect
       str = "#<Timers::Timer:#{object_id.to_s(16)} "
-      now = Time.now
+      offset = @timers.offset
 
       if @offset
-        if @offset >= now
-          str << "fires in #{@offset - now} seconds"
+        if @offset >= offset
+          str << "fires in #{@offset - offset} seconds"
         else
-          str << "fired #{now - @time} seconds ago"
+          str << "fired #{offset - @offset} seconds ago"
         end
 
         str << ", recurs every #{interval}" if recurring

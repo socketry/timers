@@ -14,6 +14,9 @@ Gem::Specification.new do |gem|
   gem.name          = "timers"
   gem.require_paths = ["lib"]
   gem.version       = Timers::VERSION
+  gem.licenses      = ['MIT']
+
+  gem.add_runtime_dependency 'hitimes'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
