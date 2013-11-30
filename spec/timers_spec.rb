@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Timers do
-  # Level of accuracy enforced by most tests (50ms)
-  Q = 0.05
+  # Level of accuracy enforced by most tests (10ms)
+  Q = 0.01
 
   it "sleeps until the next timer" do
     interval   = Q * 2
@@ -127,7 +127,7 @@ describe Timers do
     it "adds appropriate amount of time to timer" do
       timer = subject.after(10)
       timer.delay(5)
-      expect(timer.offset - Float(Time.now)).to be_within(Q).of(15)
+      expect(timer.offset - subject.current_offset).to be_within(Q).of(15)
     end
   end
 
@@ -136,8 +136,8 @@ describe Timers do
       timer = subject.after(10)
       timer2 = subject.after(20)
       subject.delay(5)
-      expect(timer.offset - Float(Time.now)).to be_within(Q).of(15)
-      expect(timer2.offset - Float(Time.now)).to be_within(Q).of(25)
+      expect(timer.offset - subject.current_offset).to be_within(Q).of(15)
+      expect(timer2.offset - subject.current_offset).to be_within(Q).of(25)
     end
   end
 
