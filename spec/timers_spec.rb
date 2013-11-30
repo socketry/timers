@@ -48,6 +48,12 @@ describe Timers do
     expect(result).to eq [:one, :two, :three]
   end
 
+  it "raises TypeError if given an invalid time" do
+    expect do
+      subject.after(nil) { nil }
+    end.to raise_exception(TypeError)
+  end
+
   describe "recurring timers" do
     it "continues to fire the timers at each interval" do
       result = []
@@ -121,7 +127,7 @@ describe Timers do
     it "adds appropriate amount of time to timer" do
       timer = subject.after(10)
       timer.delay(5)
-      expect(timer.time - Time.now).to be_within(Q).of(15)
+      expect(timer.offset - Float(Time.now)).to be_within(Q).of(15)
     end
   end
 
@@ -130,10 +136,11 @@ describe Timers do
       timer = subject.after(10)
       timer2 = subject.after(20)
       subject.delay(5)
-      expect(timer.time - Time.now).to be_within(Q).of(15)
-      expect(timer2.time - Time.now).to be_within(Q).of(25)
+      expect(timer.offset - Float(Time.now)).to be_within(Q).of(15)
+      expect(timer2.offset - Float(Time.now)).to be_within(Q).of(25)
     end
   end
+
   describe "on delaying a timer" do
     it "fires timers in the correct order" do
       result = []

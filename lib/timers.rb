@@ -44,14 +44,14 @@ class Timers
   def wait_interval(now = Time.now)
     timer = @timers.first
     return unless timer
-    interval = timer.time - now
+    interval = timer.offset - Float(now)
     interval > 0 ? interval : 0
   end
 
   # Fire all timers that are ready
   def fire(now = Time.now)
-    time = now + 0.001 # Fudge 1ms in case of clock imprecision
-    while (timer = @timers.first) && (time >= timer.time)
+    time = Float(now) + 0.001 # Fudge 1ms in case of clock imprecision
+    while (timer = @timers.first) && (time >= timer.offset)
       @timers.delete timer
       timer.fire(now)
     end
@@ -93,18 +93,18 @@ class Timers
   # An individual timer set to fire a given proc at a given time
   class Timer
     include Comparable
-    attr_reader :interval, :time, :recurring
+    attr_reader :interval, :offset, :recurring
 
     def initialize(timers, interval, recurring = false, &block)
       @timers, @interval, @recurring = timers, interval, recurring
-      @block = block
-      @time  = nil
+      @block  = block
+      @offset = nil
 
       reset
     end
 
     def <=>(other)
-      @time <=> other.time
+      @offset <=> other.offset
     end
 
     # Cancel this timer
@@ -115,14 +115,14 @@ class Timers
     # Extend this timer
     def delay(seconds)
       @timers.delete self
-      @time += seconds
+      @offset += seconds
       @timers.add self
     end
 
     # Reset this timer
     def reset(now = Time.now)
       @timers.cancel self if @time
-      @time = now + @interval
+      @offset = Float(now) + @interval
       @timers.add self
     end
 
@@ -148,9 +148,9 @@ class Timers
       str = "#<Timers::Timer:#{object_id.to_s(16)} "
       now = Time.now
 
-      if @time
-        if @time >= now
-          str << "fires in #{@time - now} seconds"
+      if @offset
+        if @offset >= now
+          str << "fires in #{@offset - now} seconds"
         else
           str << "fired #{now - @time} seconds ago"
         end
