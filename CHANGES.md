@@ -1,6 +1,8 @@
 HEAD
 ----
 * Switch to Hitimes for high precision monotonic counters
+* Removed Timers#time. Replaced with Timers#current_offset which provides a
+  monotonic time counter.
 
 1.1.0
 -----

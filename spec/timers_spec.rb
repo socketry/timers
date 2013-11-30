@@ -127,7 +127,7 @@ describe Timers do
     it "adds appropriate amount of time to timer" do
       timer = subject.after(10)
       timer.delay(5)
-      expect(timer.offset - subject.offset).to be_within(Q).of(15)
+      expect(timer.offset - subject.current_offset).to be_within(Q).of(15)
     end
   end
 
@@ -136,8 +136,8 @@ describe Timers do
       timer = subject.after(10)
       timer2 = subject.after(20)
       subject.delay(5)
-      expect(timer.offset - subject.offset).to be_within(Q).of(15)
-      expect(timer2.offset - subject.offset).to be_within(Q).of(25)
+      expect(timer.offset - subject.current_offset).to be_within(Q).of(15)
+      expect(timer2.offset - subject.current_offset).to be_within(Q).of(25)
     end
   end
 

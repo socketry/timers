@@ -43,7 +43,7 @@ class Timers
   end
 
   # Interval to wait until when the next timer will fire
-  def wait_interval(offset = self.offset)
+  def wait_interval(offset = self.current_offset)
     timer = @timers.first
     return unless timer
     interval = timer.offset - Float(offset)
@@ -51,7 +51,7 @@ class Timers
   end
 
   # Fire all timers that are ready
-  def fire(offset = self.offset)
+  def fire(offset = self.current_offset)
     time = Float(offset) + 0.001 # Fudge 1ms in case of clock imprecision
     while (timer = @timers.first) && (time >= timer.offset)
       @timers.delete timer
@@ -92,7 +92,7 @@ class Timers
 
   alias_method :cancel, :delete
 
-  def offset
+  def current_offset
     @interval.to_f
   end
 
@@ -126,7 +126,7 @@ class Timers
     end
 
     # Reset this timer
-    def reset(offset = @timers.offset)
+    def reset(offset = @timers.current_offset)
       @timers.cancel self if @time
       @offset = Float(offset) + @interval
       @timers.add self
