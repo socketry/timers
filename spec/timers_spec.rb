@@ -172,8 +172,10 @@ describe Timers do
 
   describe "Timer inspection" do
     it "before firing" do
-      timer = subject.after(Q * 1)
-
+      fired = false
+      timer = subject.after(Q * 5) { fired = true }
+      timer.pause
+      expect(fired).not_to be_true
       expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in 0.\d+ seconds>\Z/)
     end
 
