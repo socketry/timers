@@ -152,7 +152,7 @@ class Timers
     # Inspect a timer
     def inspect
       str = "#<Timers::Timer:#{object_id.to_s(16)} "
-      offset = @timers.offset
+      offset = @timers.current_offset
 
       if @offset
         if @offset >= offset

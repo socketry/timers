@@ -169,4 +169,32 @@ describe Timers do
       expect(result).to eq [:two, :three, :one]
     end
   end
+
+  describe "Timer inspection" do
+    it "before firing" do
+      timer = subject.after(Q * 1)
+
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]{12} fires in 0.\d+ seconds>\Z/)
+    end
+
+    it "after firing" do
+      fired = false
+      timer = subject.after(Q * 1) { fired = true }
+
+      subject.wait
+
+      expect(fired).to be_true
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]{12} fired 0.\d+ seconds ago>\Z/)
+    end
+
+    it "recurring firing" do
+      result = []
+      timer = subject.every(Q * 1) { result << :foo }
+
+      subject.wait
+      expect(result).not_to be_empty
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]{12} fires in 0.\d+ seconds, recurs every 0.01>\Z/)
+
+    end
+  end
 end
