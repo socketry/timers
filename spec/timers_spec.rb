@@ -121,6 +121,19 @@ describe Timers do
       expect(@fired).to be_true
       expect(@fired2).to be_true
     end
+
+    it "can fire the timer directly" do
+      fired = false
+      timer = subject.after( Q * 1 ) { fired = true }
+      timer.pause
+      subject.wait
+      expect(fired).not_to be_true
+      timer.continue
+      expect(fired).not_to be_true
+      timer.fire
+      expect(fired).to be_true
+    end
+
   end
 
   describe "delay timer" do

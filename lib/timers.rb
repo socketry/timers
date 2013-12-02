@@ -133,7 +133,7 @@ class Timers
     end
 
     # Fire the block
-    def fire(offset = @timers.offset)
+    def fire(offset = @timers.current_offset)
       reset(offset) if recurring
       @block.call
     end
