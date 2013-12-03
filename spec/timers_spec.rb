@@ -121,6 +121,19 @@ describe Timers do
       expect(@fired).to be_true
       expect(@fired2).to be_true
     end
+
+    it "can fire the timer directly" do
+      fired = false
+      timer = subject.after( Q * 1 ) { fired = true }
+      timer.pause
+      subject.wait
+      expect(fired).not_to be_true
+      timer.continue
+      expect(fired).not_to be_true
+      timer.fire
+      expect(fired).to be_true
+    end
+
   end
 
   describe "delay timer" do
@@ -154,6 +167,37 @@ describe Timers do
       subject.fire
 
       expect(result).to eq [:two, :three, :one]
+    end
+  end
+
+  describe "Timer inspection" do
+    it "before firing" do
+      fired = false
+      timer = subject.after(Q * 5) { fired = true }
+      timer.pause
+      expect(fired).not_to be_true
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds>\Z/)
+    end
+
+    it "after firing" do
+      fired = false
+      timer = subject.after(Q * 1) { fired = true }
+
+      subject.wait
+      sleep(Q*2) # making sure that current_offset has increased
+
+      expect(fired).to be_true
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fired [-\.\de]+ seconds ago>\Z/)
+    end
+
+    it "recurring firing" do
+      result = []
+      timer = subject.every(Q * 1) { result << :foo }
+
+      subject.wait
+      expect(result).not_to be_empty
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every 0.01>\Z/)
+
     end
   end
 end

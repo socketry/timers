@@ -133,7 +133,7 @@ class Timers
     end
 
     # Fire the block
-    def fire(offset = @timers.offset)
+    def fire(offset = @timers.current_offset)
       reset(offset) if recurring
       @block.call
     end
@@ -152,7 +152,7 @@ class Timers
     # Inspect a timer
     def inspect
       str = "#<Timers::Timer:#{object_id.to_s(16)} "
-      offset = @timers.offset
+      offset = @timers.current_offset
 
       if @offset
         if @offset >= offset
