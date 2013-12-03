@@ -176,7 +176,7 @@ describe Timers do
       timer = subject.after(Q * 5) { fired = true }
       timer.pause
       expect(fired).not_to be_true
-      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in 0.\d+ seconds>\Z/)
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds>\Z/)
     end
 
     it "after firing" do
@@ -186,7 +186,7 @@ describe Timers do
       subject.wait
 
       expect(fired).to be_true
-      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fired 0.\d+ seconds ago>\Z/)
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fired [-\.\de]+ seconds ago>\Z/)
     end
 
     it "recurring firing" do
@@ -195,7 +195,7 @@ describe Timers do
 
       subject.wait
       expect(result).not_to be_empty
-      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in 0.\d+ seconds, recurs every 0.01>\Z/)
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every 0.01>\Z/)
 
     end
   end
