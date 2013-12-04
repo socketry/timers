@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Timers do
-  # Level of accuracy enforced by most tests (10ms)
-  Q = 0.01
+  # Level of accuracy enforced by tests (50ms)
+  Q = 0.05
 
   it "sleeps until the next timer" do
     interval   = Q * 2
