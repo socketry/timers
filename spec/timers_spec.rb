@@ -181,7 +181,7 @@ describe Timers do
 
     it "after firing" do
       fired = false
-      timer = subject.after(Q * 1) { fired = true }
+      timer = subject.after(Q) { fired = true }
 
       subject.wait
 
@@ -191,12 +191,11 @@ describe Timers do
 
     it "recurring firing" do
       result = []
-      timer = subject.every(Q * 1) { result << :foo }
+      timer = subject.every(Q) { result << :foo }
 
       subject.wait
       expect(result).not_to be_empty
-      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every 0.01>\Z/)
-
+      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{sprintf("%0.2f", Q)}>\Z/)
     end
   end
 end
