@@ -3,6 +3,10 @@ require 'forwardable'
 require 'timers/version'
 require 'hitimes'
 
+# Workaround for thread safety issues in SortedSet initialization
+# See: https://github.com/celluloid/timers/issues/20
+SortedSet.new
+
 class Timers
   include Enumerable
   extend  Forwardable
