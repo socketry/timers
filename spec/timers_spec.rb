@@ -184,7 +184,6 @@ describe Timers do
       timer = subject.after(Q * 1) { fired = true }
 
       subject.wait
-      sleep(Q*2) # making sure that current_offset has increased
 
       expect(fired).to be_true
       expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fired [-\.\de]+ seconds ago>\Z/)
