@@ -17,7 +17,9 @@ Gem::Specification.new do |gem|
   gem.licenses      = ['MIT']
 
   gem.add_runtime_dependency 'hitimes'
+  gem.add_runtime_dependency 'tod'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'timecop'
 end
