@@ -26,7 +26,7 @@ class Timers
   def cron(time, &block)
     cron_parser = CronParser.new(time)
     interval = cron_parser.next - Time.now
-    after(interval) { block.call; cron(time, &block) }
+    Timer.new(self, interval, true, cron_parser, &block)
   end
 
   # Call the given block at a given time in a human readable format
@@ -49,7 +49,7 @@ class Timers
 
   # Call the given block after the given interval
   def after(interval, &block)
-    Timer.new(self, interval, false, &block)
+    Timer.new(self, interval, false, false, &block)
   end
 
   # Call the given block after the given interval has expired. +interval+
@@ -64,7 +64,7 @@ class Timers
 
   # Call the given block periodically at the given interval
   def every(interval, &block)
-    Timer.new(self, interval, true, &block)
+    Timer.new(self, interval, true, false, &block)
   end
 
   # Wait for the next timer and fire it
@@ -133,8 +133,8 @@ class Timers
     include Comparable
     attr_reader :interval, :offset, :recurring
 
-    def initialize(timers, interval, recurring = false, &block)
-      @timers, @interval, @recurring = timers, interval, recurring
+    def initialize(timers, interval, recurring = false, cron = false, &block)
+      @timers, @interval, @recurring, @cron = timers, interval, recurring, cron
       @block  = block
       @offset = nil
 
@@ -160,7 +160,12 @@ class Timers
     # Reset this timer
     def reset(offset = @timers.current_offset)
       @timers.cancel self if @time
-      @offset = Float(offset) + @interval
+      if @cron
+        interval = @cron.next - Time.now
+        @offset = Float(offset) + interval
+      else
+        @offset = Float(offset) + @interval
+      end
       @timers.add self
     end
 
