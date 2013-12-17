@@ -228,7 +228,7 @@ describe Timers do
   end
 
   describe 'cron' do
-    it 'runs the block at the given time, something something this is a bad test name' do
+    it 'runs the block according to the cron notation' do
       start_time = Time.local(2008, 9, 1, 1, 34, 59)
       Timecop.travel(start_time)
       fired = false

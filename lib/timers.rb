@@ -13,6 +13,7 @@ class Timers
   include Enumerable
   extend  Forwardable
   def_delegators :@timers, :delete, :each, :empty?
+  ONE_DAY_IN_SECONDS = 86400
 
   def initialize
     @timers = SortedSet.new
@@ -36,13 +37,13 @@ class Timers
     interval = sleep_at - time_now
 
     if recurring
-      after(interval) { block.call; every(86400, &block) }
+      after(interval) { block.call; every(ONE_DAY_IN_SECONDS, &block) }
     else
       after(interval, &block)
     end
   end
 
-  # Call the given block at a given time in a human readable format every day
+  # Call the given block at the same time every day in a human readable format
   def recurring_at(time, &block)
     at(time, true, &block)
   end
