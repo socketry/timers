@@ -3,6 +3,7 @@ require 'forwardable'
 require 'timers/version'
 require 'hitimes'
 require 'tod'
+require 'parse-cron'
 
 # Workaround for thread safety issues in SortedSet initialization
 # See: https://github.com/celluloid/timers/issues/20
@@ -18,6 +19,14 @@ class Timers
     @paused_timers = SortedSet.new
     @interval = Hitimes::Interval.new
     @interval.start
+  end
+
+  # Call the given block using cron notation
+  #e.g cron('* * * * *') { puts "Hi" } will puts hi every min
+  def cron(time, &block)
+    cron_parser = CronParser.new(time)
+    interval = cron_parser.next - Time.now
+    after(interval) { block.call; cron(time, &block) }
   end
 
   # Call the given block at a given time in a human readable format
