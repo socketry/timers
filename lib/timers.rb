@@ -2,6 +2,8 @@ require 'set'
 require 'forwardable'
 require 'timers/version'
 require 'hitimes'
+require 'tod'
+require 'parse-cron'
 
 # Workaround for thread safety issues in SortedSet initialization
 # See: https://github.com/celluloid/timers/issues/20
@@ -11,6 +13,7 @@ class Timers
   include Enumerable
   extend  Forwardable
   def_delegators :@timers, :delete, :each, :empty?
+  ONE_DAY_IN_SECONDS = 86400
 
   def initialize
     @timers = SortedSet.new
@@ -19,9 +22,35 @@ class Timers
     @interval.start
   end
 
+  # Call the given block using cron notation
+  #e.g cron('* * * * *') { puts "Hi" } will puts hi every min
+  def cron(time, &block)
+    cron_parser = CronParser.new(time)
+    interval = cron_parser.next - Time.now
+    Timer.new(self, interval, true, cron_parser, &block)
+  end
+
+  # Call the given block at a given time in a human readable format
+  def at(time, recurring = false, &block)
+    sleep_at = TimeOfDay.parse(time).second_of_day
+    time_now = Time.now.to_time_of_day.second_of_day
+    interval = sleep_at - time_now
+
+    if recurring
+      after(interval) { block.call; every(ONE_DAY_IN_SECONDS, &block) }
+    else
+      after(interval, &block)
+    end
+  end
+
+  # Call the given block at the same time every day in a human readable format
+  def recurring_at(time, &block)
+    at(time, true, &block)
+  end
+
   # Call the given block after the given interval
   def after(interval, &block)
-    Timer.new(self, interval, false, &block)
+    Timer.new(self, interval, false, false, &block)
   end
 
   # Call the given block after the given interval has expired. +interval+
@@ -36,7 +65,7 @@ class Timers
 
   # Call the given block periodically at the given interval
   def every(interval, &block)
-    Timer.new(self, interval, true, &block)
+    Timer.new(self, interval, true, false, &block)
   end
 
   # Wait for the next timer and fire it
@@ -105,8 +134,8 @@ class Timers
     include Comparable
     attr_reader :interval, :offset, :recurring
 
-    def initialize(timers, interval, recurring = false, &block)
-      @timers, @interval, @recurring = timers, interval, recurring
+    def initialize(timers, interval, recurring = false, cron = false, &block)
+      @timers, @interval, @recurring, @cron = timers, interval, recurring, cron
       @block  = block
       @offset = nil
 
@@ -132,7 +161,12 @@ class Timers
     # Reset this timer
     def reset(offset = @timers.current_offset)
       @timers.cancel self if @time
-      @offset = Float(offset) + @interval
+      if @cron
+        interval = @cron.next - Time.now
+        @offset = Float(offset) + interval
+      else
+        @offset = Float(offset) + @interval
+      end
       @timers.add self
     end
 

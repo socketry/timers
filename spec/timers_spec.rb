@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Timers do
   # Level of accuracy enforced by tests (50ms)
   Q = 0.05
+  ONE_DAY_IN_SECONDS = 86400
 
   it "sleeps until the next timer" do
     interval   = Q * 2
@@ -75,7 +76,6 @@ describe Timers do
       interval_ms = 25
 
       subject.after_milliseconds(interval_ms)
-      expected_elapse = subject.wait_interval
 
       expect(subject.wait_interval).to be_within(Q).of(interval_ms / 1000.0)
     end
@@ -84,7 +84,6 @@ describe Timers do
   describe "pause and continue timers" do
     before(:each) do
       @interval   = Q * 2
-      started_at = Time.now
 
       @fired = false
       @timer = subject.every(@interval) { @fired = true }
@@ -158,8 +157,8 @@ describe Timers do
     it "fires timers in the correct order" do
       result = []
 
-      second = subject.after(Q * 2) { result << :two }
-      third = subject.after(Q * 3) { result << :three }
+      subject.after(Q * 2) { result << :two }
+      subject.after(Q * 3) { result << :three }
       first = subject.after(Q * 1) { result << :one }
       first.delay(Q * 3)
 
@@ -196,6 +195,51 @@ describe Timers do
       subject.wait
       expect(result).not_to be_empty
       expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{sprintf("%0.2f", Q)}>\Z/)
+    end
+  end
+
+  describe 'at' do
+    it 'runs the block at the given time' do
+      start_time = Time.local(2008, 9, 1, 1, 34, 59)
+      Timecop.travel(start_time)
+      fired = false
+
+      subject.at('1:35:00') { fired = true }
+
+      expect(subject.wait_interval).to  be_within(Q).of 1
+      subject.wait
+      expect(fired).to be_true
+    end
+  end
+
+  describe 'recurring_at' do
+    it 'runs the block at the given time every day' do
+      start_time = Time.local(2008, 9, 1, 1, 34, 59)
+      Timecop.travel(start_time)
+      fired = false
+
+      subject.recurring_at('1:35:00') { fired = true }
+      expect(subject.wait_interval).to  be_within(Q).of 1
+      subject.wait
+
+      expect(fired).to be_true
+      expect(subject.wait_interval).to  be_within(Q).of ONE_DAY_IN_SECONDS
+    end
+  end
+
+  describe 'cron' do
+    it 'runs the block according to the cron notation' do
+      start_time = Time.local(2008, 9, 1, 1, 34, 59)
+      Timecop.travel(start_time)
+      fired = false
+
+      subject.cron('* * * * *') { fired = true }
+
+      expect(subject.wait_interval).to  be_within(Q).of 1
+      subject.wait
+
+      expect(fired).to be_true
+      expect(subject.wait_interval).to  be_within(Q).of 60
     end
   end
 end
