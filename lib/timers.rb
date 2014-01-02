@@ -131,7 +131,7 @@ class Timers
 
     # Reset this timer
     def reset(offset = @timers.current_offset)
-      @timers.cancel self if @time
+      @timers.cancel self if @offset
       @offset = Float(offset) + @interval
       @timers.add self
     end
