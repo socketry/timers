@@ -198,4 +198,27 @@ describe Timers do
       expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{sprintf("%0.2f", Q)}>\Z/)
     end
   end
+
+  describe "fires_in" do
+    let(:interval) { Q * 2 }
+
+    it "calculates the interval until the next fire if it's recurring" do
+      timer = subject.every(interval) { true }
+      expect(timer.fires_in).to be_within(Q).of(interval)
+    end
+
+    context "when timer is not recurring" do
+      let!(:timer) { subject.after(interval) { true } }
+
+      it "calculates the interval until the next fire if it hasn't already fired" do
+        expect(timer.fires_in).to be_within(Q).of(interval)
+      end
+
+      it "calculates the interval since last fire if already fired" do
+        subject.wait
+        sleep(interval)
+        expect(timer.fires_in).to be_within(Q).of(0 - interval)
+      end
+    end
+  end
 end
