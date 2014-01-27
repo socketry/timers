@@ -153,16 +153,21 @@ class Timers
       @timers.continue self
     end
 
+    # Number of seconds until next fire / since last fire
+    def fires_in
+      @offset - @timers.current_offset if @offset
+    end
+
     # Inspect a timer
     def inspect
       str = "#<Timers::Timer:#{object_id.to_s(16)} "
       offset = @timers.current_offset
 
       if @offset
-        if @offset >= offset
-          str << "fires in #{@offset - offset} seconds"
+        if fires_in >= 0
+          str << "fires in #{fires_in} seconds"
         else
-          str << "fired #{offset - @offset} seconds ago"
+          str << "fired #{fires_in.abs} seconds ago"
         end
 
         str << ", recurs every #{interval}" if recurring
