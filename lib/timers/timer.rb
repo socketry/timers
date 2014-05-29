@@ -38,7 +38,12 @@ module Timers
 
     # Fire the block
     def fire(offset = @timers.current_offset)
-      reset(offset) if recurring
+      if recurring
+        reset(offset)
+      else
+        @offset = offset
+      end
+      
       @block.call
     end
     alias_method :call, :fire
