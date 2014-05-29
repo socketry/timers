@@ -1,7 +1,7 @@
 
 require 'hitimes'
 
-class Timers
+module Timers
   # An exclusive, monotonic timeout class.
   class Timeout
     def initialize(duration)

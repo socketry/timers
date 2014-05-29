@@ -1,3 +1,4 @@
-class Timers
+
+module Timers
   VERSION = "2.0.0"
 end
