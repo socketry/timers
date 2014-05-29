@@ -87,8 +87,11 @@ timers.continue
 10.times { timers.wait } # will fire all timers
 ```
 
-License
--------
+## License
 
-Copyright (c) 2014 Tony Arcieri. Distributed under the MIT License. See
-LICENSE for further details.
+Released under the MIT license.
+
+Copyright (c) 2014 Tony Arcieri.  
+Copyright, 2014, by [Samuel G. D. Williams](http://www.codeotaku.com/samuel-williams).
+
+See the LICENSE file for further details.
