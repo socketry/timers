@@ -34,7 +34,7 @@ module Timers::GroupSpec
       expect(subject.wait_interval).to be_within(Q).of interval
 
       sleep(interval)
-      expect(subject.wait_interval).to be(0)
+      expect(subject.wait_interval).to be(nil)
     end
 
     it "fires timers in the correct order" do

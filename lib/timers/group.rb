@@ -40,8 +40,12 @@ module Timers
 
     # Wait for the next timer and fire it
     def wait
-      i = wait_interval
-      sleep i if i
+      # Repeatedly call sleep until there is no longer any wait_interval:
+      while i = wait_interval
+        # We cannot assume that sleep will wait for the specified time, it might be +/- a bit.
+        sleep i
+      end
+      
       fire
     end
 
@@ -50,12 +54,12 @@ module Timers
       timer = @timers.first
       return unless timer
       interval = timer.offset - Float(offset)
-      interval > 0 ? interval : 0
+      interval > 0 ? interval : nil
     end
 
     # Fire all timers that are ready
     def fire(offset = self.current_offset)
-      time = Float(offset) + 0.001 # Fudge 1ms in case of clock imprecision
+      time = Float(offset)
       while (timer = @timers.first) && (time >= timer.offset)
         @timers.delete timer
         timer.fire(offset)
