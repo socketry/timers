@@ -90,5 +90,7 @@ timers.continue
 License
 -------
 
-Copyright (c) 2014 Tony Arcieri. Distributed under the MIT License. See
-LICENSE for further details.
+Copyright (c) 2014 Celluloid timers project developers (given in the file
+AUTHORS.md).
+
+Distributed under the MIT License. See LICENSE file for further details.
