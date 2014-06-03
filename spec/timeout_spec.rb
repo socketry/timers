@@ -3,15 +3,12 @@ require 'spec_helper'
 require 'timers/timeout'
 
 describe Timers::Timeout do
-  # Level of accuracy enforced by tests (50ms)
-  Q = 0.05
-
   it "repeats until timeout expired" do
     timeout = Timers::Timeout.new(5)
     count = 0
     
     timeout.while_time_remaining do |remaining|
-      expect(remaining).to be_within(Q).of (timeout.duration - count)
+      expect(remaining).to be_within(TIMER_QUANTUM).of (timeout.duration - count)
       
       count += 1
       sleep 1
