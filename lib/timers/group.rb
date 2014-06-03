@@ -43,7 +43,7 @@ module Timers
       # Repeatedly call sleep until there is no longer any wait_interval:
       while i = wait_interval
         # We cannot assume that sleep will wait for the specified time, it might be +/- a bit.
-        sleep i if interval > 0
+        sleep i
       end
       
       fire
@@ -53,7 +53,8 @@ module Timers
     def wait_interval(offset = self.current_offset)
       timer = @timers.first
       return unless timer
-      timer.offset - Float(offset)
+      interval = timer.offset - Float(offset)
+      interval > 0 ? interval : nil
     end
 
     # Fire all timers that are ready
