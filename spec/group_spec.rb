@@ -10,7 +10,7 @@ describe Timers::Group do
     subject.after(interval) { fired = true }
     subject.wait
 
-    expect(fired).to be_true
+    expect(fired).to be true
     expect(Time.now - started_at).to be_within(TIMER_QUANTUM).of interval
   end
 
@@ -20,7 +20,7 @@ describe Timers::Group do
     sleep(TIMER_QUANTUM * 2)
     subject.wait
 
-    expect(fired).to be_true
+    expect(fired).to be true
   end
 
   it "calculates the interval until the next timer should fire" do
@@ -93,7 +93,7 @@ describe Timers::Group do
     it "does not fire when paused" do
       @timer.pause
       subject.wait
-      expect(@fired).to be_false
+      expect(@fired).to be false
     end
 
     it "fires when continued after pause" do
@@ -101,14 +101,14 @@ describe Timers::Group do
       subject.wait
       @timer.continue
       subject.wait
-      expect(@fired).to be_true
+      expect(@fired).to be true
     end
 
     it "can pause all timers at once" do
       subject.pause
       subject.wait
-      expect(@fired).to be_false
-      expect(@fired2).to be_false
+      expect(@fired).to be false
+      expect(@fired2).to be false
     end
 
     it "can continue all timers at once" do
@@ -116,8 +116,8 @@ describe Timers::Group do
       subject.wait
       subject.continue
       subject.wait
-      expect(@fired).to be_true
-      expect(@fired2).to be_true
+      expect(@fired).to be true
+      expect(@fired2).to be true
     end
 
     it "can fire the timer directly" do
@@ -125,11 +125,11 @@ describe Timers::Group do
       timer = subject.after( TIMER_QUANTUM * 1 ) { fired = true }
       timer.pause
       subject.wait
-      expect(fired).not_to be_true
+      expect(fired).not_to be true
       timer.continue
-      expect(fired).not_to be_true
+      expect(fired).not_to be true
       timer.fire
-      expect(fired).to be_true
+      expect(fired).to be true
     end
 
   end
@@ -173,7 +173,7 @@ describe Timers::Group do
       fired = false
       timer = subject.after(TIMER_QUANTUM * 5) { fired = true }
       timer.pause
-      expect(fired).not_to be_true
+      expect(fired).not_to be true
       expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds>\Z/)
     end
 
@@ -183,7 +183,7 @@ describe Timers::Group do
 
       subject.wait
 
-      expect(fired).to be_true
+      expect(fired).to be true
       expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fired [-\.\de]+ seconds ago>\Z/)
     end
 
