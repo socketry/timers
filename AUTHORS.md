@@ -12,3 +12,4 @@
 - Nicholas Evans
 - Dimitrij Denissenko
 - Ryan LeCompte
+- Samuel G. D. Williams
