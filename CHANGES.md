@@ -1,3 +1,9 @@
+3.0.0.pre
+---------
+* Refactor `Timers` class into `Timers::Group`
+* Add `Timers::Timeout` class for implementing timeouts
+* Fix timer fudging
+
 2.0.0 (2013-12-30)
 ------------------
 * Switch to Hitimes for high precision monotonic counters
