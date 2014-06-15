@@ -1,8 +1,9 @@
-3.0.0.pre
----------
+3.0.0 (2013-06-14)
+------------------
 * Refactor `Timers` class into `Timers::Group`
 * Add `Timers::Timeout` class for implementing timeouts
 * Fix timer fudging
+* Update to RSpec 3
 
 2.0.0 (2013-12-30)
 ------------------
