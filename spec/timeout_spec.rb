@@ -2,7 +2,7 @@
 require 'spec_helper'
 require 'timers/timeout'
 
-describe Timers::Timeout do
+RSpec.describe Timers::Timeout do
   it "repeats until timeout expired" do
     timeout = Timers::Timeout.new(5)
     count = 0

@@ -1,7 +1,7 @@
 
 require 'spec_helper'
 
-describe Timers::Group do
+RSpec.describe Timers::Group do
   it "sleeps until the next timer" do
     interval   = TIMER_QUANTUM * 2
     started_at = Time.now
