@@ -1,3 +1,7 @@
+3.0.1 (2013-06-27)
+------------------
+* Require 'set' automatically
+
 3.0.0 (2013-06-14)
 ------------------
 * Refactor `Timers` class into `Timers::Group`
