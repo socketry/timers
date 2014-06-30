@@ -73,7 +73,6 @@ RSpec.describe Timers::Group do
       interval_ms = 25
 
       subject.after_milliseconds(interval_ms)
-      expected_elapse = subject.wait_interval
 
       expect(subject.wait_interval).to be_within(TIMER_QUANTUM).of(interval_ms / 1000.0)
     end
@@ -82,7 +81,6 @@ RSpec.describe Timers::Group do
   describe "pause and continue timers" do
     before(:each) do
       @interval   = TIMER_QUANTUM * 2
-      started_at = Time.now
 
       @fired = false
       @timer = subject.every(@interval) { @fired = true }
@@ -156,8 +154,8 @@ RSpec.describe Timers::Group do
     it "fires timers in the correct order" do
       result = []
 
-      second = subject.after(TIMER_QUANTUM * 2) { result << :two }
-      third = subject.after(TIMER_QUANTUM * 3) { result << :three }
+      subject.after(TIMER_QUANTUM * 2) { result << :two }
+      subject.after(TIMER_QUANTUM * 3) { result << :three }
       first = subject.after(TIMER_QUANTUM * 1) { result << :one }
       first.delay(TIMER_QUANTUM * 3)
 

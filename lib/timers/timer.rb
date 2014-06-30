@@ -43,7 +43,7 @@ module Timers
       else
         @offset = offset
       end
-      
+
       @block.call
     end
     alias_method :call, :fire
@@ -66,7 +66,6 @@ module Timers
     # Inspect a timer
     def inspect
       str = "#<Timers::Timer:#{object_id.to_s(16)} "
-      offset = @timers.current_offset
 
       if @offset
         if fires_in >= 0
