@@ -30,7 +30,7 @@ RSpec.describe Timers::Group do
     expect(subject.wait_interval).to be_within(TIMER_QUANTUM).of interval
 
     sleep(interval)
-    expect(subject.wait_interval).to be(nil)
+    expect(subject.wait_interval).to be <= 0
   end
 
   it "fires timers in the correct order" do

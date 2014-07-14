@@ -41,7 +41,7 @@ module Timers
     # Wait for the next timer and fire it
     def wait
       # Repeatedly call sleep until there is no longer any wait_interval:
-      while i = wait_interval
+      while i = wait_interval and i > 0
         # We cannot assume that sleep will wait for the specified time, it might be +/- a bit.
         sleep i
       end
@@ -51,10 +51,9 @@ module Timers
 
     # Interval to wait until when the next timer will fire
     def wait_interval(offset = self.current_offset)
-      timer = @timers.first
-      return unless timer
-      interval = timer.offset - Float(offset)
-      interval > 0 ? interval : nil
+      return unless timer = @timers.first
+      
+      timer.offset - Float(offset)
     end
 
     # Fire all timers that are ready
