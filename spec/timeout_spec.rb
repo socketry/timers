@@ -1,10 +1,10 @@
 
 require 'spec_helper'
-require 'timers/timeout'
+require 'timers/wait'
 
-RSpec.describe Timers::Timeout do
+RSpec.describe Timers::Wait do
   it "repeats until timeout expired" do
-    timeout = Timers::Timeout.new(5)
+    timeout = Timers::Wait.new(5)
     count = 0
     
     timeout.while_time_remaining do |remaining|
@@ -18,7 +18,7 @@ RSpec.describe Timers::Timeout do
   end
   
   it "yields results as soon as possible" do
-    timeout = Timers::Timeout.new(5)
+    timeout = Timers::Wait.new(5)
     
     result = timeout.while_time_remaining do |remaining|
       break :done

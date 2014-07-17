@@ -7,4 +7,4 @@ SortedSet.new
 require 'timers/version'
 
 require 'timers/group'
-require 'timers/timeout'
+require 'timers/wait'

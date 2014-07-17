@@ -39,11 +39,18 @@ module Timers
     end
 
     # Wait for the next timer and fire it
-    def wait
+    def wait(&block)
+      # If no timers are present, yield nil and return:
+      return yield(nil) if block_given? and empty?
+      
       # Repeatedly call sleep until there is no longer any wait_interval:
       while i = wait_interval and i > 0
-        # We cannot assume that sleep will wait for the specified time, it might be +/- a bit.
-        sleep i
+        if block_given?
+          yield(i)
+        else
+          # We cannot assume that sleep will wait for the specified time, it might be +/- a bit.
+          sleep i
+        end
       end
       
       fire
