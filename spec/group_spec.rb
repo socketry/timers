@@ -83,9 +83,9 @@ RSpec.describe Timers::Group do
       @interval   = TIMER_QUANTUM * 2
 
       @fired = false
-      @timer = subject.every(@interval) { @fired = true }
+      @timer = subject.after(@interval) { @fired = true }
       @fired2 = false
-      @timer2 = subject.every(@interval) { @fired2 = true }
+      @timer2 = subject.after(@interval) { @fired2 = true }
     end
 
     it "does not fire when paused" do
@@ -113,7 +113,11 @@ RSpec.describe Timers::Group do
       subject.pause
       subject.wait
       subject.continue
+      
+      # We need to wait until we are sure both timers will fire, otherwise highly accurate clocks (e.g. JVM) may only fire the first timer, but not the second, because they are actually schedueled at different times.
+      sleep TIMER_QUANTUM * 2
       subject.wait
+      
       expect(@fired).to be true
       expect(@fired2).to be true
     end
