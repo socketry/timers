@@ -44,12 +44,12 @@ module Timers
       return yield(nil) if block_given? and empty?
       
       # Repeatedly call sleep until there is no longer any wait_interval:
-      while i = wait_interval and i > 0
+      while interval = wait_interval and interval > 0
         if block_given?
-          yield(i)
+          yield interval
         else
           # We cannot assume that sleep will wait for the specified time, it might be +/- a bit.
-          sleep i
+          sleep interval
         end
       end
       
