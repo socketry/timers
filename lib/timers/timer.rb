@@ -5,12 +5,13 @@ module Timers
     include Comparable
     attr_reader :interval, :offset, :recurring
 
-    def initialize(timers, interval, recurring = false, &block)
+    def initialize(timers, interval, recurring = false, offset = nil, &block)
       @timers, @interval, @recurring = timers, interval, recurring
       @block  = block
-      @offset = nil
-
-      reset
+      @offset = offset
+      
+      # If a start offset was supplied, use that, otherwise use the current timers offset.
+      reset(@offset || @timers.current_offset)
     end
 
     def <=>(other)
@@ -38,14 +39,18 @@ module Timers
 
     # Fire the block
     def fire(offset = @timers.current_offset)
-      if recurring
+      if recurring == :strict
+        # ... make the next interval strictly the last offset + the interval:
+        reset(@offset)
+      elsif recurring
         reset(offset)
       else
         @offset = offset
       end
 
-      @block.call
+      @block.call(offset)
     end
+
     alias_method :call, :fire
 
     # Pause this timer
