@@ -66,8 +66,8 @@ module Timers
     # Fire all timers that are ready
     def fire(offset = self.current_offset)
       time = Float(offset)
-      while (timer = @timers.first) && (time >= timer.offset)
-        @timers.delete timer
+      
+      pop_ready(time).each do |timer|
         timer.fire(offset)
       end
     end
@@ -107,6 +107,20 @@ module Timers
 
     def current_offset
       @interval.to_f
+    end
+
+    private 
+    
+    def pop_ready(time)
+      ready = []
+      
+      while (timer = @timers.first) && (time >= timer.offset)
+        @timers.delete timer
+        
+        ready << timer
+      end
+      
+      return ready
     end
   end
 end
