@@ -63,7 +63,7 @@ RSpec.describe Timers::Group do
   
   it "run efficiently" do
     result = []
-    range = (1..1000)
+    range = (1..500)
     duration = 2.0
 
     total = 0
