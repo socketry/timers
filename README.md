@@ -5,8 +5,8 @@ Timers
 [![Code Climate](https://codeclimate.com/github/celluloid/timers.png)](https://codeclimate.com/github/celluloid/timers)
 [![Coverage Status](https://coveralls.io/repos/celluloid/timers/badge.png?branch=master)](https://coveralls.io/r/celluloid/timers)
 
-Pure Ruby timer collections. Schedule several procs to fire after configurable
-delays or at periodic intervals.
+Ruby timer collections. Schedule several procs to fire after configurable delays
+or at periodic intervals.
 
 This gem is especially useful when you are faced with an API that accepts a
 single timeout but you want to run multiple timers on top of it. An example of
@@ -77,13 +77,13 @@ paused_timer = timers.every(5) { puts "I was paused" }
 paused_timer.pause
 10.times { timers.wait } # will not fire paused timer
 
-paused_timer.continue
+paused_timer.resume
 10.times { timers.wait } # will fire timer
 
 timers.pause
 10.times { timers.wait } # will not fire any timers
 
-timers.continue
+timers.resume
 10.times { timers.wait } # will fire all timers
 ```
 

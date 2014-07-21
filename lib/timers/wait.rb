@@ -3,7 +3,19 @@ require 'hitimes'
 
 module Timers
   # An exclusive, monotonic timeout class.
-  class Timeout
+  class Wait
+    def self.for(duration, &block)
+      if duration
+        timeout = self.new(duration)
+        
+        timeout.while_time_remaining(&block)
+      else
+        while true
+          yield(nil)
+        end
+      end
+    end
+    
     def initialize(duration)
       @duration = duration
       @remaining = true

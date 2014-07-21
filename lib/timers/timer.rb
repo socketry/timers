@@ -5,62 +5,94 @@ module Timers
     include Comparable
     attr_reader :interval, :offset, :recurring
 
-    def initialize(timers, interval, recurring = false, &block)
-      @timers, @interval, @recurring = timers, interval, recurring
-      @block  = block
-      @offset = nil
+    def initialize(group, interval, recurring = false, offset = nil, &block)
+      @group = group
+      
+      @group.timers << self
+      
+      @interval = interval
+      @recurring = recurring
+      @block = block
+      @offset = offset
+      
+      @handle = nil
+      
+      # If a start offset was supplied, use that, otherwise use the current timers offset.
+      reset(@offset || @group.current_offset)
+    end
 
+    def paused?
+      @group.paused_timers.include? self
+    end
+
+    def pause
+      return if paused?
+      
+      @group.timers.delete self
+      @group.paused_timers.add self
+      
+      @handle.cancel! if @handle
+      @handle = nil
+    end
+
+    def resume
+      return unless paused?
+      
+      @group.timers.add self
+      @group.paused_timers.delete self
+      
       reset
     end
 
-    def <=>(other)
-      @offset <=> other.offset
+    alias_method :continue, :resume
+
+    # Extend this timer
+    def delay(seconds)
+      @handle.cancel! if @handle
+      
+      @offset += seconds
+      
+      @handle = @group.events.schedule(@offset, self)
     end
 
     # Cancel this timer
     def cancel
-      @timers.cancel self
-    end
-
-    # Extend this timer
-    def delay(seconds)
-      @timers.delete self
-      @offset += seconds
-      @timers.add self
+      @handle.cancel! if @handle
+      @handle = nil
+      
+      # This timer is no longer valid:
+      @group.timers.delete self
+      @group = nil
     end
 
     # Reset this timer
-    def reset(offset = @timers.current_offset)
-      @timers.cancel self if @offset
+    def reset(offset = @group.current_offset)
+      @handle.cancel! if @handle
+      
       @offset = Float(offset) + @interval
-      @timers.add self
+      
+      @handle = @group.events.schedule(@offset, self)
     end
 
     # Fire the block
-    def fire(offset = @timers.current_offset)
-      if recurring
+    def fire(offset = @group.current_offset)
+      if recurring == :strict
+        # ... make the next interval strictly the last offset + the interval:
+        reset(@offset)
+      elsif recurring
         reset(offset)
       else
         @offset = offset
       end
 
-      @block.call
+      @block.call(offset)
     end
+
     alias_method :call, :fire
-
-    # Pause this timer
-    def pause
-      @timers.pause self
-    end
-
-    # Continue this timer
-    def continue
-      @timers.continue self
-    end
 
     # Number of seconds until next fire / since last fire
     def fires_in
-      @offset - @timers.current_offset if @offset
+      @offset - @group.current_offset if @offset
     end
 
     # Inspect a timer

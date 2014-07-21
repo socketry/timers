@@ -2,6 +2,35 @@
 require 'spec_helper'
 
 RSpec.describe Timers::Group do
+  describe "#wait" do
+    it "calls the wait block with nil" do
+      called = false
+      
+      subject.wait do |interval|
+        expect(interval).to be == nil
+        called = true
+      end
+      
+      expect(called).to be true
+    end
+  
+    it "calls the wait block with an interval" do
+      called = false
+      fired = false
+
+      subject.after(0.1) { fired = true }
+
+      subject.wait do |interval|
+        expect(interval).to be_within(TIMER_QUANTUM).of(0.1)
+        called = true
+        sleep 0.2
+      end
+
+      expect(called).to be true
+      expect(fired).to be true
+    end
+  end
+  
   it "sleeps until the next timer" do
     interval   = TIMER_QUANTUM * 2
     started_at = Time.now
@@ -30,7 +59,7 @@ RSpec.describe Timers::Group do
     expect(subject.wait_interval).to be_within(TIMER_QUANTUM).of interval
 
     sleep(interval)
-    expect(subject.wait_interval).to be(nil)
+    expect(subject.wait_interval).to be <= 0
   end
 
   it "fires timers in the correct order" do
@@ -68,14 +97,12 @@ RSpec.describe Timers::Group do
     end
   end
 
-  describe "millisecond timers" do
-    it "calculates the proper interval to wait until firing" do
-      interval_ms = 25
+  it "calculates the proper interval to wait until firing" do
+    interval_ms = 25
 
-      subject.after_milliseconds(interval_ms)
+    subject.after(interval_ms / 1000.0)
 
-      expect(subject.wait_interval).to be_within(TIMER_QUANTUM).of(interval_ms / 1000.0)
-    end
+    expect(subject.wait_interval).to be_within(TIMER_QUANTUM).of(interval_ms / 1000.0)
   end
 
   describe "pause and continue timers" do
@@ -83,9 +110,9 @@ RSpec.describe Timers::Group do
       @interval   = TIMER_QUANTUM * 2
 
       @fired = false
-      @timer = subject.every(@interval) { @fired = true }
+      @timer = subject.after(@interval) { @fired = true }
       @fired2 = false
-      @timer2 = subject.every(@interval) { @fired2 = true }
+      @timer2 = subject.after(@interval) { @fired2 = true }
     end
 
     it "does not fire when paused" do
@@ -97,8 +124,11 @@ RSpec.describe Timers::Group do
     it "fires when continued after pause" do
       @timer.pause
       subject.wait
-      @timer.continue
+      @timer.resume
+      
+      sleep @timer.interval
       subject.wait
+      
       expect(@fired).to be true
     end
 
@@ -112,8 +142,12 @@ RSpec.describe Timers::Group do
     it "can continue all timers at once" do
       subject.pause
       subject.wait
-      subject.continue
+      subject.resume
+      
+      # We need to wait until we are sure both timers will fire, otherwise highly accurate clocks (e.g. JVM) may only fire the first timer, but not the second, because they are actually schedueled at different times.
+      sleep TIMER_QUANTUM * 2
       subject.wait
+      
       expect(@fired).to be true
       expect(@fired2).to be true
     end
@@ -124,7 +158,7 @@ RSpec.describe Timers::Group do
       timer.pause
       subject.wait
       expect(fired).not_to be true
-      timer.continue
+      timer.resume
       expect(fired).not_to be true
       timer.fire
       expect(fired).to be true
