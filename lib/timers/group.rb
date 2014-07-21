@@ -34,8 +34,8 @@ module Timers
     alias_method :after_ms, :after_milliseconds
 
     # Call the given block periodically at the given interval
-    def every(interval, &block)
-      Timer.new(self, interval, true, &block)
+    def every(interval, recur = true, &block)
+      Timer.new(self, interval, recur, &block)
     end
 
     # Wait for the next timer and fire it
