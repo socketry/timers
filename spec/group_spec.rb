@@ -97,7 +97,7 @@ RSpec.describe Timers::Group do
     it "fires when continued after pause" do
       @timer.pause
       subject.wait
-      @timer.continue
+      @timer.resume
       subject.wait
       expect(@fired).to be true
     end
@@ -112,7 +112,7 @@ RSpec.describe Timers::Group do
     it "can continue all timers at once" do
       subject.pause
       subject.wait
-      subject.continue
+      subject.resume
       
       # We need to wait until we are sure both timers will fire, otherwise highly accurate clocks (e.g. JVM) may only fire the first timer, but not the second, because they are actually schedueled at different times.
       sleep TIMER_QUANTUM * 2
@@ -128,7 +128,7 @@ RSpec.describe Timers::Group do
       timer.pause
       subject.wait
       expect(fired).not_to be true
-      timer.continue
+      timer.resume
       expect(fired).not_to be true
       timer.fire
       expect(fired).to be true

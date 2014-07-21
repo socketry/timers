@@ -88,7 +88,7 @@ module Timers
     # Resume all timers.
     def resume
       @paused_timers.dup.each do |timer|
-        timer.continue
+        timer.resume
       end
       
       @paused_timers.clear
