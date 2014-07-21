@@ -37,10 +37,6 @@ module Timers
       Timer.new(self, interval, false, &block)
     end
 
-    def after_milliseconds(interval, &block)
-      after(interval / 1000.0,  &block)
-    end
-
     # Call the given block periodically at the given interval
     def every(interval, recur = true, &block)
       Timer.new(self, interval, recur, &block)

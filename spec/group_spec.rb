@@ -68,14 +68,12 @@ RSpec.describe Timers::Group do
     end
   end
 
-  describe "millisecond timers" do
-    it "calculates the proper interval to wait until firing" do
-      interval_ms = 25
+  it "calculates the proper interval to wait until firing" do
+    interval_ms = 25
 
-      subject.after_milliseconds(interval_ms)
+    subject.after(interval_ms / 1000.0)
 
-      expect(subject.wait_interval).to be_within(TIMER_QUANTUM).of(interval_ms / 1000.0)
-    end
+    expect(subject.wait_interval).to be_within(TIMER_QUANTUM).of(interval_ms / 1000.0)
   end
 
   describe "pause and continue timers" do
