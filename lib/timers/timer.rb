@@ -111,8 +111,6 @@ module Timers
         str << "dead"
       end
 
-      str << ", cancelled" if @cancelled
-
       str << ">"
     end
   end
