@@ -4,7 +4,6 @@ require 'spec_helper'
 RSpec.describe Timers::Events do
   it "should register an event" do
     callback = proc do |time|
-      fired = true
     end
     
     handle = subject.schedule(0.1, callback)
@@ -20,7 +19,6 @@ RSpec.describe Timers::Events do
   
   it "should register events in order" do
     callback = proc do |time|
-      fired = true
     end
     
     times = [0.95, 0.1, 0.3, 0.5, 0.4, 0.2, 0.01, 0.9]
