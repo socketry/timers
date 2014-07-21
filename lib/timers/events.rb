@@ -19,6 +19,10 @@ module Timers
         @callback = nil
       end
       
+      def cancelled?
+        @callback == nil
+      end
+      
       def <=> other
         @time <=> other.to_f
       end
@@ -27,9 +31,9 @@ module Timers
         @time
       end
       
-      def fire(*args)
+      def fire
         if @callback
-          @callback.call(*args)
+          @callback.call(@time)
         end
       end
     end
@@ -53,19 +57,31 @@ module Timers
       return handle
     end
     
-    def pop(time)
-      index = bsearch(@sequence, time)
-      
-      return @sequence.shift(index)
+    # Returns the first non-cancelled handle.
+    def first
+      while handle = @sequence.first
+        if handle.cancelled?
+          @sequence.shift
+        else
+          return handle
+        end
+      end
     end
     
+    # Fire all handles which are less than the given time.
     def fire(time)
       pop(time).each do |handle|
         handle.fire
       end
     end
-    
+
     private
+
+    def pop(time)
+      index = bsearch(@sequence, time)
+      
+      return @sequence.shift(index)
+    end
 
     def bsearch(a, e, l = 0, u = a.length - 1)
       return l if l>u
