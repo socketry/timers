@@ -81,8 +81,6 @@ module Timers
       @timers.dup.each do |timer|
         timer.pause
       end
-      
-      @timers.clear
     end
 
     # Resume all timers.
@@ -90,8 +88,6 @@ module Timers
       @paused_timers.dup.each do |timer|
         timer.resume
       end
-      
-      @paused_timers.clear
     end
 
     alias_method :continue, :resume
