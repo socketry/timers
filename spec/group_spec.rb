@@ -98,7 +98,10 @@ RSpec.describe Timers::Group do
       @timer.pause
       subject.wait
       @timer.resume
+      
+      sleep @timer.interval
       subject.wait
+      
       expect(@fired).to be true
     end
 
