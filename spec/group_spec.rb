@@ -2,6 +2,35 @@
 require 'spec_helper'
 
 RSpec.describe Timers::Group do
+  describe "#wait" do
+    it "calls the wait block with nil" do
+      called = false
+      
+      subject.wait do |interval|
+        expect(interval).to be == nil
+        called = true
+      end
+      
+      expect(called).to be true
+    end
+  
+    it "calls the wait block with an interval" do
+      called = false
+      fired = false
+
+      subject.after(0.1) { fired = true }
+
+      subject.wait do |interval|
+        expect(interval).to be_within(TIMER_QUANTUM).of(0.1)
+        called = true
+        sleep 0.2
+      end
+
+      expect(called).to be true
+      expect(fired).to be true
+    end
+  end
+  
   it "sleeps until the next timer" do
     interval   = TIMER_QUANTUM * 2
     started_at = Time.now

@@ -42,25 +42,29 @@ module Timers
       Timer.new(self, interval, recur, &block)
     end
 
-    # Wait for the next timer and fire it
+    # Wait for the next timer and fire it.
     def wait(&block)
-      # If no timers are present, yield nil and return:
-      return yield(nil) if block_given? and empty?
-      
-      # Repeatedly call sleep until there is no longer any wait_interval:
-      while interval = wait_interval and interval > 0
-        if block_given?
+      if block_given?
+        yield wait_interval
+        
+        while interval = wait_interval and interval > 0
           yield interval
-        else
+        end
+      else
+        while interval = wait_interval and interval > 0
           # We cannot assume that sleep will wait for the specified time, it might be +/- a bit.
           sleep interval
         end
       end
-      
+
       fire
     end
 
     # Interval to wait until when the next timer will fire.
+    # - nil: no timers
+    # - -ve: timers expired already
+    # -   0: timers ready to fire
+    # - +ve: timers waiting to fire
     def wait_interval(offset = self.current_offset)
       if handle = @events.sequence.first
         return handle.time - Float(offset)
