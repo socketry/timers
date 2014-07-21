@@ -1,6 +1,6 @@
 
 require 'spec_helper'
-require 'ruby-prof'
+require 'ruby-prof' unless RUBY_PLATFORM =~ /java/
 
 # Event based timers:
 
@@ -41,27 +41,29 @@ require 'ruby-prof'
 # Serviced 31805 events in 2.04997178 seconds, 15514.867656452036 e/s.
 
 RSpec.describe Timers::Group do
-  before(:each) do
-    # Running RubyProf makes the code slightly slower.
-    RubyProf.start
-  end
+  if defined? RubyProf
+    before(:each) do
+      # Running RubyProf makes the code slightly slower.
+      RubyProf.start
+    end
 
-  after(:each) do |arg|
-    if RubyProf.running?
-      file = arg.metadata[:description].gsub(/\s+/, '-')
-    
-      result = RubyProf.stop
-    
-      printer = RubyProf::FlatPrinter.new(result)
-      printer.print($stderr, min_percent: 1.0)
+    after(:each) do |arg|
+      if RubyProf.running?
+        # file = arg.metadata[:description].gsub(/\s+/, '-')
       
-      puts "*** Running with RubyProf reduces performance ***"
+        result = RubyProf.stop
+      
+        printer = RubyProf::FlatPrinter.new(result)
+        printer.print($stderr, min_percent: 1.0)
+        
+        puts "*** Running with RubyProf reduces performance ***"
+      end
     end
   end
   
   it "run efficiently" do
     result = []
-    range = (1..500)
+    range = (1..1000)
     duration = 2.0
 
     total = 0
