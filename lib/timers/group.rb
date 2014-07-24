@@ -101,7 +101,7 @@ module Timers
 
     # Cancel all timers.
     def cancel
-      @timers.each do |timer|
+      @timers.dup.each do |timer|
         timer.cancel
       end
     end
