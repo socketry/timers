@@ -32,17 +32,21 @@ module Timers
     # Paused timers:
     attr :paused_timers
 
-    # Call the given block after the given interval
+    # Call the given block after the given interval. The first argument will be
+    # the time at which the group was asked to fire timers for.
     def after(interval, &block)
       Timer.new(self, interval, false, &block)
     end
 
-    # Call the given block periodically at the given interval
+    # Call the given block periodically at the given interval. The first 
+    # argument will be the time at which the group was asked to fire timers for.
     def every(interval, recur = true, &block)
       Timer.new(self, interval, recur, &block)
     end
 
-    # Wait for the next timer and fire it.
+    # Wait for the next timer and fire it. Can take a block, which should behave
+    # like sleep(n), except that n may be nil (sleep forever) or a negative
+    # number (fire immediately after return).
     def wait(&block)
       if block_given?
         yield wait_interval
@@ -106,6 +110,7 @@ module Timers
       end
     end
 
+    # The group's current time.
     def current_offset
       @interval.to_f
     end

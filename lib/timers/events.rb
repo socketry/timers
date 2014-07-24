@@ -5,21 +5,26 @@ require 'hitimes'
 require 'timers/timer'
 
 module Timers
-  # Maintains an ordered list of events, which can be cancelled. Efficient O(logN) insertion, pop(k), and efficient O(1) cancellation.
+  # Maintains an ordered list of events, which can be cancelled.
   class Events
+    # Represents a cancellable handle for a specific timer event.
     class Handle
       def initialize(time, callback)
         @time = time
         @callback = callback
       end
       
+      # The absolute time that the handle should be fired at.
       attr :time
       
+      # Cancel this timer, O(1).
       def cancel!
-        # The simplest way to keep track of cancelled status is to nullify the callback. This should also be optimal for garbage collection.
+        # The simplest way to keep track of cancelled status is to nullify the
+        # callback. This should also be optimal for garbage collection.
         @callback = nil
       end
       
+      # Has this timer been cancelled? Cancelled timer's don't fire.
       def cancelled?
         @callback.nil?
       end
@@ -32,7 +37,7 @@ module Timers
         @time
       end
       
-      # Fire the callback if not cancelled.
+      # Fire the callback if not cancelled with the given time parameter.
       def fire(time)
         if @callback
           @callback.call(time)
@@ -69,11 +74,12 @@ module Timers
       end
     end
     
+    # Returns the number of pending (possibly cancelled) events.
     def size
       @sequence.size
     end
     
-    # Fire all handles which are less than the given time.
+    # Fire all handles for which Handle#time is less than the given time.
     def fire(time)
       pop(time).reverse_each do |handle|
         handle.fire(time)
@@ -82,14 +88,16 @@ module Timers
 
     private
 
+    # Efficiently take k handles for which Handle#time is less than the given 
+    # time.
     def pop(time)
       index = bisect_left(@sequence, time)
       
       return @sequence.pop(@sequence.size - index)
     end
     
-    # Return the left-most index where to insert item e, in a list a, assuming a is 
-    # sorted in descending order.
+    # Return the left-most index where to insert item e, in a list a, assuming 
+    # a is sorted in descending order.
     def bisect_left(a, e, l = 0, u = a.length)
       while l < u
         m = l + (u-l)/2
