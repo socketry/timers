@@ -32,9 +32,10 @@ module Timers
         @time
       end
       
-      def fire
+      # Fire the callback if not cancelled.
+      def fire(time)
         if @callback
-          @callback.call(@time)
+          @callback.call(time)
         end
       end
     end
@@ -75,7 +76,7 @@ module Timers
     # Fire all handles which are less than the given time.
     def fire(time)
       pop(time).reverse_each do |handle|
-        handle.fire
+        handle.fire(time)
       end
     end
 
