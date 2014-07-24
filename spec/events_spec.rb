@@ -11,11 +11,11 @@ RSpec.describe Timers::Events do
     
     handle = subject.schedule(0.1, callback)
     
-    expect(subject.sequence.size).to be == 1
+    expect(subject.size).to be == 1
     
     subject.fire(0.15)
     
-    expect(subject.sequence.size).to be == 0
+    expect(subject.size).to be == 0
     
     expect(fired).to be true
   end
@@ -23,20 +23,35 @@ RSpec.describe Timers::Events do
   it "should register events in order" do
     fired = []
     
-    callback = proc do |time|
-      fired << time
-    end
-    
     times = [0.95, 0.1, 0.3, 0.5, 0.4, 0.2, 0.01, 0.9]
     
-    times.each do |time|
-      subject.schedule(time, callback)
+    times.each do |requested_time|
+      callback = proc do |time|
+        fired << requested_time
+      end
+      
+      subject.schedule(requested_time, callback)
     end
     
-    sequence_times = subject.sequence.map(&:time)
-    expect(times.sort).to be == sequence_times
-    
     subject.fire(0.5)
-    expect(fired).to be == times.sort.first(5)
+    expect(fired).to be == times.sort.first(6)
+    
+    subject.fire(1.0)
+    expect(fired).to be == times.sort
+  end
+  
+  it "should fire events with the time they were fired at" do
+    fired_at = :not_fired
+    
+    callback = proc do |time|
+      # The time we actually were fired at:
+      fired_at = time
+    end
+    
+    subject.schedule(0.5, callback)
+    
+    subject.fire(1.0)
+    
+    expect(fired_at).to be == 1.0
   end
 end
