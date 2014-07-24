@@ -16,15 +16,15 @@ Ruby library for using system calls like epoll and kqueue.
 Usage
 -----
 
-Create a new timer group with `Timers.new`:
+Create a new timer group with `Timers::Group.new`:
 
 ```ruby
 require 'timers'
 
-timers = Timers.new
+timers = Timers::Group.new
 ```
 
-Schedule a proc to run after 5 seconds with `Timers#after`:
+Schedule a proc to run after 5 seconds with `Timers::Group#after`:
 
 ```ruby
 five_second_timer = timers.after(5) { puts "Take five" }
@@ -33,7 +33,7 @@ five_second_timer = timers.after(5) { puts "Take five" }
 The `five_second_timer` variable is now bound to a Timers::Timer object. To
 cancel a timer, use `Timers::Timer#cancel`
 
-Once you've scheduled a timer, you can wait until the next timer fires with `Timers#wait`:
+Once you've scheduled a timer, you can wait until the next timer fires with `Timers::Group#wait`:
 
 ```ruby
 # Waits 5 seconds
@@ -42,7 +42,7 @@ timers.wait
 # The script will now print "Take five"
 ```
 
-You can schedule a block to run periodically with `Timers#every`:
+You can schedule a block to run periodically with `Timers::Group#every`:
 
 ```ruby
 every_five_seconds = timers.every(5) { puts "Another 5 seconds" }
@@ -51,8 +51,8 @@ loop { timers.wait }
 ```
 
 If you'd like another method to do the waiting for you, e.g. `Kernel.select`,
-you can use `Timers#wait_interval` to obtain the amount of time to wait. When
-a timeout is encountered, you can fire all pending timers with `Timers#fire`:
+you can use `Timers::Group#wait_interval` to obtain the amount of time to wait. When
+a timeout is encountered, you can fire all pending timers with `Timers::Group#fire`:
 
 ```ruby
 loop do
