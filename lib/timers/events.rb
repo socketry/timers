@@ -9,22 +9,23 @@ module Timers
   class Events
     class Handle
       def initialize(time, callback)
-        @time = time.to_f
+        @time = time
         @callback = callback
       end
       
       attr :time
       
       def cancel!
+        # The simplest way to keep track of cancelled status is to nullify the callback. This should also be optimal for garbage collection.
         @callback = nil
       end
       
       def cancelled?
-        @callback == nil
+        @callback.nil?
       end
       
-      def <=> other
-        @time <=> other.to_f
+      def > other
+        @time > other.to_f
       end
       
       def to_f
@@ -39,17 +40,16 @@ module Timers
     end
     
     def initialize
-      # Maintained in sorted order:
+      # A sequence of handles, maintained in sorted order, future to present.
+      # @sequence.last is the next event to be fired.
       @sequence = []
     end
     
-    attr :sequence
-    
     # Add an event at the given time.
     def schedule(time, callback)
-      handle = Handle.new(time, callback)
+      handle = Handle.new(time.to_f, callback)
       
-      index = bsearch(@sequence, handle)
+      index = bisect_left(@sequence, handle)
       
       # Maintain sorted order, O(logN) insertion time.
       @sequence.insert(index, handle)
@@ -59,18 +59,22 @@ module Timers
     
     # Returns the first non-cancelled handle.
     def first
-      while handle = @sequence.first
+      while handle = @sequence.last
         if handle.cancelled?
-          @sequence.shift
+          @sequence.pop
         else
           return handle
         end
       end
     end
     
+    def size
+      @sequence.size
+    end
+    
     # Fire all handles which are less than the given time.
     def fire(time)
-      pop(time).each do |handle|
+      pop(time).reverse_each do |handle|
         handle.fire
       end
     end
@@ -78,28 +82,25 @@ module Timers
     private
 
     def pop(time)
-      index = bsearch(@sequence, time)
+      index = bisect_left(@sequence, time)
       
-      return @sequence.shift(index)
+      return @sequence.pop(@sequence.size - index)
     end
-
-    def bsearch(a, e, l = 0, u = a.length - 1)
-      return l if l>u
-      
-      m=(l+u)/2
-      
-      # Perhaps could be nicer way than hard coded to_f:
-      c = (e <=> a[m].to_f)
-      
-      if c == 0
-        return m
-      elsif c == -1
-        u = m-1
-      else
-        l = m+1
+    
+    # Return the left-most index where to insert item e, in a list a, assuming a is 
+    # sorted in descending order.
+    def bisect_left(a, e, l = 0, u = a.length)
+      while l < u
+        m = l + (u-l)/2
+        
+        if a[m] > e
+          l = m+1
+        else
+          u = m
+        end
       end
       
-      return bsearch(a,e,l,u)
+      return l
     end
   end
 end

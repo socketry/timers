@@ -66,7 +66,7 @@ module Timers
     # -   0: timers ready to fire
     # - +ve: timers waiting to fire
     def wait_interval(offset = self.current_offset)
-      if handle = @events.sequence.first
+      if handle = @events.first
         return handle.time - Float(offset)
       end
     end

@@ -11,11 +11,11 @@ RSpec.describe Timers::Events do
     
     handle = subject.schedule(0.1, callback)
     
-    expect(subject.sequence.size).to be == 1
+    expect(subject.size).to be == 1
     
     subject.fire(0.15)
     
-    expect(subject.sequence.size).to be == 0
+    expect(subject.size).to be == 0
     
     expect(fired).to be true
   end
@@ -33,10 +33,10 @@ RSpec.describe Timers::Events do
       subject.schedule(time, callback)
     end
     
-    sequence_times = subject.sequence.map(&:time)
-    expect(times.sort).to be == sequence_times
-    
     subject.fire(0.5)
-    expect(fired).to be == times.sort.first(5)
+    expect(fired).to be == times.sort.first(6)
+    
+    subject.fire(1.0)
+    expect(fired).to be == times.sort
   end
 end
