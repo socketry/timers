@@ -1,8 +1,16 @@
-3.0.1 (2013-06-27)
+4.0.0 (2014-07-27)
+------------------
+* Replace Timers::Timeout with Timers::Wait
+* Timers::Group#wait_interval now returns nil when no timers, a postive or
+  negative interval which if positive is the amount of time required to wait
+  and if negative, how far in the past the latest timer should have fired
+* Performance improvements
+
+3.0.1 (2014-06-27)
 ------------------
 * Require 'set' automatically
 
-3.0.0 (2013-06-14)
+3.0.0 (2014-06-14)
 ------------------
 * Refactor `Timers` class into `Timers::Group`
 * Add `Timers::Timeout` class for implementing timeouts
