@@ -61,7 +61,7 @@ module Timers
       @handle = nil
       
       # This timer is no longer valid:
-      @group.timers.delete self
+      @group.timers.delete self if @group
       @group = nil
     end
 
