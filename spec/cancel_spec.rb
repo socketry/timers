@@ -7,7 +7,6 @@ RSpec.describe Timers::Group do
 
     handle = subject.after(0.1) { fired = true }
     handle.cancel
-    sleep 0.2
     handle.cancel
 
     expect(fired).to be false
