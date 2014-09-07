@@ -9,7 +9,7 @@ RSpec.describe Timers::Events do
       fired = true
     end
     
-    handle = subject.schedule(0.1, callback)
+    subject.schedule(0.1, callback)
     
     expect(subject.size).to be == 1
     

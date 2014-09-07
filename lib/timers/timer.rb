@@ -1,14 +1,16 @@
 
 module Timers
-  # An individual timer set to fire a given proc at a given time
+  # An individual timer set to fire a given proc at a given time. A timer is 
+  # always connected to a Timer::Group but it would ONLY be in @group.timers
+  # if it also has a @handle specified. Otherwise it is either PAUSED or has
+  # been FIRED and is not recurring. You can manually enter this state by
+  # calling #cancel and resume normal operation by calling #reset.
   class Timer
     include Comparable
     attr_reader :interval, :offset, :recurring
 
     def initialize(group, interval, recurring = false, offset = nil, &block)
       @group = group
-      
-      @group.timers << self
       
       @interval = interval
       @recurring = recurring
@@ -38,9 +40,9 @@ module Timers
     def resume
       return unless paused?
       
-      @group.timers.add self
       @group.paused_timers.delete self
       
+      # This will add us back to the group:
       reset
     end
 
@@ -54,27 +56,34 @@ module Timers
       
       @handle = @group.events.schedule(@offset, self)
     end
-
-    # Cancel this timer
+    
+    # Cancel this timer. Do not call while paused.
     def cancel
+      return unless @handle
+      
       @handle.cancel! if @handle
       @handle = nil
       
       # This timer is no longer valid:
       @group.timers.delete self if @group
-      @group = nil
     end
 
-    # Reset this timer
+    # Reset this timer. Do not call while paused.
     def reset(offset = @group.current_offset)
-      @handle.cancel! if @handle
+      # This logic allows us to minimise the interaction with @group.timers.
+      # A timer with a handle is always registered with the group.
+      if @handle
+        @handle.cancel!
+      else
+        @group.timers << self
+      end
       
       @offset = Float(offset) + @interval
       
       @handle = @group.events.schedule(@offset, self)
     end
 
-    # Fire the block
+    # Fire the block.
     def fire(offset = @group.current_offset)
       if recurring == :strict
         # ... make the next interval strictly the last offset + the interval:
@@ -86,6 +95,8 @@ module Timers
       end
 
       @block.call(offset)
+      
+      cancel unless recurring
     end
 
     alias_method :call, :fire
