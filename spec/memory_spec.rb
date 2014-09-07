@@ -2,6 +2,10 @@
 require 'spec_helper'
 
 RSpec.describe Timers::Group do
+  before do
+    skip("JRuby doesn't support ObjectSpace") if defined?(JRUBY_VERSION)
+  end
+
   describe "cancelling timers" do
     it "should cancel one shot timers after they fire" do
       x = 0
