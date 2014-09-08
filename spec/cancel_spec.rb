@@ -29,4 +29,18 @@ RSpec.describe Timers::Group do
     
     expect(fired).to be true
   end
+  
+  it "should cancel and remove one shot timers after they fire" do
+    x = 0
+
+    Timers::Wait.for(2) do |remaining|
+      timer = subject.every(0.2) { x += 1 }
+      subject.after(0.1) { timer.cancel }
+      
+      subject.wait
+    end
+    
+    expect(subject.timers).to be_empty
+    expect(x).to be == 0
+  end
 end
