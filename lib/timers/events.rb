@@ -100,7 +100,7 @@ module Timers
     # a is sorted in descending order.
     def bisect_left(a, e, l = 0, u = a.length)
       while l < u
-        m = l + (u-l)/2
+        m = l + (u-l).div(2)
         
         if a[m] > e
           l = m+1
