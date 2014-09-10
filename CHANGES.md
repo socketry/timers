@@ -1,3 +1,8 @@
+4.0.1 (2014-09-10)
+------------------
+* Memory leak fixes
+* mathn fix for those crazy enough to use it
+
 4.0.0 (2014-07-27)
 ------------------
 * Replace Timers::Timeout with Timers::Wait
