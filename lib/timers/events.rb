@@ -60,7 +60,7 @@ module Timers
       # Maintain sorted order, O(logN) insertion time.
       @sequence.insert(index, handle)
       
-      return handle
+      handle
     end
     
     # Returns the first non-cancelled handle.
@@ -85,7 +85,7 @@ module Timers
     def pop(time)
       index = bisect_left(@sequence, time)
       
-      return @sequence.pop(@sequence.size - index)
+      @sequence.pop(@sequence.size - index)
     end
     
     # Return the left-most index where to insert item e, in a list a, assuming 
@@ -101,7 +101,7 @@ module Timers
         end
       end
       
-      return l
+      l
     end
   end
 end
