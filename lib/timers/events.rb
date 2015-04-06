@@ -60,18 +60,12 @@ module Timers
       # Maintain sorted order, O(logN) insertion time.
       @sequence.insert(index, handle)
       
-      return handle
+      handle
     end
     
     # Returns the first non-cancelled handle.
     def first
-      while handle = @sequence.last
-        if handle.cancelled?
-          @sequence.pop
-        else
-          return handle
-        end
-      end
+      @sequence.reverse.find { |handle| !handle.cancelled? }
     end
     
     # Returns the number of pending (possibly cancelled) events.
@@ -81,9 +75,7 @@ module Timers
     
     # Fire all handles for which Handle#time is less than the given time.
     def fire(time)
-      pop(time).reverse_each do |handle|
-        handle.fire(time)
-      end
+      pop(time).reverse.map { |handle| handle.fire(time) }
     end
 
     private
@@ -93,7 +85,7 @@ module Timers
     def pop(time)
       index = bisect_left(@sequence, time)
       
-      return @sequence.pop(@sequence.size - index)
+      @sequence.pop(@sequence.size - index)
     end
     
     # Return the left-most index where to insert item e, in a list a, assuming 
@@ -109,7 +101,7 @@ module Timers
         end
       end
       
-      return l
+      l
     end
   end
 end

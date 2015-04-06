@@ -42,7 +42,7 @@ module Timers
     def time_remaining?
       @remaining = (@duration - @interval.duration)
     
-      return @remaining > 0
+      @remaining > 0
     end
   end
 end
