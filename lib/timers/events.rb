@@ -65,7 +65,14 @@ module Timers
     
     # Returns the first non-cancelled handle.
     def first
-      @sequence.reverse.find { |handle| !handle.cancelled? }
+      while handle = @sequence.last
+        if handle.cancelled?
+          @sequence.pop
+        else
+          return handle
+        end
+      end
+      # @sequence.reverse.find { |handle| !handle.cancelled? }
     end
     
     # Returns the number of pending (possibly cancelled) events.
