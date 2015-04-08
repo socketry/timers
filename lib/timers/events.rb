@@ -82,7 +82,9 @@ module Timers
     
     # Fire all handles for which Handle#time is less than the given time.
     def fire(time)
-      return pop(time).reverse.map { |handle| handle.fire(time) }
+      pop(time).reverse_each do |handle|
+        handle.fire(time)
+      end
     end
 
     private
