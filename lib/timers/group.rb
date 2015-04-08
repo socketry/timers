@@ -61,7 +61,7 @@ module Timers
         end
       end
 
-      fire
+      return fire
     end
 
     # Interval to wait until when the next timer will fire.

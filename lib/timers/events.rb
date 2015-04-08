@@ -60,7 +60,7 @@ module Timers
       # Maintain sorted order, O(logN) insertion time.
       @sequence.insert(index, handle)
       
-      handle
+      return handle
     end
     
     # Returns the first non-cancelled handle.
@@ -82,7 +82,7 @@ module Timers
     
     # Fire all handles for which Handle#time is less than the given time.
     def fire(time)
-      pop(time).reverse.map { |handle| handle.fire(time) }
+      return pop(time).reverse.map { |handle| handle.fire(time) }
     end
 
     private
@@ -108,7 +108,7 @@ module Timers
         end
       end
       
-      l
+      return l
     end
   end
 end
