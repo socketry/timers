@@ -50,6 +50,13 @@ every_five_seconds = timers.every(5) { puts "Another 5 seconds" }
 loop { timers.wait }
 ```
 
+You also schedule a block to run immediately, and then periodically, with `Timers::Group#every_with_now`:
+```ruby
+every_with_now_five_seconds = timers.every_with_now(5) { puts "Now and another 5 seconds" } # The block runs immediately and then periodically
+
+loop { timer.wait }
+```
+
 If you'd like another method to do the waiting for you, e.g. `Kernel.select`,
 you can use `Timers::Group#wait_interval` to obtain the amount of time to wait. When
 a timeout is encountered, you can fire all pending timers with `Timers::Group#fire`:
