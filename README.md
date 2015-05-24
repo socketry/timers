@@ -52,7 +52,7 @@ loop { timers.wait }
 
 You also schedule a block to run immediately, and then periodically, with `Timers::Group#every_with_now`:
 ```ruby
-every_with_now_five_seconds = timers.every_with_now(5) { puts "Now and another 5 seconds" } # The block runs immediately and then periodically
+every_with_now_and_five_seconds = timers.every_with_now(5) { puts "Now and another 5 seconds" }
 
 loop { timer.wait }
 ```
