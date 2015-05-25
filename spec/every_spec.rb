@@ -22,8 +22,8 @@ RSpec.describe Timers::Group do
 
     subject.every(0.7) { result << :a }
     subject.every(2.3) { result << :b }
-    subject.every_with_now(1.3) { result << :c }
-    subject.every_with_now(2.4) { result << :d }
+    subject.now_and_every(1.3) { result << :c }
+    subject.now_and_every(2.4) { result << :d }
 
     Timers::Wait.for(2.5) do |remaining|
       subject.wait if subject.wait_interval < remaining

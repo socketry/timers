@@ -46,7 +46,7 @@ module Timers
 
     # Call the given block immediately, and then periodically at the given interval. The first
     # argument will be the time at which the group was asked to fire timers for.
-    def every_with_now(interval, recur = true, &block)
+    def now_and_every(interval, recur = true, &block)
       block.call
       every(interval, recur, &block)
     end
