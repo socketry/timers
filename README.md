@@ -50,9 +50,9 @@ every_five_seconds = timers.every(5) { puts "Another 5 seconds" }
 loop { timers.wait }
 ```
 
-You also schedule a block to run immediately, and then periodically, with `Timers::Group#now_and_every`:
+You can also schedule a block to run immediately and periodically with `Timers::Group#now_and_every`:
 ```ruby
-now_and_every_five_seconds = timers.now_and_every(5) { puts "Now and another 5 seconds" }
+now_and_every_five_seconds = timers.now_and_every(5) { puts "Now and in another 5 seconds" }
 
 loop { timer.wait }
 ```
