@@ -38,6 +38,13 @@ module Timers
       Timer.new(self, interval, false, &block)
     end
 
+    # Call the given block immediately, and then after the given interval. The first
+    # argument will be the time at which the group was asked to fire timers for.
+    def now_and_after(interval, &block)
+      block.call
+      after(interval, &block)
+    end
+
     # Call the given block periodically at the given interval. The first 
     # argument will be the time at which the group was asked to fire timers for.
     def every(interval, recur = true, &block)
