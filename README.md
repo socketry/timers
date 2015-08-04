@@ -54,7 +54,7 @@ You can also schedule a block to run immediately and periodically with `Timers::
 ```ruby
 now_and_every_five_seconds = timers.now_and_every(5) { puts "Now and in another 5 seconds" }
 
-loop { timer.wait }
+loop { timers.wait }
 ```
 
 If you'd like another method to do the waiting for you, e.g. `Kernel.select`,
