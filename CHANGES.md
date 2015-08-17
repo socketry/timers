@@ -1,3 +1,8 @@
+4.1.0 (2015-08-16)
+------------------
+* Addition of `now_and_every` method; fires block immediately, then sets recurring timer.
+* Includes `now_and_after` method; does the same as above for one-shot timers: essentially a "two-shot" timer.
+
 4.0.1 (2014-09-10)
 ------------------
 * Memory leak fixes
