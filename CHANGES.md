@@ -1,3 +1,7 @@
+HEAD
+------------------
+* Continues with the `4.1.*` series, closing out the minor revisions called for in the issue tracker, no longer issuing `4.0.*` gems.
+
 4.0.4 (2015-09-01)
 ------------------
 * Re-release of the `4.1.1` version under the `4.0.4` designation to work-around issues caused by yanking `4.0.2` a couple weeks ago.
