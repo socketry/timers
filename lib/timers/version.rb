@@ -1,3 +1,3 @@
 module Timers
-  VERSION = "4.1.1"
+  VERSION = "4.0.4"
 end

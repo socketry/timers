@@ -1,3 +1,7 @@
+4.0.4 (2015-09-01)
+------------------
+* Re-release of the `4.1.1` version under the `4.0.4` designation to work-around issues caused by yanking `4.0.2` a couple weeks ago.
+
 4.1.1 (2015-08-21)
 ------------------
 * Remove `RubyProf` from Gemfile and a test, due to it providing no substantial benefit while increasing problems building bundles under Rubinius.
