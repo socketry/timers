@@ -43,4 +43,23 @@ RSpec.describe Timers::Group do
     expect(subject.timers).to be_empty
     expect(x).to be == 0
   end
+  
+  it "should be okay to cancel during wait" do
+    fired = false
+    timer = subject.after(0.1) { puts "Fired!"; fired = true }
+    
+    first = true
+    
+    subject.wait do |interval|
+      puts "Interval: #{interval}"
+      if first 
+        timer.cancel
+        first = false
+      end
+      
+      break if interval < 0 or interval == nil
+    end
+    
+    expect(fired).to be_falsey
+  end
 end
