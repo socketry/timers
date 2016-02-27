@@ -1,9 +1,10 @@
 Timers
 ======
-[![Gem Version](https://badge.fury.io/rb/timers.png)](http://rubygems.org/gems/timers)
-[![Build Status](https://secure.travis-ci.org/celluloid/timers.png?branch=master)](http://travis-ci.org/celluloid/timers)
-[![Code Climate](https://codeclimate.com/github/celluloid/timers.png)](https://codeclimate.com/github/celluloid/timers)
-[![Coverage Status](https://coveralls.io/repos/celluloid/timers/badge.png?branch=master)](https://coveralls.io/r/celluloid/timers)
+[![Gem Version](https://badge.fury.io/rb/timers.svg)](http://rubygems.org/gems/timers)
+[![Build Status](https://secure.travis-ci.org/celluloid/timers.svg?branch=master)](http://travis-ci.org/celluloid/timers)
+[![Code Climate](https://codeclimate.com/github/celluloid/timers.svg)](https://codeclimate.com/github/celluloid/timers)
+[![Coverage Status](https://coveralls.io/repos/celluloid/timers/badge.svg?branch=master)](https://coveralls.io/r/celluloid/timers)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/celluloid/timers/master/LICENSE.txt)
 
 Ruby timer collections. Schedule several procs to fire after configurable delays
 or at periodic intervals.
@@ -97,7 +98,7 @@ timers.resume
 License
 -------
 
-Copyright (c) 2014 Celluloid timers project developers (given in the file
+Copyright (c) 2012-2016 Celluloid timers project developers (given in the file
 AUTHORS.md).
 
 Distributed under the MIT License. See LICENSE file for further details.
