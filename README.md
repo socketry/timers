@@ -14,6 +14,14 @@ single timeout but you want to run multiple timers on top of it. An example of
 such a library is [nio4r](https://github.com/celluloid/nio4r), a cross-platform
 Ruby library for using system calls like epoll and kqueue.
 
+Installation
+------------
+
+Add this line to your Gemfile:
+```ruby
+gem 'timers', :git => 'git://github.com/celluloid/timers.git'
+```
+
 Usage
 -----
 
