@@ -23,7 +23,7 @@ HEAD
 4.0.0 (2014-07-27)
 ------------------
 * Replace Timers::Timeout with Timers::Wait
-* Timers::Group#wait_interval now returns nil when no timers, a postive or
+* Timers::Group#wait_interval now returns nil when no timers, a positive or
   negative interval which if positive is the amount of time required to wait
   and if negative, how far in the past the latest timer should have fired
 * Performance improvements
