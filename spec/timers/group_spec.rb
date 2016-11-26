@@ -1,19 +1,18 @@
-
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Timers::Group do
   describe "#wait" do
     it "calls the wait block with nil" do
       called = false
-      
+
       subject.wait do |interval|
-        expect(interval).to be == nil
+        expect(interval).to be_nil
         called = true
       end
-      
+
       expect(called).to be true
     end
-  
+
     it "calls the wait block with an interval" do
       called = false
       fired = false
@@ -30,7 +29,7 @@ RSpec.describe Timers::Group do
       expect(fired).to be true
     end
   end
-  
+
   it "sleeps until the next timer" do
     interval   = TIMER_QUANTUM * 2
     started_at = Time.now
@@ -107,7 +106,7 @@ RSpec.describe Timers::Group do
 
   describe "pause and continue timers" do
     before(:each) do
-      @interval   = TIMER_QUANTUM * 2
+      @interval = TIMER_QUANTUM * 2
 
       @fired = false
       @timer = subject.after(@interval) { @fired = true }
@@ -125,10 +124,10 @@ RSpec.describe Timers::Group do
       @timer.pause
       subject.wait
       @timer.resume
-      
+
       sleep @timer.interval
       subject.wait
-      
+
       expect(@fired).to be true
     end
 
@@ -143,18 +142,20 @@ RSpec.describe Timers::Group do
       subject.pause
       subject.wait
       subject.resume
-      
-      # We need to wait until we are sure both timers will fire, otherwise highly accurate clocks (e.g. JVM) may only fire the first timer, but not the second, because they are actually schedueled at different times.
+
+      # We need to wait until we are sure both timers will fire, otherwise highly accurate clocks
+      # (e.g. JVM)may only fire the first timer, but not the second, because they are actually
+      # schedueled at different times.
       sleep TIMER_QUANTUM * 2
       subject.wait
-      
+
       expect(@fired).to be true
       expect(@fired2).to be true
     end
 
     it "can fire the timer directly" do
       fired = false
-      timer = subject.after( TIMER_QUANTUM * 1 ) { fired = true }
+      timer = subject.after(TIMER_QUANTUM * 1) { fired = true }
       timer.pause
       subject.wait
       expect(fired).not_to be true
@@ -163,7 +164,6 @@ RSpec.describe Timers::Group do
       timer.fire
       expect(fired).to be true
     end
-
   end
 
   describe "delay timer" do
@@ -200,7 +200,7 @@ RSpec.describe Timers::Group do
     end
   end
 
-  describe "Timer inspection" do
+  describe "#inspect" do
     it "before firing" do
       fired = false
       timer = subject.after(TIMER_QUANTUM * 5) { fired = true }
@@ -225,11 +225,12 @@ RSpec.describe Timers::Group do
 
       subject.wait
       expect(result).not_to be_empty
-      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{sprintf("%0.2f", TIMER_QUANTUM)}>\Z/)
+      regex = /\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{format("%0.2f", TIMER_QUANTUM)}>\Z/
+      expect(timer.inspect).to match(regex)
     end
   end
 
-  describe "fires_in" do
+  describe "#fires_in" do
     let(:interval) { TIMER_QUANTUM * 2 }
 
     it "calculates the interval until the next fire if it's recurring" do

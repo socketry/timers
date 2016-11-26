@@ -1,5 +1,4 @@
-
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Timers::Group do
   it "should fire several times" do
