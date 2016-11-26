@@ -11,16 +11,16 @@
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-link]: https://github.com/celluloid/timers/master/LICENSE.txt
 
-Ruby timer collections. Schedule several procs to fire after configurable delays
-or at periodic intervals.
+Collections of one-shot and periodic timers, intended for use with event loops.
 
-This gem is especially useful when you are faced with an API that accepts a
-single timeout but you want to run multiple timers on top of it. An example of
-such a library is [nio4r](https://github.com/celluloid/nio4r), a cross-platform
-Ruby library for using system calls like epoll and kqueue.
+**Does not require Celluloid!** Though this gem was originally written
+to provide the timer subsystem for [Celluloid], it can be used independently
+in any sort of event loop context, or can provide a purely timer-based event
+loop itself.
 
-Usage
------
+[Celluloid]: https://github.com/celluloid/celluloid/
+
+## Usage
 
 Create a new timer group with `Timers::Group.new`:
 
@@ -100,8 +100,7 @@ timers.resume
 10.times { timers.wait } # will fire all timers
 ```
 
-License
--------
+## License
 
 Copyright (c) 2012-2016 Celluloid timers project developers (given in the file
 AUTHORS.md).
