@@ -1,6 +1,6 @@
 
 module Timers
-  # An individual timer set to fire a given proc at a given time. A timer is 
+  # An individual timer set to fire a given proc at a given time. A timer is
   # always connected to a Timer::Group but it would ONLY be in @group.timers
   # if it also has a @handle specified. Otherwise it is either PAUSED or has
   # been FIRED and is not recurring. You can manually enter this state by
@@ -11,14 +11,14 @@ module Timers
 
     def initialize(group, interval, recurring = false, offset = nil, &block)
       @group = group
-      
+
       @interval = interval
       @recurring = recurring
       @block = block
       @offset = offset
-      
+
       @handle = nil
-      
+
       # If a start offset was supplied, use that, otherwise use the current timers offset.
       reset(@offset || @group.current_offset)
     end
@@ -29,41 +29,41 @@ module Timers
 
     def pause
       return if paused?
-      
+
       @group.timers.delete self
       @group.paused_timers.add self
-      
+
       @handle.cancel! if @handle
       @handle = nil
     end
 
     def resume
       return unless paused?
-      
+
       @group.paused_timers.delete self
-      
+
       # This will add us back to the group:
       reset
     end
 
-    alias_method :continue, :resume
+    alias continue resume
 
     # Extend this timer
     def delay(seconds)
       @handle.cancel! if @handle
-      
+
       @offset += seconds
-      
+
       @handle = @group.events.schedule(@offset, self)
     end
-    
+
     # Cancel this timer. Do not call while paused.
     def cancel
       return unless @handle
-      
+
       @handle.cancel! if @handle
       @handle = nil
-      
+
       # This timer is no longer valid:
       @group.timers.delete self if @group
     end
@@ -77,9 +77,9 @@ module Timers
       else
         @group.timers << self
       end
-      
+
       @offset = Float(offset) + @interval
-      
+
       @handle = @group.events.schedule(@offset, self)
     end
 
@@ -95,11 +95,11 @@ module Timers
       end
 
       @block.call(offset)
-      
+
       cancel unless recurring
     end
 
-    alias_method :call, :fire
+    alias call fire
 
     # Number of seconds until next fire / since last fire
     def fires_in
@@ -111,11 +111,11 @@ module Timers
       str = "#<Timers::Timer:#{object_id.to_s(16)} "
 
       if @offset
-        if fires_in >= 0
-          str << "fires in #{fires_in} seconds"
-        else
-          str << "fired #{fires_in.abs} seconds ago"
-        end
+        str << if fires_in >= 0
+                 "fires in #{fires_in} seconds"
+               else
+                 "fired #{fires_in.abs} seconds ago"
+               end
 
         str << ", recurs every #{interval}" if recurring
       else

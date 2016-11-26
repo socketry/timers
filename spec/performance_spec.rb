@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 # Event based timers:
 
@@ -39,7 +39,6 @@ require 'spec_helper'
 # Serviced 1142649 events in 11.194903921 seconds, 102068.70405115146 e/s.
 
 RSpec.describe Timers::Group do
-
   it "runs efficiently" do
     result = []
     range = (1..500)
@@ -49,52 +48,49 @@ RSpec.describe Timers::Group do
     range.each do |index|
       offset = index.to_f / range.max
       total += (duration / offset).floor
-      
+
       subject.every(index.to_f / range.max, :strict) { result << index }
     end
-    
+
     subject.wait while result.size < total
-    
+
     rate = result.size.to_f / subject.current_offset
     puts "Serviced #{result.size} events in #{subject.current_offset} seconds, #{rate} e/s."
-    
+
     expect(subject.current_offset).to be_within(TIMER_QUANTUM).of(duration)
   end
 
-=begin
-  it "runs efficiently at high volume" do
-    results = []
-    range = (1..300)
-    groups = (1..20)
-    duration = 101
-
-    timers = []
-    @mutex = Mutex.new
-    start = Time.now
-    groups.each do |gi|
-      timers << Thread.new {
-        result = []
-        timer = Timers::Group.new
-        total = 0
-        range.each do |ri|
-          offset = ri.to_f / range.max
-          total += (duration / offset).floor
-          timer.every(ri.to_f / range.max, :strict) { result << ri }
-        end
-        timer.wait while result.size < total
-        @mutex.synchronize { results += result }
-        
-      }
-    end
-    timers.each { |t| t.join }
-    finish = Time.now
-    
-    rate = results.size.to_f / ( runtime = finish - start )
-    
-    puts "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
-    
-    expect(runtime).to be_within(TIMER_QUANTUM).of(duration)
-  end
-=end
-
+  #   it "runs efficiently at high volume" do
+  #     results = []
+  #     range = (1..300)
+  #     groups = (1..20)
+  #     duration = 101
+  #
+  #     timers = []
+  #     @mutex = Mutex.new
+  #     start = Time.now
+  #     groups.each do |gi|
+  #       timers << Thread.new {
+  #         result = []
+  #         timer = Timers::Group.new
+  #         total = 0
+  #         range.each do |ri|
+  #           offset = ri.to_f / range.max
+  #           total += (duration / offset).floor
+  #           timer.every(ri.to_f / range.max, :strict) { result << ri }
+  #         end
+  #         timer.wait while result.size < total
+  #         @mutex.synchronize { results += result }
+  #
+  #       }
+  #     end
+  #     timers.each { |t| t.join }
+  #     finish = Time.now
+  #
+  #     rate = results.size.to_f / ( runtime = finish - start )
+  #
+  #     puts "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
+  #
+  #     expect(runtime).to be_within(TIMER_QUANTUM).of(duration)
+  #   end
 end
