@@ -20,6 +20,11 @@ loop itself.
 
 [Celluloid]: https://github.com/celluloid/celluloid/
 
+## Supported platforms
+
+* Ruby 2.0, 2.1, 2.2, and 2.3
+* JRuby 9000
+
 ## Usage
 
 Create a new timer group with `Timers::Group.new`:
