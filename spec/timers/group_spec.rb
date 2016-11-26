@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe Timers::Group do
   describe "#wait" do
     it "calls the wait block with nil" do

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe Timers::Group do
   it "should be able to cancel twice" do
     fired = false

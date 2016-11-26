@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe Timers::Group do
   it "should not diverge too much" do
     fired = :not_fired_yet

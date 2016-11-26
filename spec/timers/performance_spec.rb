@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 # Event based timers:
 
 # Serviced 31812 events in 2.39075272 seconds, 13306.320832794887 e/s.

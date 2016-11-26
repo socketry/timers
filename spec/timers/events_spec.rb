@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 RSpec.describe Timers::Events do
   it "should register an event" do
     fired = false
