@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module Timers
   # An individual timer set to fire a given proc at a given time. A timer is
@@ -108,7 +109,7 @@ module Timers
 
     # Inspect a timer
     def inspect
-      str = "#<Timers::Timer:#{object_id.to_s(16)} "
+      str = "#<Timers::Timer:#{object_id.to_s(16)} ".dup
 
       if @offset
         str << if fires_in >= 0

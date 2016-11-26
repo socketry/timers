@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 require "spec_helper"
 
@@ -201,7 +202,7 @@ RSpec.describe Timers::Group do
     end
   end
 
-  describe "Timer inspection" do
+  describe "#inspect" do
     it "before firing" do
       fired = false
       timer = subject.after(TIMER_QUANTUM * 5) { fired = true }
@@ -231,7 +232,7 @@ RSpec.describe Timers::Group do
     end
   end
 
-  describe "fires_in" do
+  describe "#fires_in" do
     let(:interval) { TIMER_QUANTUM * 2 }
 
     it "calculates the interval until the next fire if it's recurring" do

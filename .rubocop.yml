@@ -8,6 +8,12 @@ AllCops:
 LineLength:
   Max: 128
 
+Style/NumericPredicate:
+  Enabled: false
+
+Style/SafeNavigation:
+  Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
