@@ -1,10 +1,17 @@
-Timers
-======
-[![Gem Version](https://badge.fury.io/rb/timers.svg)](http://rubygems.org/gems/timers)
-[![Build Status](https://secure.travis-ci.org/celluloid/timers.svg?branch=master)](http://travis-ci.org/celluloid/timers)
-[![Code Climate](https://codeclimate.com/github/celluloid/timers.svg)](https://codeclimate.com/github/celluloid/timers)
-[![Coverage Status](https://coveralls.io/repos/celluloid/timers/badge.svg?branch=master)](https://coveralls.io/r/celluloid/timers)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/celluloid/timers/master/LICENSE.txt)
+# Timers for Ruby
+
+[![Gem Version][gem-image]][gem-link] [![Build Status][build-image]][build-link] [![Code Climate][codeclimate-image]][codeclimate-link] [![Coverage Status][coverage-image]][coverage-link] [![MIT licensed][license-image]][license-link]
+
+[gem-image]: https://badge.fury.io/rb/timers.svg
+[gem-link]: http://rubygems.org/gems/timers
+[build-image]: https://secure.travis-ci.org/celluloid/timers.svg?branch=master
+[build-link]: https://travis-ci.org/celluloid/timers
+[codeclimate-image]: https://codeclimate.com/github/celluloid/timers.svg
+[codeclimate-link]: https://codeclimate.com/github/celluloid/timers
+[coverage-image]: https://coveralls.io/repos/celluloid/timers/badge.svg?branch=master
+[coverage-link]: https://coveralls.io/r/celluloid/timers
+[license-image]: https://img.shields.io/badge/license-MIT-blue.svg
+[license-link]: https://github.com/celluloid/timers/master/LICENSE.txt
 
 Ruby timer collections. Schedule several procs to fire after configurable delays
 or at periodic intervals.
