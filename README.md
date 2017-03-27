@@ -2,23 +2,16 @@
 
 [gem-image]: https://badge.fury.io/rb/timers.svg
 [gem-link]: http://rubygems.org/gems/timers
-[build-image]: https://secure.travis-ci.org/celluloid/timers.svg?branch=master
-[build-link]: https://travis-ci.org/celluloid/timers
-[codeclimate-image]: https://codeclimate.com/github/celluloid/timers.svg
-[codeclimate-link]: https://codeclimate.com/github/celluloid/timers
-[coverage-image]: https://coveralls.io/repos/celluloid/timers/badge.svg?branch=master
-[coverage-link]: https://coveralls.io/r/celluloid/timers
+[build-image]: https://secure.travis-ci.org/socketry/timers.svg?branch=master
+[build-link]: https://travis-ci.org/socketry/timers
+[codeclimate-image]: https://codeclimate.com/github/socketry/timers.svg
+[codeclimate-link]: https://codeclimate.com/github/socketry/timers
+[coverage-image]: https://coveralls.io/repos/socketry/timers/badge.svg?branch=master
+[coverage-link]: https://coveralls.io/r/socketry/timers
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
-[license-link]: https://github.com/celluloid/timers/master/LICENSE.txt
+[license-link]: https://github.com/socketry/timers/master/LICENSE.txt
 
 Collections of one-shot and periodic timers, intended for use with event loops.
-
-**Does not require Celluloid!** Though this gem was originally written
-to provide the timer subsystem for [Celluloid], it can be used independently
-in any sort of event loop context, or can provide a purely timer-based event
-loop itself.
-
-[Celluloid]: https://github.com/celluloid/celluloid/
 
 ## Supported platforms
 
@@ -107,7 +100,6 @@ timers.resume
 
 ## License
 
-Copyright (c) 2012-2016 Celluloid timers project developers (given in the file
-AUTHORS.md).
+Copyright (c) 2012-2017 Timers Developers (given in the file AUTHORS.md).
 
 Distributed under the MIT License. See LICENSE file for further details.

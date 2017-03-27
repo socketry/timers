@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Tony Arcieri"]
   gem.email         = ["bascule@gmail.com"]
   gem.licenses      = ["MIT"]
-  gem.homepage      = "https://github.com/celluloid/timers"
+  gem.homepage      = "https://github.com/socketry/timers"
   gem.summary       = "Pure Ruby one-shot and periodic timers"
   gem.description = <<-DESCRIPTION.strip.gsub(/\s+/, " ")
     Schedule procs to run after a certain time, or at periodic intervals,
