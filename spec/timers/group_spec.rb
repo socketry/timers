@@ -206,7 +206,7 @@ RSpec.describe Timers::Group do
       timer = subject.after(TIMER_QUANTUM * 5) { fired = true }
       timer.pause
       expect(fired).not_to be true
-      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds>\Z/)
+      expect(timer.inspect).to match(/\A#<Timers::Timer:0x[\da-f]+ fires in [-\.\de]+ seconds>\Z/)
     end
 
     it "after firing" do
@@ -216,7 +216,7 @@ RSpec.describe Timers::Group do
       subject.wait
 
       expect(fired).to be true
-      expect(timer.inspect).to match(/\A#<Timers::Timer:[\da-f]+ fired [-\.\de]+ seconds ago>\Z/)
+      expect(timer.inspect).to match(/\A#<Timers::Timer:0x[\da-f]+ fired [-\.\de]+ seconds ago>\Z/)
     end
 
     it "recurring firing" do
@@ -225,7 +225,7 @@ RSpec.describe Timers::Group do
 
       subject.wait
       expect(result).not_to be_empty
-      regex = /\A#<Timers::Timer:[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{format("%0.2f", TIMER_QUANTUM)}>\Z/
+      regex = /\A#<Timers::Timer:0x[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{format("%0.2f", TIMER_QUANTUM)}>\Z/
       expect(timer.inspect).to match(regex)
     end
   end
