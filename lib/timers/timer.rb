@@ -109,7 +109,7 @@ module Timers
 
     # Inspect a timer
     def inspect
-      str = "#<Timers::Timer:#{object_id.to_s(16)} ".dup
+      str = "#{to_s[0..-2]} ".dup
 
       if @offset
         str << if fires_in >= 0
