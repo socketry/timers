@@ -17,3 +17,7 @@ end
 group :development, :test do
   gem "rake"
 end
+
+unless RUBY_PLATFORM =~ /java|rbx/
+  gem "ruby-prof", :group => :development
+end

@@ -4,7 +4,7 @@
 
 ## 4.1.1 (2015-08-21)
 
-* Remove `RubyProf` from Gemfile and a test, due to it providing no substantial benefit while increasing problems building bundles under Rubinius.
+* Remove `RubyProf` from Gemfile and a test, due to it providing no substantial benefit while increasing problems building bundles under Rubinius (since reverted).
 
 ## 4.1.0 (2015-08-16)
 
