@@ -18,6 +18,4 @@ group :development, :test do
   gem "rake"
 end
 
-unless RUBY_PLATFORM =~ /java|rbx/
-  gem "ruby-prof", :group => :test
-end
+gem "ruby-prof", group: :test unless RUBY_PLATFORM =~ /java|rbx/

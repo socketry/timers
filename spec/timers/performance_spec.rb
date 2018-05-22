@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-require 'ruby-prof' unless RUBY_PLATFORM =~ /java|rbx/
+require "spec_helper"
+require "ruby-prof" unless RUBY_PLATFORM =~ /java|rbx/
 
 # Event based timers:
 
@@ -49,18 +49,18 @@ RSpec.describe Timers::Group do
       puts "*** Running with RubyProf reduces performance ***"
     end
 
-    after(:each) do |arg|
+    after(:each) do
       if RubyProf.running?
         # file = arg.metadata[:description].gsub(/\s+/, '-')
-      
+
         result = RubyProf.stop
-      
+
         printer = RubyProf::FlatPrinter.new(result)
         printer.print($stderr, min_percent: 1.0)
       end
     end
   end
-  
+
   it "runs efficiently" do
     result = []
     range = (1..500)
