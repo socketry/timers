@@ -19,5 +19,5 @@ group :development, :test do
 end
 
 unless RUBY_PLATFORM =~ /java|rbx/
-  gem "ruby-prof", :group => :development
+  gem "ruby-prof", :group => :test
 end
