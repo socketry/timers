@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "hitimes"
+require_relative "interval"
 
 module Timers
   # An exclusive, monotonic timeout class.
@@ -27,7 +27,7 @@ module Timers
 
     # Yields while time remains for work to be done:
     def while_time_remaining
-      @interval = Hitimes::Interval.new
+      @interval = Interval.new
       @interval.start
 
       yield @remaining while time_remaining?
@@ -39,7 +39,7 @@ module Timers
     private
 
     def time_remaining?
-      @remaining = (@duration - @interval.duration)
+      @remaining = (@duration - @interval.to_f)
 
       @remaining > 0
     end
