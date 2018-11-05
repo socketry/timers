@@ -1,21 +1,21 @@
 language: ruby
 sudo: false
-
-bundler_args: --without development doc
-
-rvm:
-  - 2.0.0
-  - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - jruby-9.1.14.0
+dist: trusty
+cache: bundler
 
 matrix:
-  fast_finish: true
-
-branches:
-  only:
-    - master
-
-notifications:
-  irc: "irc.freenode.org#celluloid"
+  include:
+    - rvm: 2.3
+    - rvm: 2.4
+    - rvm: 2.5
+    - rvm: 2.6
+    - rvm: jruby-head
+      env: JRUBY_OPTS="--debug -X+O"
+    - rvm: truffleruby
+    - rvm: ruby-head
+    - rvm: rbx-3
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-head
+    - rvm: rbx-3
+    - rvm: truffleruby

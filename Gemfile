@@ -1,21 +1,17 @@
-# frozen_string_literal: true
-
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gemspec
 
 group :development do
-  gem "pry", require: false
+	gem 'pry'
 end
 
 group :test do
-  gem "rspec", "~> 3", require: false
-  gem "rubocop", "0.45", require: false
-  gem "coveralls", require: false
-end
-
-group :development, :test do
-  gem "rake"
+	gem 'benchmark-ips'
+	gem 'ruby-prof', platforms: :mri
+	
+	gem 'simplecov'
+	gem 'coveralls', require: false
 end
 
 gem "ruby-prof", group: :test unless RUBY_PLATFORM =~ /java|rbx/

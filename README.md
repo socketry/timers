@@ -1,22 +1,28 @@
-# Timers for Ruby [![Gem Version][gem-image]][gem-link] [![Build Status][build-image]][build-link] [![Code Climate][codeclimate-image]][codeclimate-link] [![Coverage Status][coverage-image]][coverage-link] [![MIT licensed][license-image]][license-link]
+# Timers
 
-[gem-image]: https://badge.fury.io/rb/timers.svg
-[gem-link]: http://rubygems.org/gems/timers
-[build-image]: https://secure.travis-ci.org/socketry/timers.svg?branch=master
-[build-link]: https://travis-ci.org/socketry/timers
-[codeclimate-image]: https://codeclimate.com/github/socketry/timers.svg
-[codeclimate-link]: https://codeclimate.com/github/socketry/timers
-[coverage-image]: https://coveralls.io/repos/socketry/timers/badge.svg?branch=master
-[coverage-link]: https://coveralls.io/r/socketry/timers
-[license-image]: https://img.shields.io/badge/license-MIT-blue.svg
-[license-link]: https://github.com/socketry/timers/master/LICENSE.txt
+Collections of one-shot and periodic timers, intended for use with event loops such as [async].
 
-Collections of one-shot and periodic timers, intended for use with event loops.
+[![Build Status](https://secure.travis-ci.org/socketry/timers.svg)](https://travis-ci.org/socketry/timers)
+[![Code Climate](https://codeclimate.com/github/socketry/timers.svg)](https://codeclimate.com/github/socketry/timers)
+[![Coverage Status](https://coveralls.io/repos/socketry/timers/badge.svg)](https://coveralls.io/r/socketry/timers)
 
-## Supported platforms
+[async]: https://github.com/socketry/async
 
-* Ruby 2.0, 2.1, 2.2, and 2.3
-* JRuby 9000
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'timers'
+```
+
+And then execute:
+
+	$ bundle
+
+Or install it yourself as:
+
+	$ gem install timers
 
 ## Usage
 
@@ -98,8 +104,46 @@ timers.resume
 10.times { timers.wait } # will fire all timers
 ```
 
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
 ## License
 
-Copyright (c) 2012-2017 Timers Developers (given in the file AUTHORS.md).
+Released under the MIT license.
 
-Distributed under the MIT License. See LICENSE file for further details.
+Copyright, 2018, by [Samuel G. D. Williams](http://www.codeotaku.com/samuel-williams).  
+Copyright, 2016, by [Tony Arcieri](bascule@gmail.com).  
+Copyright, 2016, by Jeremy Hinegardner.  
+Copyright, 2016, by Sean Gregory.  
+Copyright, 2016, by Chuck Remes.  
+Copyright, 2016, by Utenmiki.  
+Copyright, 2016, by Ron Evans.  
+Copyright, 2016, by Larry Lv.  
+Copyright, 2016, by Bruno Enten.  
+Copyright, 2016, by Jesse Cooke.  
+Copyright, 2016, by Nicholas Evans.  
+Copyright, 2016, by Dimitrij Denissenko.  
+Copyright, 2016, by Ryan LeCompte.  
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
