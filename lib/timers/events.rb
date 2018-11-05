@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require "forwardable"
-require "hitimes"
-
-require "timers/timer"
+require_relative "timer"
 
 module Timers
   # Maintains an ordered list of events, which can be cancelled.

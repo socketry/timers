@@ -2,10 +2,10 @@
 
 require "set"
 require "forwardable"
-require "hitimes"
 
-require "timers/timer"
-require "timers/events"
+require_relative "interval"
+require_relative "timer"
+require_relative "events"
 
 module Timers
   # A collection of timers which may fire at different times
@@ -21,7 +21,7 @@ module Timers
       @timers = Set.new
       @paused_timers = Set.new
 
-      @interval = Hitimes::Interval.new
+      @interval = Interval.new
       @interval.start
     end
 
