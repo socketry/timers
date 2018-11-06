@@ -1,30 +1,35 @@
 # frozen_string_literal: true
+#
+# This file is part of the "timers" project and released under the MIT license.
+#
+# Copyright, 2018, by Samuel Williams. All rights reserved.
+#
 
 require "spec_helper"
 require "timers/wait"
 
 RSpec.describe Timers::Wait do
-  it "repeats until timeout expired" do
-    timeout = Timers::Wait.new(5)
-    count = 0
+	it "repeats until timeout expired" do
+		timeout = Timers::Wait.new(5)
+		count = 0
 
-    timeout.while_time_remaining do |remaining|
-      expect(remaining).to be_within(TIMER_QUANTUM).of(timeout.duration - count)
+		timeout.while_time_remaining do |remaining|
+			expect(remaining).to be_within(TIMER_QUANTUM).of(timeout.duration - count)
 
-      count += 1
-      sleep 1
-    end
+			count += 1
+			sleep 1
+		end
 
-    expect(count).to eq(5)
-  end
+		expect(count).to eq(5)
+	end
 
-  it "yields results as soon as possible" do
-    timeout = Timers::Wait.new(5)
+	it "yields results as soon as possible" do
+		timeout = Timers::Wait.new(5)
 
-    result = timeout.while_time_remaining do |_remaining|
-      break :done
-    end
+		result = timeout.while_time_remaining do |_remaining|
+			break :done
+		end
 
-    expect(result).to eq(:done)
-  end
+		expect(result).to eq(:done)
+	end
 end

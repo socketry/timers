@@ -1,21 +1,38 @@
 # frozen_string_literal: true
-
-require "coveralls"
-Coveralls.wear!
-
-require "bundler/setup"
-require "timers"
+#
+# This file is part of the "timers" project and released under the MIT license.
+#
+# Copyright, 2018, by Samuel Williams. All rights reserved.
+#
 
 # Level of accuracy enforced by tests (50ms)
 TIMER_QUANTUM = 0.05
 
+if ENV['COVERAGE'] || ENV['TRAVIS']
+	begin
+		require 'simplecov'
+		
+		SimpleCov.start do
+			add_filter "/spec/"
+		end
+		
+		if ENV['TRAVIS']
+			require 'coveralls'
+			Coveralls.wear!
+		end
+	rescue LoadError
+		warn "Could not load simplecov: #{$!}"
+	end
+end
+
+require "bundler/setup"
+require "timers"
+
 RSpec.configure do |config|
-  # Setting this config option `false` removes rspec-core's monkey patching of the
-  # top level methods like `describe`, `shared_examples_for` and `shared_context`
-  # on `main` and `Module`. The methods are always available through the `RSpec`
-  # module like `RSpec.describe` regardless of this setting.
-  # For backwards compatibility this defaults to `true`.
-  #
-  # https://relishapp.com/rspec/rspec-core/v/3-0/docs/configuration/global-namespace-dsl
-  config.expose_dsl_globally = false
+	# Enable flags like --only-failures and --next-failure
+	config.example_status_persistence_file_path = ".rspec_status"
+
+	config.expect_with :rspec do |c|
+		c.syntax = :expect
+	end
 end

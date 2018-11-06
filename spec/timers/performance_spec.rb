@@ -1,4 +1,9 @@
 # frozen_string_literal: true
+#
+# This file is part of the "timers" project and released under the MIT license.
+#
+# Copyright, 2018, by Samuel Williams. All rights reserved.
+#
 
 require "spec_helper"
 require "ruby-prof" unless RUBY_PLATFORM =~ /java|rbx/
@@ -42,79 +47,79 @@ require "ruby-prof" unless RUBY_PLATFORM =~ /java|rbx/
 # Serviced 1142649 events in 11.194903921 seconds, 102068.70405115146 e/s.
 
 RSpec.describe Timers::Group do
-  context "with profiler" do
-    if defined? RubyProf
-      before(:each) do
-        # Running RubyProf makes the code slightly slower.
-        RubyProf.start
-        puts "*** Running with RubyProf reduces performance ***"
-      end
+	context "with profiler" do
+		if defined? RubyProf
+			before(:each) do
+				# Running RubyProf makes the code slightly slower.
+				RubyProf.start
+				puts "*** Running with RubyProf reduces performance ***"
+			end
 
-      after(:each) do
-        if RubyProf.running?
-          # file = arg.metadata[:description].gsub(/\s+/, '-')
+			after(:each) do
+				if RubyProf.running?
+					# file = arg.metadata[:description].gsub(/\s+/, '-')
 
-          result = RubyProf.stop
+					result = RubyProf.stop
 
-          printer = RubyProf::FlatPrinter.new(result)
-          printer.print($stderr, min_percent: 1.0)
-        end
-      end
-    end
+					printer = RubyProf::FlatPrinter.new(result)
+					printer.print($stderr, min_percent: 1.0)
+				end
+			end
+		end
 
-    it "runs efficiently" do
-      result = []
-      range = (1..500)
-      duration = 2.0
+		it "runs efficiently" do
+			result = []
+			range = (1..500)
+			duration = 2.0
 
-      total = 0
-      range.each do |index|
-        offset = index.to_f / range.max
-        total += (duration / offset).floor
+			total = 0
+			range.each do |index|
+				offset = index.to_f / range.max
+				total += (duration / offset).floor
 
-        subject.every(index.to_f / range.max, :strict) { result << index }
-      end
+				subject.every(index.to_f / range.max, :strict) { result << index }
+			end
 
-      subject.wait while result.size < total
+			subject.wait while result.size < total
 
-      rate = result.size.to_f / subject.current_offset
-      puts "Serviced #{result.size} events in #{subject.current_offset} seconds, #{rate} e/s."
+			rate = result.size.to_f / subject.current_offset
+			puts "Serviced #{result.size} events in #{subject.current_offset} seconds, #{rate} e/s."
 
-      expect(subject.current_offset).to be_within(TIMER_QUANTUM * 10).of(duration)
-    end
-  end
-  
-  it "runs efficiently at high volume" do
-    results = []
-    range = (1..300)
-    groups = (1..20)
-    duration = 101
+			expect(subject.current_offset).to be_within(TIMER_QUANTUM * 10).of(duration)
+		end
+	end
+	
+	it "runs efficiently at high volume" do
+		results = []
+		range = (1..300)
+		groups = (1..20)
+		duration = 11
 
-    timers = []
-    @mutex = Mutex.new
-    start = Time.now
-    groups.each do |gi|
-      timers << Thread.new {
-        result = []
-        timer = Timers::Group.new
-        total = 0
-        range.each do |ri|
-          offset = ri.to_f / range.max
-          total += (duration / offset).floor
-          timer.every(ri.to_f / range.max, :strict) { result << ri }
-        end
-        timer.wait while result.size < total
-        @mutex.synchronize { results += result }
+		timers = []
+		@mutex = Mutex.new
+		start = Time.now
+		groups.each do |gi|
+			timers << Thread.new {
+				result = []
+				timer = Timers::Group.new
+				total = 0
+				range.each do |ri|
+					offset = ri.to_f / range.max
+					total += (duration / offset).floor
+					timer.every(ri.to_f / range.max, :strict) { result << ri }
+				end
+				timer.wait while result.size < total
+				@mutex.synchronize { results += result }
 
-      }
-    end
-    timers.each { |t| t.join }
-    finish = Time.now
+			}
+		end
+		timers.each { |t| t.join }
+		finish = Time.now
 
-    rate = results.size.to_f / ( runtime = finish - start )
+		rate = results.size.to_f / ( runtime = finish - start )
 
-    puts "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
+		puts "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
 
-    expect(runtime).to be_within(TIMER_QUANTUM * 10).of(duration)
-  end
+		expect(runtime).to be_within(TIMER_QUANTUM * 10).of(duration)
+	end
 end
