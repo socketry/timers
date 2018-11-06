@@ -120,6 +120,6 @@ RSpec.describe Timers::Group do
 
 		puts "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
 
-		expect(runtime).to be_within(TIMER_QUANTUM * 10).of(duration)
+		expect(runtime).to be_within(20).percent_of(duration)
 	end
 end
