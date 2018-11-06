@@ -8,7 +8,7 @@ end
 
 group :test do
 	gem 'benchmark-ips'
-	gem "ruby-prof" unless RUBY_PLATFORM =~ /java|rbx/
+	gem "ruby-prof", platform: :mri
 	
 	gem 'simplecov'
 	gem 'coveralls'
