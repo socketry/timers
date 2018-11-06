@@ -85,7 +85,7 @@ RSpec.describe Timers::Group do
 			rate = result.size.to_f / subject.current_offset
 			puts "Serviced #{result.size} events in #{subject.current_offset} seconds, #{rate} e/s."
 
-			expect(subject.current_offset).to be_within(TIMER_QUANTUM * 10).of(duration)
+			expect(subject.current_offset).to be_within(20).percent_of(duration)
 		end
 	end
 	
