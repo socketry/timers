@@ -20,9 +20,7 @@ Gem::Specification.new do |spec|
 		using any API that accepts a timeout.
 	DESCRIPTION
 
-	spec.files         = `git ls-files`.split($OUTPUT_RECORD_SEPARATOR)
-	spec.executables   = spec.files.grep(%r{^bin/}).map { |f| File.basename(f) }
-	spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+	spec.files         = %w{README.md} + Dir.glob("lib/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
 	spec.require_paths = ["lib"]
 
 	spec.required_ruby_version = '>= 2.2.1'
