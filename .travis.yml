@@ -1,20 +1,20 @@
 language: ruby
-sudo: false
 dist: xenial
 cache: bundler
 
 matrix:
   include:
-    - rvm: 2.2
     - rvm: 2.3
     - rvm: 2.4
     - rvm: 2.5
     - rvm: 2.6
     - rvm: jruby-head
+      env: JRUBY_OPTS="--debug -X+O"
     - rvm: truffleruby
     - rvm: ruby-head
     - rvm: rbx-3
   allow_failures:
     - rvm: ruby-head
+    - rvm: jruby-head
     - rvm: rbx-3
     - rvm: truffleruby
