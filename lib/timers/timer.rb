@@ -75,6 +75,7 @@ module Timers
 		end
 
 		# Reset this timer. Do not call while paused.
+		# @param offset [Numeric] the duration to add to the timer.
 		def reset(offset = @group.current_offset)
 			# This logic allows us to minimise the interaction with @group.timers.
 			# A timer with a handle is always registered with the group.
