@@ -58,8 +58,13 @@ module Timers
 
 			index = bisect_left(@sequence, handle)
 
-			# Maintain sorted order, O(logN) insertion time.
-			@sequence.insert(index, handle)
+			if current_handle = @sequence[index] and current_handle.cancelled?
+				# puts "Replacing handle at index: #{index} due to cancellation in array containing #{@sequence.size} item(s)."
+				@sequence[index] = handle
+			else
+				# puts "Inserting handle at index: #{index} in array containing #{@sequence.size} item(s)."
+				@sequence.insert(index, handle)
+			end
 
 			handle
 		end
