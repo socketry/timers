@@ -32,8 +32,12 @@ module Timers
 				@callback.nil?
 			end
 
-			def >(other)
+			def > other
 				@time > other.to_f
+			end
+
+			def >= other
+				@time >= other.to_f
 			end
 
 			def to_f
@@ -84,7 +88,9 @@ module Timers
 
 		# Fire all handles for which Handle#time is less than the given time.
 		def fire(time)
-			pop(time).reverse_each do |handle|
+			while handle = @sequence.last and handle.time <= time
+				@sequence.pop
+				
 				handle.fire(time)
 			end
 		end
@@ -99,13 +105,13 @@ module Timers
 			@sequence.pop(@sequence.size - index)
 		end
 
-		# Return the left-most index where to insert item e, in a list a, assuming
+		# Return the right-most index where to insert item e, in a list a, assuming
 		# a is sorted in descending order.
 		def bisect_left(a, e, l = 0, u = a.length)
 			while l < u
 				m = l + (u - l).div(2)
 
-				if a[m] > e
+				if a[m] >= e
 					l = m + 1
 				else
 					u = m

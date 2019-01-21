@@ -101,7 +101,7 @@ module Timers
 				@offset = offset
 			end
 
-			@block.call(offset)
+			@block.call(offset, self)
 
 			cancel unless recurring
 		end

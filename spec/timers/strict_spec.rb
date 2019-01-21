@@ -29,9 +29,11 @@ RSpec.describe Timers::Group do
 		count = 0
 
 		start_offset = subject.current_offset
-		Timers::Timer.new(subject, 0, :strict, start_offset) do |offset|
+		Timers::Timer.new(subject, 0, :strict, start_offset) do |offset, timer|
 			fired = offset
 			count += 1
+
+			timer.cancel
 		end
 
 		subject.wait
