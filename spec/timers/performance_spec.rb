@@ -6,7 +6,6 @@
 #
 
 require "spec_helper"
-require "ruby-prof" unless RUBY_PLATFORM =~ /java|rbx/
 
 # Event based timers:
 

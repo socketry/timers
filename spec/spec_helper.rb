@@ -25,8 +25,10 @@ if ENV['COVERAGE'] || ENV['TRAVIS']
 	end
 end
 
-require "bundler/setup"
-require "timers"
+require 'bundler/setup'
+Bundler.require(:test)
+
+require 'timers'
 
 RSpec.configure do |config|
 	# Enable flags like --only-failures and --next-failure
