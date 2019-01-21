@@ -54,27 +54,22 @@ module Timers
 			# A sequence of handles, maintained in sorted order, future to present.
 			# @sequence.last is the next event to be fired.
 			@sequence = []
+			@queue = []
 		end
 
 		# Add an event at the given time.
 		def schedule(time, callback)
 			handle = Handle.new(time.to_f, callback)
-
-			index = bisect_left(@sequence, handle)
-
-			if current_handle = @sequence[index] and current_handle.cancelled?
-				# puts "Replacing handle at index: #{index} due to cancellation in array containing #{@sequence.size} item(s)."
-				@sequence[index] = handle
-			else
-				# puts "Inserting handle at index: #{index} in array containing #{@sequence.size} item(s)."
-				@sequence.insert(index, handle)
-			end
-
-			handle
+			
+			@queue << handle
+			
+			return handle
 		end
 
 		# Returns the first non-cancelled handle.
 		def first
+			merge!
+			
 			while (handle = @sequence.last)
 				return handle unless handle.cancelled?
 				@sequence.pop
@@ -83,31 +78,40 @@ module Timers
 
 		# Returns the number of pending (possibly cancelled) events.
 		def size
-			@sequence.size
+			@sequence.size + @queue.size
 		end
 
 		# Fire all handles for which Handle#time is less than the given time.
 		def fire(time)
+			merge!
+			
 			while handle = @sequence.last and handle.time <= time
 				@sequence.pop
-				
 				handle.fire(time)
 			end
 		end
 
 		private
 
-		# Efficiently take k handles for which Handle#time is less than the given
-		# time.
-		def pop(time)
-			index = bisect_left(@sequence, time)
-
-			@sequence.pop(@sequence.size - index)
+		def merge!
+			while handle = @queue.pop
+				next if handle.cancelled?
+				
+				index = bisect_right(@sequence, handle)
+				
+				if current_handle = @sequence[index] and current_handle.cancelled?
+					# puts "Replacing handle at index: #{index} due to cancellation in array containing #{@sequence.size} item(s)."
+					@sequence[index] = handle
+				else
+					# puts "Inserting handle at index: #{index} in array containing #{@sequence.size} item(s)."
+					@sequence.insert(index, handle)
+				end
+			end
 		end
 
 		# Return the right-most index where to insert item e, in a list a, assuming
 		# a is sorted in descending order.
-		def bisect_left(a, e, l = 0, u = a.length)
+		def bisect_right(a, e, l = 0, u = a.length)
 			while l < u
 				m = l + (u - l).div(2)
 

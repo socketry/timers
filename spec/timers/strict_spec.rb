@@ -24,20 +24,16 @@ RSpec.describe Timers::Group do
 		expect(fired - start_offset).to be_within(quantum).of(iterations * quantum)
 	end
 
-	it "should only fire once" do
-		fired = :not_fired_yet
+	it "should only fire 0-interval timer once per iteration" do
 		count = 0
-
+		
 		start_offset = subject.current_offset
 		Timers::Timer.new(subject, 0, :strict, start_offset) do |offset, timer|
-			fired = offset
 			count += 1
-
-			timer.cancel
 		end
-
+		
 		subject.wait
-
+		
 		expect(count).to be == 1
 	end
 end

@@ -81,7 +81,7 @@ module Timers
 					sleep interval
 				end
 			end
-
+			
 			fire
 		end
 
