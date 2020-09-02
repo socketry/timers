@@ -230,7 +230,7 @@ RSpec.describe Timers::Group do
 
 			subject.wait
 			expect(result).not_to be_empty
-			regex = /\A#<Timers::Timer:0x[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{format("%0.2f", TIMER_QUANTUM)}>\Z/
+			regex = /\A#<Timers::Timer:0x[\da-f]+ fires in [-\.\de]+ seconds, recurs every #{TIMER_QUANTUM}>\Z/
 			expect(timer.inspect).to match(regex)
 		end
 	end

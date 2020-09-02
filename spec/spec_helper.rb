@@ -5,8 +5,8 @@
 # Copyright, 2018, by Samuel Williams. All rights reserved.
 #
 
-# Level of accuracy enforced by tests (50ms)
-TIMER_QUANTUM = 0.05
+# Level of accuracy enforced by tests:
+TIMER_QUANTUM = 0.1
 
 require 'bundler/setup'
 Bundler.require(:test)

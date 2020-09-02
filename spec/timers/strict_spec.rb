@@ -10,18 +10,18 @@ RSpec.describe Timers::Group do
 		fired = :not_fired_yet
 		count = 0
 		quantum = 0.01
-
+		
 		start_offset = subject.current_offset
 		Timers::Timer.new(subject, quantum, :strict, start_offset) do |offset|
 			fired = offset
 			count += 1
 		end
-
+		
 		iterations = 1000
 		subject.wait while count < iterations
-
+		
 		# In my testing on the JVM, without the :strict recurring, I noticed 60ms of error here.
-		expect(fired - start_offset).to be_within(quantum).of(iterations * quantum)
+		expect(fired - start_offset).to be_within(quantum + TIMER_QUANTUM).of(iterations * quantum)
 	end
 
 	it "should only fire 0-interval timer once per iteration" do
