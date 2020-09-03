@@ -39,7 +39,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - uses: ruby/setup-ruby@master
+    - uses: ioquatix/setup-ruby@master
       with:
         ruby-version: ${{matrix.ruby}}
         bundler-cache: true
