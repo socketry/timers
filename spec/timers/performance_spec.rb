@@ -68,7 +68,7 @@ RSpec.describe Timers::Group do
 
 		it "runs efficiently" do
 			result = []
-			range = (1..500)
+			range = (1..5000)
 			duration = 2.0
 
 			total = 0
@@ -87,10 +87,10 @@ RSpec.describe Timers::Group do
 			expect(subject.current_offset).to be_within(20).percent_of(duration)
 		end
 	end
-	
+
 	it "runs efficiently at high volume" do
 		results = []
-		range = (1..300)
+		range = (1..3000)
 		groups = (1..20)
 		duration = 11
 
