@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Timers
   # A priority queue implementation using a standard binary minheap. It uses straight comparison
   # of its contents to determine priority. This works because a Handle from Timers::Events implements
@@ -18,9 +20,16 @@ module Timers
       @contents[0]
     end
 
+    # Returns the number of elements in the heap
+    def size
+      @contents.size
+    end
+
     # Returns the earliest timer if the heap is non-empty and removes it from the heap.
     # Returns nil if the heap is empty. (and doesn't change the heap in that case)
     def pop
+      return nil if @contents.empty?
+      return @contents.pop if @contents.size == 1 # no need to do heap trickery in this case
       min = @contents[0]
       last = @contents.pop
       @contents[0] = last
@@ -46,7 +55,7 @@ module Timers
 
     def bubble_up(index)
       parent_index = (index - 1) / 2 # watch out, integer division!
-      while index > 0 && @contents[index] > @contents[parent_index]
+      while index > 0 && @contents[index] < @contents[parent_index]
         # if the node has a smaller value than its parent, swap these nodes
         # to uphold the minheap invariant and update the index of the 'current'
         # node. If the node is already at index 0, we can also stop because that
@@ -74,7 +83,7 @@ module Timers
           # node only has a left child
           least_valued_child_node = left_child_value
           least_valued_child_index = left_child_index
-        elsif right_child_value < left_child_value
+        elsif right_child_value > left_child_value
           least_valued_child_node = left_child_value
           least_valued_child_index = left_child_index
         else
