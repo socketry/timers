@@ -121,4 +121,44 @@ RSpec.describe Timers::Group do
 
 		expect(runtime).to be_within(20).percent_of(duration)
 	end
+
+	it "copes with very large amounts of timers" do
+		# This spec tries to emulate (as best as possible) the timer characteristics of the
+		# following scenario:
+		# - a fairly busy Falcon server serving a constant stream of request that spend most of their time
+		#   in a long database call. Both the web request and the db call have a timeout attached
+		# - there will already exist a lot of timers in the queue and more are added all the time
+		# - the server is assumed to be busy so there are "always" new requests waiting to be accept()-ed
+		#   and thus the server spends relatively little time actually sleeping and most of its time in
+		#   either the reactor or an active fiber.
+		# - On each loop of the reactor it will run any fibers in the ready queue, accept any waiting
+		#   requests on the server socket and then call wait_interval to see if there are any expired
+		#   timeouts that need to be handled.
+
+		# Result for PriorityHeap based timer queue: Inserted 20k timers in 0.055050924 seconds
+		# Result for Array based timer queue: 			 Inserted 20k timers in 0.141001845 seconds
+
+		results = []
+		# Prefill the timer queue with a lot of timers in the semidistant future
+		20000.times do
+			subject.after(10) { results << "yay!" }
+		end
+		# add one timer which is done immediately, to get the pending array into the queue
+		subject.after(-1) { results << "I am first!" }
+		subject.wait
+		expect(results.size).to eq(1)
+		expect(results.first).to eq("I am first!")
+
+		# 20k extra requests come in and get added into the queue
+		start = Time.now
+		20000.times do
+			# add new timer to the queue (later than all the others so far)
+			subject.after(15) { result << "yay again!" }
+			# wait_interval in the reactor loop
+			subject.wait_interval()
+		end
+
+		expect(subject.events.size).to eq(40_000)
+		puts "Inserted 20k timers in #{Time.now - start} seconds"
+	end
 end
