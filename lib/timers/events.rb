@@ -24,10 +24,12 @@ require_relative "timer"
 require_relative "priority_heap"
 
 module Timers
-	# Maintains an ordered list of events, which can be cancelled.
+	# Maintains a PriorityHeap of events ordered on time, which can be cancelled.
 	class Events
 		# Represents a cancellable handle for a specific timer event.
 		class Handle
+			include Comparable
+
 			def initialize(time, callback)
 				@time = time
 				@callback = callback
@@ -48,21 +50,13 @@ module Timers
 				@callback.nil?
 			end
 
-			def < other
-				@time < other.to_f
-			end
-			
-			def > other
-				@time > other.to_f
+			def <=> other
+				@time <=> other.time
 			end
 
-			def >= other
-				@time >= other.to_f
-			end
-
-			def to_f
-				@time
-			end
+			# def to_f
+			# 	@time
+			# end
 
 			# Fire the callback if not cancelled with the given time parameter.
 			def fire(time)
