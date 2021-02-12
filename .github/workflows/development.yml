@@ -11,19 +11,18 @@ jobs:
       matrix:
         os:
           - ubuntu
+          - macos
         
         ruby:
           - 2.5
           - 2.6
           - 2.7
+          - 3.0
         
         experimental: [false]
         env: [""]
         
         include:
-          - os: macos
-            ruby: 2.7
-            experimental: true
           - os: ubuntu
             ruby: truffleruby
             experimental: true
@@ -36,7 +35,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - uses: ioquatix/setup-ruby@master
+    - uses: ruby/setup-ruby@master
       with:
         ruby-version: ${{matrix.ruby}}
         bundler-cache: true
