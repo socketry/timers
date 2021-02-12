@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 
 require_relative "timer"
+require_relative "priority_heap"
 
 module Timers
 	# Maintains an ordered list of events, which can be cancelled.
@@ -47,6 +48,10 @@ module Timers
 				@callback.nil?
 			end
 
+			def < other
+				@time < other.to_f
+			end
+			
 			def > other
 				@time > other.to_f
 			end
@@ -68,7 +73,7 @@ module Timers
 		def initialize
 			# A sequence of handles, maintained in sorted order, future to present.
 			# @sequence.last is the next event to be fired.
-			@sequence = []
+			@sequence = PriorityHeap.new
 			@queue = []
 		end
 
@@ -85,7 +90,7 @@ module Timers
 		def first
 			merge!
 			
-			while (handle = @sequence.last)
+			while (handle = @sequence.peek)
 				return handle unless handle.cancelled?
 				@sequence.pop
 			end
@@ -100,7 +105,7 @@ module Timers
 		def fire(time)
 			merge!
 			
-			while handle = @sequence.last and handle.time <= time
+			while handle = @sequence.peek and handle.time <= time
 				@sequence.pop
 				handle.fire(time)
 			end
@@ -108,36 +113,12 @@ module Timers
 
 		private
 
+		# Move all non-cancelled timers from the pending queue to the priority heap
 		def merge!
 			while handle = @queue.pop
 				next if handle.cancelled?
-				
-				index = bisect_right(@sequence, handle)
-				
-				if current_handle = @sequence[index] and current_handle.cancelled?
-					# puts "Replacing handle at index: #{index} due to cancellation in array containing #{@sequence.size} item(s)."
-					@sequence[index] = handle
-				else
-					# puts "Inserting handle at index: #{index} in array containing #{@sequence.size} item(s)."
-					@sequence.insert(index, handle)
-				end
+				@sequence.push(handle)
 			end
-		end
-
-		# Return the right-most index where to insert item e, in a list a, assuming
-		# a is sorted in descending order.
-		def bisect_right(a, e, l = 0, u = a.length)
-			while l < u
-				m = l + (u - l).div(2)
-
-				if a[m] >= e
-					l = m + 1
-				else
-					u = m
-				end
-			end
-
-			l
 		end
 	end
 end
