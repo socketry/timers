@@ -6,7 +6,7 @@
 RSpec.describe Timers::PriorityHeap do
   context "when empty" do 
     it "should return nil when the first element is requested" do
-      expect(subject.first).to be_nil
+      expect(subject.peek).to be_nil
     end
 
     it "should return nil when the first element is extracted" do
@@ -19,7 +19,7 @@ RSpec.describe Timers::PriorityHeap do
   end
 
   it "returns the same element after inserting a single element" do
-    subject.insert(1)
+    subject.push(1)
     expect(subject.size).to eq(1)
     expect(subject.pop).to eq(1)
     expect(subject.size).to be_zero
@@ -27,10 +27,11 @@ RSpec.describe Timers::PriorityHeap do
 
   it "should return inserted elements in ascending order no matter the insertion order" do
     (1..10).to_a.shuffle.each do |e|
-      subject.insert(e)
+      subject.push(e)
     end
 
     expect(subject.size).to eq(10)
+    expect(subject.peek).to eq(1)
 
     result = []
     10.times do

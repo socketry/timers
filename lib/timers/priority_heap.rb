@@ -16,7 +16,7 @@ module Timers
     end
 
     # Returns the earliest timer or nil if the heap is empty.
-    def first
+    def peek
       @contents[0]
     end
 
@@ -39,7 +39,7 @@ module Timers
 
     # Inserts a new timer into the heap, then rearranges elements until the heap invariant
     # is true again.
-    def insert(element)
+    def push(element)
       @contents.push(element)
       bubble_up(@contents.size - 1)
       self
