@@ -1,9 +1,24 @@
 # frozen_string_literal: true
-#
-# This file is part of the "timers" project and released under the MIT license.
-#
-# Copyright, 2018, by Samuel Williams. All rights reserved.
-#
+
+# Copyright, 2018, by Samuel G. D. Williams. <http://www.codeotaku.com>
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 
 require "spec_helper"
 
@@ -53,37 +68,37 @@ RSpec.describe Timers::Group do
 				RubyProf.start
 				puts "*** Running with RubyProf reduces performance ***"
 			end
-
+			
 			after(:each) do
 				if RubyProf.running?
 					# file = arg.metadata[:description].gsub(/\s+/, '-')
-
+					
 					result = RubyProf.stop
-
+					
 					printer = RubyProf::FlatPrinter.new(result)
 					printer.print($stderr, min_percent: 1.0)
 				end
 			end
 		end
-
+		
 		it "runs efficiently" do
 			result = []
 			range = (1..500)
 			duration = 2.0
-
+			
 			total = 0
 			range.each do |index|
 				offset = index.to_f / range.max
 				total += (duration / offset).floor
-
+				
 				subject.every(index.to_f / range.max, :strict) { result << index }
 			end
-
+			
 			subject.wait while result.size < total
-
+			
 			rate = result.size.to_f / subject.current_offset
 			puts "Serviced #{result.size} events in #{subject.current_offset} seconds, #{rate} e/s."
-
+			
 			expect(subject.current_offset).to be_within(20).percent_of(duration)
 		end
 	end
@@ -93,35 +108,39 @@ RSpec.describe Timers::Group do
 		range = (1..300)
 		groups = (1..20)
 		duration = 11
-
+		
 		timers = []
 		@mutex = Mutex.new
 		start = Time.now
-		groups.each do |gi|
-			timers << Thread.new {
+		
+		groups.each do
+			timers << Thread.new do
 				result = []
 				timer = Timers::Group.new
 				total = 0
-				range.each do |ri|
-					offset = ri.to_f / range.max
+				
+				range.each do |index|
+					offset = index.to_f / range.max
 					total += (duration / offset).floor
-					timer.every(ri.to_f / range.max, :strict) { result << ri }
+					timer.every(index.to_f / range.max, :strict) { result << index }
 				end
+				
 				timer.wait while result.size < total
 				@mutex.synchronize { results += result }
-
-			}
+			end
 		end
+		
 		timers.each { |t| t.join }
 		finish = Time.now
-
-		rate = results.size.to_f / ( runtime = finish - start )
-
+		
+		runtime = finish - start
+		rate = results.size.to_f / runtime
+		
 		puts "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
-
+		
 		expect(runtime).to be_within(20).percent_of(duration)
 	end
-
+	
 	it "copes with very large amounts of timers" do
 		# This spec tries to emulate (as best as possible) the timer characteristics of the
 		# following scenario:
@@ -134,30 +153,33 @@ RSpec.describe Timers::Group do
 		# - On each loop of the reactor it will run any fibers in the ready queue, accept any waiting
 		#   requests on the server socket and then call wait_interval to see if there are any expired
 		#   timeouts that need to be handled.
-
+		
 		# Result for PriorityHeap based timer queue: Inserted 20k timers in 0.055050924 seconds
 		# Result for Array based timer queue: 			 Inserted 20k timers in 0.141001845 seconds
-
+		
 		results = []
+		
 		# Prefill the timer queue with a lot of timers in the semidistant future
 		20000.times do
 			subject.after(10) { results << "yay!" }
 		end
+		
 		# add one timer which is done immediately, to get the pending array into the queue
 		subject.after(-1) { results << "I am first!" }
 		subject.wait
 		expect(results.size).to eq(1)
 		expect(results.first).to eq("I am first!")
-
+		
 		# 20k extra requests come in and get added into the queue
 		start = Time.now
+		
 		20000.times do
 			# add new timer to the queue (later than all the others so far)
 			subject.after(15) { result << "yay again!" }
 			# wait_interval in the reactor loop
 			subject.wait_interval()
 		end
-
+		
 		expect(subject.events.size).to eq(40_000)
 		puts "Inserted 20k timers in #{Time.now - start} seconds"
 	end

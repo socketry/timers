@@ -29,66 +29,66 @@ module Timers
 	class Timer
 		include Comparable
 		attr_reader :interval, :offset, :recurring
-
+		
 		def initialize(group, interval, recurring = false, offset = nil, &block)
 			@group = group
-
+			
 			@interval = interval
 			@recurring = recurring
 			@block = block
 			@offset = offset
-
+			
 			@handle = nil
-
+			
 			# If a start offset was supplied, use that, otherwise use the current timers offset.
 			reset(@offset || @group.current_offset)
 		end
-
+		
 		def paused?
 			@group.paused_timers.include? self
 		end
-
+		
 		def pause
 			return if paused?
-
+			
 			@group.timers.delete self
 			@group.paused_timers.add self
-
+			
 			@handle.cancel! if @handle
 			@handle = nil
 		end
-
+		
 		def resume
 			return unless paused?
-
+			
 			@group.paused_timers.delete self
-
+			
 			# This will add us back to the group:
 			reset
 		end
-
+		
 		alias continue resume
-
+		
 		# Extend this timer
 		def delay(seconds)
 			@handle.cancel! if @handle
-
+			
 			@offset += seconds
-
+			
 			@handle = @group.events.schedule(@offset, self)
 		end
-
+		
 		# Cancel this timer. Do not call while paused.
 		def cancel
 			return unless @handle
-
+			
 			@handle.cancel! if @handle
 			@handle = nil
-
+			
 			# This timer is no longer valid:
 			@group.timers.delete self if @group
 		end
-
+		
 		# Reset this timer. Do not call while paused.
 		# @param offset [Numeric] the duration to add to the timer.
 		def reset(offset = @group.current_offset)
@@ -99,12 +99,12 @@ module Timers
 			else
 				@group.timers << self
 			end
-
+			
 			@offset = Float(offset) + @interval
-
+			
 			@handle = @group.events.schedule(@offset, self)
 		end
-
+		
 		# Fire the block.
 		def fire(offset = @group.current_offset)
 			if recurring == :strict
@@ -115,36 +115,38 @@ module Timers
 			else
 				@offset = offset
 			end
-
+			
 			@block.call(offset, self)
-
+			
 			cancel unless recurring
 		end
-
+		
 		alias call fire
-
+		
 		# Number of seconds until next fire / since last fire
 		def fires_in
 			@offset - @group.current_offset if @offset
 		end
-
+		
 		# Inspect a timer
 		def inspect
-			str = "#{to_s[0..-2]} ".dup
-
+			buffer = "#{to_s[0..-2]} ".dup
+			
 			if @offset
-				str << if fires_in >= 0
-								 "fires in #{fires_in} seconds"
-							 else
-								 "fired #{fires_in.abs} seconds ago"
-							 end
-
-				str << ", recurs every #{interval}" if recurring
+				if fires_in >= 0
+					buffer << "fires in #{fires_in} seconds"
+				else
+					buffer << "fired #{fires_in.abs} seconds ago"
+				end
+				
+				buffer << ", recurs every #{interval}" if recurring
 			else
-				str << "dead"
+				buffer << "dead"
 			end
-
-			str << ">"
+			
+			buffer << ">"
+			
+			return buffer
 		end
 	end
 end
