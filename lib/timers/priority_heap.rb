@@ -87,30 +87,19 @@ module Timers
 			return self
 		end
 		
-		private
-		
-		# Validate the heap invariant.
-		def validate!(index = 0)
-			if value = @contents[index]
-				left_index = index*2 + 1
-				if left_value = @contents[left_index]
-					unless value < left_value
-						raise "Invalid left index from #{index}!"
-					end
-					
-					validate!(left_index)
-				end
-				
-				right_index = left_index + 1
-				if right_value = @contents[right_index]
-					unless value < right_value
-						raise "Invalid right index from #{index}!"
-					end
-					
-					validate!(right_index)
-				end
-			end
+    # Empties out the heap, discarding all elements
+		def clear!
+      @contents = []
+    end
+
+		# Validate the heap invariant. Every element except the root must not be smaller than
+    # its parent element. Note that it MAY be equal.
+		def validate!
+      # notice we skip index 0 on purpose, because it has no parent
+      (1..(@contents.size - 1)).all? { |e| @contents[e] >= @contents[(e - 1) / 2] }
 		end
+
+		private
 		
 		def swap(i, j)
 			@contents[i], @contents[j] = @contents[j], @contents[i]
