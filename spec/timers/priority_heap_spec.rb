@@ -60,4 +60,39 @@ RSpec.describe Timers::PriorityHeap do
 		expect(subject.size).to be_zero
 		expect(result.sort).to eq(result)
 	end
+
+  context "maintaining the heap invariant" do
+    it "for empty heaps" do
+      expect(subject.validate!).to be true
+    end
+
+    it "for heap of size 1" do
+      subject.push(123)
+      expect(subject.validate!).to be true
+    end
+    # Exhaustive testing of all permutations of [1..6]
+    it "for all permutations of size 6" do
+      [1,2,3,4,5,6].permutation do |arr|
+        subject.clear!
+        arr.each { |e| subject.push(e) }
+        expect(subject.validate!).to be true
+      end
+    end
+
+    # A few examples with more elements (but not ALL permutations)
+    it "for larger amounts of values" do
+      5.times do
+        subject.clear!
+        (1..1000).to_a.shuffle.each { |e| subject.push(e) }
+        expect(subject.validate!).to be true
+      end
+    end
+
+    # What if we insert several of the same item along with others?
+    it "with several elements of the same value" do
+      test_values = (1..10).to_a + [4] * 5
+      test_values.each { |e| subject.push(e) }
+      expect(subject.validate!).to be true
+    end
+  end
 end
