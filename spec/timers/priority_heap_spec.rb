@@ -63,19 +63,19 @@ RSpec.describe Timers::PriorityHeap do
 
   context "maintaining the heap invariant" do
     it "for empty heaps" do
-      expect(subject.validate!).to be true
+      expect(subject).to be_valid
     end
 
     it "for heap of size 1" do
       subject.push(123)
-      expect(subject.validate!).to be true
+      expect(subject).to be_valid
     end
     # Exhaustive testing of all permutations of [1..6]
     it "for all permutations of size 6" do
       [1,2,3,4,5,6].permutation do |arr|
         subject.clear!
         arr.each { |e| subject.push(e) }
-        expect(subject.validate!).to be true
+        expect(subject).to be_valid
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe Timers::PriorityHeap do
       5.times do
         subject.clear!
         (1..1000).to_a.shuffle.each { |e| subject.push(e) }
-        expect(subject.validate!).to be true
+        expect(subject).to be_valid
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe Timers::PriorityHeap do
     it "with several elements of the same value" do
       test_values = (1..10).to_a + [4] * 5
       test_values.each { |e| subject.push(e) }
-      expect(subject.validate!).to be true
+      expect(subject).to be_valid
     end
   end
 end

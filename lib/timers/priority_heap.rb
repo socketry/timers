@@ -94,7 +94,7 @@ module Timers
 
 		# Validate the heap invariant. Every element except the root must not be smaller than
     # its parent element. Note that it MAY be equal.
-		def validate!
+		def valid?
       # notice we skip index 0 on purpose, because it has no parent
       (1..(@contents.size - 1)).all? { |e| @contents[e] >= @contents[(e - 1) / 2] }
 		end
