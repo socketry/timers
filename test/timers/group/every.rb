@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2016, by Tony Arcieri.
-# Copyright, 2018-2021, by Samuel Williams.
+# Copyright, 2014-2022, by Samuel Williams.
+# Copyright, 2014-2016, by Tony Arcieri.
+# Copyright, 2015, by Tommy Ong Gia Phu.
+# Copyright, 2015, by Donovan Keme.
 
 require 'timers/group'
 

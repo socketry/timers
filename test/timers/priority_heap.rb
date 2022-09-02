@@ -2,7 +2,7 @@
 
 # Released under the MIT License.
 # Copyright, 2021, by Wander Hillen.
-# Copyright, 2021, by Samuel Williams.
+# Copyright, 2021-2022, by Samuel Williams.
 
 require 'timers/priority_heap'
 

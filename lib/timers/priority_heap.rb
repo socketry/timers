@@ -2,7 +2,7 @@
 
 # Released under the MIT License.
 # Copyright, 2021, by Wander Hillen.
-# Copyright, 2021, by Samuel Williams.
+# Copyright, 2021-2022, by Samuel Williams.
 
 module Timers
 	# A priority queue implementation using a standard binary minheap. It uses straight comparison

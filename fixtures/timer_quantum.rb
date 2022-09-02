@@ -1,3 +1,5 @@
+# Released under the MIT License.
+# Copyright, 2022, by Samuel Williams.
 
 class TimerQuantum
 	def self.resolve

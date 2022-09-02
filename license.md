@@ -1,21 +1,31 @@
 # MIT License
 
 Copyright, 2012-2017, by Tony Arcieri.  
+Copyright, 2012, by Ryan LeCompte.  
+Copyright, 2012, by Jesse Cooke.  
+Copyright, 2012, by Nicholas Evans.  
+Copyright, 2012, by Dimitrij Denissenko.  
 Copyright, 2013, by Chuck Remes.  
-Copyright, 2013, by deadprogrammer.  
-Copyright, 2013, by skinnyjames.  
-Copyright, 2013, by utenmiki.  
+Copyright, 2013, by Ron Evans.  
+Copyright, 2013, by Sean Gregory.  
+Copyright, 2013-2015, by Utenmiki.  
 Copyright, 2013, by Jeremy Hinegardner.  
-Copyright, 2014-2021, by Samuel Williams.  
+Copyright, 2014, by Larry Lv.  
+Copyright, 2014, by Bruno Enten.  
+Copyright, 2014-2022, by Samuel Williams.  
+Copyright, 2014, by Mike Bourgeous.  
+Copyright, 2014, by Klaus Trainer.  
 Copyright, 2014, by Lin Jen-Shin.  
-Copyright, 2015, by takiy33.  
-Copyright, 2015, by //de.  
-Copyright, 2015, by tommyogp.  
+Copyright, 2014, by Lavir the Whiolet.  
+Copyright, 2015-2016, by Donovan Keme.  
 Copyright, 2015, by Tommy Ong Gia Phu.  
+Copyright, 2015, by Will Jessop.  
 Copyright, 2016, by Ryunosuke SATO.  
-Copyright, 2016, by Donovan Keme.  
-Copyright, 2018, by Tim Smith.  
-Copyright, 2020, by Olle Jonsson.  
+Copyright, 2016, by Atul Bhosale.  
+Copyright, 2016, by Feram.  
+Copyright, 2017, by Vít Ondruch.  
+Copyright, 2017-2020, by Olle Jonsson.  
+Copyright, 2020, by Tim Smith.  
 Copyright, 2021, by Wander Hillen.  
 Copyright, 2022, by Yoshiki Takagi.  
 
