@@ -61,4 +61,15 @@ describe Timers::Events do
 		
 		expect(fired_at).to be == 1.0
 	end
+	
+	it "should flush cancelled events" do
+		callback = proc{}
+		
+		10.times do
+			handle = events.schedule(0.1, callback)
+			handle.cancel!
+		end
+		
+		expect(events.size).to be == 1
+	end
 end

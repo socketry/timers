@@ -57,6 +57,8 @@ module Timers
 		
 		# Add an event at the given time.
 		def schedule(time, callback)
+			flush!
+			
 			handle = Handle.new(time.to_f, callback)
 			
 			@queue << handle
@@ -97,6 +99,12 @@ module Timers
 				next if handle.cancelled?
 				
 				@sequence.push(handle)
+			end
+		end
+		
+		def flush!
+			while @queue.last&.cancelled?
+				@queue.pop
 			end
 		end
 	end
