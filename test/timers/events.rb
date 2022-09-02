@@ -4,7 +4,11 @@
 # Copyright, 2016, by Tony Arcieri.
 # Copyright, 2018-2021, by Samuel Williams.
 
-RSpec.describe Timers::Events do
+require 'timers/events'
+
+describe Timers::Events do
+	let(:events) {subject.new}
+	
 	it "should register an event" do
 		fired = false
 		
@@ -12,15 +16,15 @@ RSpec.describe Timers::Events do
 			fired = true
 		end
 		
-		subject.schedule(0.1, callback)
+		events.schedule(0.1, callback)
 		
-		expect(subject.size).to be == 1
+		expect(events.size).to be == 1
 		
-		subject.fire(0.15)
+		events.fire(0.15)
 		
-		expect(subject.size).to be == 0
+		expect(events.size).to be == 0
 		
-		expect(fired).to be true
+		expect(fired).to be == true
 	end
 	
 	it "should register events in order" do
@@ -33,13 +37,13 @@ RSpec.describe Timers::Events do
 				fired << requested_time
 			end
 			
-			subject.schedule(requested_time, callback)
+			events.schedule(requested_time, callback)
 		end
 		
-		subject.fire(0.5)
+		events.fire(0.5)
 		expect(fired).to be == times.sort.first(6)
 		
-		subject.fire(1.0)
+		events.fire(1.0)
 		expect(fired).to be == times.sort
 	end
 	
@@ -51,9 +55,9 @@ RSpec.describe Timers::Events do
 			fired_at = time
 		end
 		
-		subject.schedule(0.5, callback)
+		events.schedule(0.5, callback)
 		
-		subject.fire(1.0)
+		events.fire(1.0)
 		
 		expect(fired_at).to be == 1.0
 	end

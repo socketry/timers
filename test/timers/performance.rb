@@ -5,8 +5,6 @@
 # Copyright, 2018-2021, by Samuel Williams.
 # Copyright, 2021, by Wander Hillen.
 
-require "spec_helper"
-
 # Event based timers:
 
 # Serviced 31812 events in 2.39075272 seconds, 13306.320832794887 e/s.
@@ -45,16 +43,24 @@ require "spec_helper"
 # Max out events performance (on my computer):
 # Serviced 1142649 events in 11.194903921 seconds, 102068.70405115146 e/s.
 
-RSpec.describe Timers::Group do
-	context "with profiler" do
+require 'timers/group'
+
+describe Timers::Group do
+	let(:group) {subject.new}
+	
+	with "profiler" do
 		if defined? RubyProf
-			before(:each) do
+			def before
 				# Running RubyProf makes the code slightly slower.
 				RubyProf.start
 				puts "*** Running with RubyProf reduces performance ***"
+				
+				super
 			end
 			
-			after(:each) do
+			def after
+				super
+				
 				if RubyProf.running?
 					# file = arg.metadata[:description].gsub(/\s+/, '-')
 					
@@ -76,15 +82,15 @@ RSpec.describe Timers::Group do
 				offset = index.to_f / range.max
 				total += (duration / offset).floor
 				
-				subject.every(index.to_f / range.max, :strict) { result << index }
+				group.every(index.to_f / range.max, :strict) { result << index }
 			end
 			
-			subject.wait while result.size < total
+			group.wait while result.size < total
 			
-			rate = result.size.to_f / subject.current_offset
-			puts "Serviced #{result.size} events in #{subject.current_offset} seconds, #{rate} e/s."
+			rate = result.size.to_f / group.current_offset
+			inform "Serviced #{result.size} events in #{group.current_offset} seconds, #{rate} e/s."
 			
-			expect(subject.current_offset).to be_within(20).percent_of(duration)
+			expect(group.current_offset).to be_within(20).percent_of(duration)
 		end
 	end
 	
@@ -92,7 +98,7 @@ RSpec.describe Timers::Group do
 		results = []
 		range = (1..300)
 		groups = (1..20)
-		duration = 11
+		duration = 2.0
 		
 		timers = []
 		@mutex = Mutex.new
@@ -121,7 +127,7 @@ RSpec.describe Timers::Group do
 		runtime = finish - start
 		rate = results.size.to_f / runtime
 		
-		puts "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
+		inform "Serviced #{results.size} events in #{runtime} seconds, #{rate} e/s; across #{groups.max} timers."
 		
 		expect(runtime).to be_within(20).percent_of(duration)
 	end
@@ -146,26 +152,26 @@ RSpec.describe Timers::Group do
 		
 		# Prefill the timer queue with a lot of timers in the semidistant future
 		20000.times do
-			subject.after(10) { results << "yay!" }
+			group.after(10) { results << "yay!" }
 		end
 		
 		# add one timer which is done immediately, to get the pending array into the queue
-		subject.after(-1) { results << "I am first!" }
-		subject.wait
-		expect(results.size).to eq(1)
-		expect(results.first).to eq("I am first!")
+		group.after(-1) { results << "I am first!" }
+		group.wait
+		expect(results.size).to be == 1
+		expect(results.first).to be == "I am first!"
 		
 		# 20k extra requests come in and get added into the queue
 		start = Time.now
 		
 		20000.times do
 			# add new timer to the queue (later than all the others so far)
-			subject.after(15) { result << "yay again!" }
+			group.after(15) { result << "yay again!" }
 			# wait_interval in the reactor loop
-			subject.wait_interval()
+			group.wait_interval()
 		end
 		
-		expect(subject.events.size).to eq(40_000)
+		expect(group.events.size).to be == 40_000
 		puts "Inserted 20k timers in #{Time.now - start} seconds"
 	end
 end
