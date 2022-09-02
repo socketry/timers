@@ -40,15 +40,15 @@ describe Timers::Group do
 	end
 	
 	it "sleeps until the next timer" do
-		interval   = TIMER_QUANTUM * 2
+		interval = 0.1
 		started_at = Time.now
 		
 		fired = false
-		group.after(interval) { fired = true }
+		group.after(interval) {fired = true}
 		group.wait
 		
 		expect(fired).to be == true
-		expect(Time.now - started_at).to be_within(TIMER_QUANTUM).of interval
+		expect(Time.now - started_at).to be_within(TIMER_QUANTUM).of(interval)
 	end
 	
 	it "fires instantly when next timer is in the past" do
@@ -77,7 +77,7 @@ describe Timers::Group do
 		group.after(TIMER_QUANTUM * 3) { result << :three }
 		group.after(TIMER_QUANTUM * 1) { result << :one }
 		
-		sleep TIMER_QUANTUM * 4
+		sleep(TIMER_QUANTUM * 4)
 		group.fire
 		
 		expect(result).to be == [:one, :two, :three]
@@ -111,70 +111,6 @@ describe Timers::Group do
 		group.after(interval_ms / 1000.0)
 		
 		expect(group.wait_interval).to be_within(TIMER_QUANTUM).of(interval_ms / 1000.0)
-	end
-	
-	with "pause and continue timers" do
-		def before
-			@interval = TIMER_QUANTUM * 2
-			
-			@fired = false
-			@timer = group.after(@interval) { @fired = true }
-			@fired2 = false
-			@timer2 = group.after(@interval) { @fired2 = true }
-			
-			super
-		end
-		
-		it "does not fire when paused" do
-			@timer.pause
-			group.wait
-			expect(@fired).to be == false
-		end
-		
-		it "fires when continued after pause" do
-			@timer.pause
-			group.wait
-			@timer.resume
-			
-			sleep @timer.interval
-			group.wait
-			
-			expect(@fired).to be == true
-		end
-		
-		it "can pause all timers at once" do
-			group.pause
-			group.wait
-			expect(@fired).to be == false
-			expect(@fired2).to be == false
-		end
-		
-		it "can continue all timers at once" do
-			group.pause
-			group.wait
-			group.resume
-			
-			# We need to wait until we are sure both timers will fire, otherwise highly accurate clocks
-			# (e.g. JVM)may only fire the first timer, but not the second, because they are actually
-			# schedueled at different times.
-			sleep TIMER_QUANTUM * 2
-			group.wait
-			
-			expect(@fired).to be == true
-			expect(@fired2).to be == true
-		end
-		
-		it "can fire the timer directly" do
-			fired = false
-			timer = group.after(TIMER_QUANTUM * 1) { fired = true }
-			timer.pause
-			group.wait
-			expect(fired).not.to be == true
-			timer.resume
-			expect(fired).not.to be == true
-			timer.fire
-			expect(fired).to be == true
-		end
 	end
 	
 	with "delay timer" do
@@ -265,9 +201,9 @@ describe Timers::Group do
 				
 				group.wait
 				
-				sleep(interval)
+				sleep(TIMER_QUANTUM)
 				
-				expect(timer.fires_in).to be_within(TIMER_QUANTUM).of(-interval)
+				expect(timer.fires_in).to be < 0.0
 			end
 		end
 	end
