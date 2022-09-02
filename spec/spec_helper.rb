@@ -1,9 +1,8 @@
 # frozen_string_literal: true
-#
-# This file is part of the "timers" project and released under the MIT license.
-#
-# Copyright, 2018, by Samuel Williams. All rights reserved.
-#
+
+# Released under the MIT License.
+# Copyright, 2012-2016, by Tony Arcieri.
+# Copyright, 2018-2021, by Samuel Williams.
 
 # Level of accuracy enforced by tests:
 TIMER_QUANTUM = 0.2

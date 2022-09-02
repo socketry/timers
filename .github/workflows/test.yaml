@@ -1,9 +1,16 @@
-name: Development
+name: Test
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
+env:
+  CONSOLE_OUTPUT: XTerm
+
 jobs:
   test:
+    name: ${{matrix.ruby}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}-latest
     continue-on-error: ${{matrix.experimental}}
     
@@ -11,17 +18,14 @@ jobs:
       matrix:
         os:
           - ubuntu
-          - macos
+          # - macos
         
         ruby:
-          - 2.5
-          - 2.6
-          - 2.7
-          - '3.0' # Due to https://github.com/actions/runner/issues/849, we have to use quotes for '3.0'
-          - 3.1
+          - "2.7"
+          - "3.0"
+          - "3.1"
         
         experimental: [false]
-        env: [""]
         
         include:
           - os: ubuntu
@@ -35,12 +39,12 @@ jobs:
             experimental: true
     
     steps:
-    - uses: actions/checkout@v2
-    - uses: ruby/setup-ruby@master
+    - uses: actions/checkout@v3
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{matrix.ruby}}
         bundler-cache: true
     
     - name: Run tests
-      timeout-minutes: 5
-      run: ${{matrix.env}} bundle exec rspec
+      timeout-minutes: 10
+      run: bundle exec bake test

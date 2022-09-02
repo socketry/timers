@@ -2,7 +2,7 @@
 
 Collections of one-shot and periodic timers, intended for use with event loops such as [async](https://github.com/socketry/async).
 
-[![Development Status](https://github.com/socketry/timers/workflows/Development/badge.svg)](https://github.com/socketry/timers/actions?workflow=Development)
+[![Development Status](https://github.com/socketry/timers/workflows/Test/badge.svg)](https://github.com/socketry/timers/actions?workflow=Test)
 
 ## Installation
 
