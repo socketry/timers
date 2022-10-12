@@ -42,4 +42,3 @@ class TimerQuantum
 end
 
 TIMER_QUANTUM = TimerQuantum.resolve
-p timer_quantum: TIMER_QUANTUM

@@ -173,6 +173,6 @@ describe Timers::Group do
 		end
 		
 		expect(group.events.size).to be == 40_000
-		puts "Inserted 20k timers in #{Time.now - start} seconds"
+		inform "Inserted 20k timers in #{Time.now - start} seconds"
 	end
 end
