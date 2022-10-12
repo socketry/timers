@@ -16,7 +16,7 @@ class TimerQuantum
 		@precision ||= self.measure_host_precision
 	end
 	
-	def measure_host_precision(repeats: 100, duration: 0.0001)
+	def measure_host_precision(repeats: 100, duration: 0.01)
 		# Measure the precision sleep using the monotonic clock:
 		start_time = self.now
 		repeats.times do
