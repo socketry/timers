@@ -84,9 +84,10 @@ module Timers
 
 		private
 		
-		def swap(i, j)
-			@contents[i], @contents[j] = @contents[j], @contents[i]
-		end
+		# Left here for reference, but unused.
+		# def swap(i, j)
+		# 	@contents[i], @contents[j] = @contents[j], @contents[i]
+		# end
 		
 		def bubble_up(index)
 			parent_index = (index - 1) / 2 # watch out, integer division!

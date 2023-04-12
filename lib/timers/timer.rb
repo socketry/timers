@@ -23,12 +23,11 @@ module Timers
 			@interval = interval
 			@recurring = recurring
 			@block = block
-			@offset = offset
-			
+			@offset = nil
 			@handle = nil
 			
 			# If a start offset was supplied, use that, otherwise use the current timers offset.
-			reset(@offset || @group.current_offset)
+			reset(offset || @group.current_offset)
 		end
 		
 		def paused?
@@ -73,7 +72,7 @@ module Timers
 			@handle = nil
 			
 			# This timer is no longer valid:
-			@group.timers.delete self if @group
+			@group.timers.delete(self) if @group
 		end
 		
 		# Reset this timer. Do not call while paused.
@@ -117,18 +116,18 @@ module Timers
 		
 		# Inspect a timer
 		def inspect
-			buffer = "#{to_s[0..-2]} ".dup
+			buffer = to_s[0..-2]
 			
 			if @offset
-				if fires_in >= 0
-					buffer << "fires in #{fires_in} seconds"
+				delta_offset = @offset - @group.current_offset
+				
+				if delta_offset > 0
+					buffer << " fires in #{delta_offset} seconds"
 				else
-					buffer << "fired #{fires_in.abs} seconds ago"
+					buffer << " fired #{delta_offset.abs} seconds ago"
 				end
 				
 				buffer << ", recurs every #{interval}" if recurring
-			else
-				buffer << "dead"
 			end
 			
 			buffer << ">"

@@ -10,6 +10,17 @@ require 'timers/group'
 describe Timers::Group do
 	let(:group) {subject.new}
 	
+	it "can cancel a timer" do
+		fired = false
+		
+		timer = group.after(0.1) { fired = true }
+		timer.cancel
+		
+		group.wait
+		
+		expect(fired).to be == false
+	end
+	
 	it "should be able to cancel twice" do
 		fired = false
 		
@@ -50,5 +61,19 @@ describe Timers::Group do
 		
 		expect(group.timers).to be(:empty?)
 		expect(x).to be == 0
+	end
+	
+	with "#cancel" do
+		it "should cancel all timers" do
+			timers = 3.times.map do
+				group.every(0.1) {}
+			end
+			
+			expect(group.timers).not.to be(:empty?)
+			
+			group.cancel
+			
+			expect(group.timers).to be(:empty?)
+		end
 	end
 end

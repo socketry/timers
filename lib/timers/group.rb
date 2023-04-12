@@ -92,8 +92,9 @@ module Timers
 		# -   0: timers ready to fire
 		# - +ve: timers waiting to fire
 		def wait_interval(offset = current_offset)
-			handle = @events.first
-			handle.time - Float(offset) if handle
+			if handle = @events.first
+				handle.time - Float(offset)
+			end
 		end
 		
 		# Fire all timers that are ready.

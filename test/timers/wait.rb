@@ -14,9 +14,14 @@ describe Timers::Wait do
 	it "repeats until timeout expired" do
 		timeout = Timers::Wait.new(interval*repeats)
 		count = 0
+		previous_remaining = nil
 		
 		timeout.while_time_remaining do |remaining|
-			expect(remaining).to be_within(TIMER_QUANTUM).of(timeout.duration - (count * interval))
+			if previous_remaining
+				expect(remaining).to be_within(TIMER_QUANTUM).of(previous_remaining - interval)
+			end
+			
+			previous_remaining = remaining
 			
 			count += 1
 			sleep(interval)
@@ -33,5 +38,19 @@ describe Timers::Wait do
 		end
 		
 		expect(result).to be == :done
+	end
+	
+	with "#for" do
+		with "no duration" do
+			it "waits forever" do
+				count = 0
+				Timers::Wait.for(nil) do
+					count += 1
+					break if count > 10
+				end
+				
+				expect(count).to be > 10
+			end
+		end
 	end
 end
