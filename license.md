@@ -28,6 +28,7 @@ Copyright, 2017-2020, by Olle Jonsson.
 Copyright, 2020, by Tim Smith.  
 Copyright, 2021, by Wander Hillen.  
 Copyright, 2022, by Yoshiki Takagi.  
+Copyright, 2023, by Peter Goldstein.  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

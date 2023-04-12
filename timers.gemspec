@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
 	spec.version = Timers::VERSION
 	
 	spec.summary = "Pure Ruby one-shot and periodic timers."
-	spec.authors = ["Tony Arcieri", "Samuel Williams", "//de", "Wander Hillen", "Jeremy Hinegardner", "skinnyjames", "Chuck Remes", "utenmiki", "Olle Jonsson", "deadprogrammer", "takiy33", "Larry Lv", "Lin Jen-Shin", "Ryunosuke SATO", "Tommy Ong Gia Phu", "Atul Bhosale", "Bruno Enten", "Dimitrij Denissenko", "Donovan Keme", "Feram", "Jesse Cooke", "Klaus Trainer", "Lavir the Whiolet", "Mike Bourgeous", "Ryan LeCompte", "Tim Smith", "Vít Ondruch", "Will Jessop", "Yoshiki Takagi", "nicholas a. evans", "tommyogp"]
+	spec.authors = ["Tony Arcieri", "Samuel Williams", "Donovan Keme", "Wander Hillen", "Utenmiki", "Jeremy Hinegardner", "Sean Gregory", "Chuck Remes", "Olle Jonsson", "Ron Evans", "Tommy Ong Gia Phu", "Larry Lv", "Lin Jen-Shin", "Ryunosuke SATO", "Atul Bhosale", "Bruno Enten", "Dimitrij Denissenko", "Feram", "Jesse Cooke", "Klaus Trainer", "Lavir the Whiolet", "Mike Bourgeous", "Nicholas Evans", "Peter Goldstein", "Ryan LeCompte", "Tim Smith", "Vít Ondruch", "Will Jessop", "Yoshiki Takagi"]
 	spec.license = "MIT"
 	
 	spec.cert_chain  = ['release.cert']
@@ -17,9 +17,9 @@ Gem::Specification.new do |spec|
 	
 	spec.files = Dir.glob(['{lib}/**/*', '*.md'], File::FNM_DOTMATCH, base: __dir__)
 	
-	spec.add_development_dependency "bundler"
-	spec.add_development_dependency "covered"
 	spec.add_development_dependency "bake-test", "~> 0.1"
 	spec.add_development_dependency "bake-test-external", "~> 0.2"
+	spec.add_development_dependency "bundler"
+	spec.add_development_dependency "covered"
 	spec.add_development_dependency "sus", "~> 0.13"
 end
