@@ -34,4 +34,18 @@ describe Timers::Wait do
 		
 		expect(result).to be == :done
 	end
+	
+	with "#for" do
+		with "no duration" do
+			it "waits forever" do
+				count = 0
+				Timers::Wait.for(nil) do
+					count += 1
+					break if count > 10
+				end
+				
+				expect(count).to be > 10
+			end
+		end
+	end
 end

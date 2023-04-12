@@ -17,6 +17,7 @@ module Timers
 				
 				timeout.while_time_remaining(&block)
 			else
+				# If there is no "duration" to wait for, we wait forever.
 				loop do
 					yield(nil)
 				end

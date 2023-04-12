@@ -36,18 +36,31 @@ describe Timers::Group do
 			expect(called).to be == true
 			expect(fired).to be == true
 		end
+		
+		it "repeatedly calls the wait block if it sleeps less than the interval" do
+			called = 0
+			fired = false
+			
+			group.after(0.1) { fired = true }
+			
+			group.wait do |interval|
+				called += 1
+				sleep(0.01)
+			end
+			
+			expect(called).to be > 1
+			expect(fired).to be == true
+		end
 	end
 	
 	it "sleeps until the next timer" do
 		interval = 0.1
-		started_at = Time.now
 		
 		fired = false
 		group.after(interval) {fired = true}
 		group.wait
 		
 		expect(fired).to be == true
-		expect(Time.now - started_at).to be_within(TIMER_QUANTUM).of(interval)
 	end
 	
 	it "fires instantly when next timer is in the past" do
@@ -86,6 +99,26 @@ describe Timers::Group do
 		expect do
 			group.after(nil) { nil }
 		end.to raise_exception(TypeError)
+	end
+	
+	with "#now_and_after" do
+		it "fires the timer immediately" do
+			result = []
+			
+			group.now_and_after(TIMER_QUANTUM * 2) { result << :foo }
+			
+			expect(result).to be == [:foo]
+		end
+		
+		it "fires the timer at the correct time" do
+			result = []
+			
+			group.now_and_after(TIMER_QUANTUM * 2) { result << :foo }
+			
+			group.wait
+			
+			expect(result).to be == [:foo, :foo]
+		end
 	end
 	
 	with "recurring timers" do

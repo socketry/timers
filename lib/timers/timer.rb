@@ -23,12 +23,11 @@ module Timers
 			@interval = interval
 			@recurring = recurring
 			@block = block
-			@offset = offset
-			
+			@offset = nil
 			@handle = nil
 			
 			# If a start offset was supplied, use that, otherwise use the current timers offset.
-			reset(@offset || @group.current_offset)
+			reset(offset || @group.current_offset)
 		end
 		
 		def paused?
@@ -129,8 +128,6 @@ module Timers
 				end
 				
 				buffer << ", recurs every #{interval}" if recurring
-			else
-				buffer << " dead"
 			end
 			
 			buffer << ">"
