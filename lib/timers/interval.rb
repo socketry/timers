@@ -30,11 +30,13 @@ module Timers
 			@total + duration
 		end
 		
-		protected def duration
+		protected 
+		
+		def duration
 			now - @current
 		end
-		
-		protected def now
+		 
+		def now
 			::Process.clock_gettime(::Process::CLOCK_MONOTONIC)
 		end
 	end
