@@ -1,3 +1,0 @@
-async:
-  url: https://github.com/socketry/async
-  command: bundle exec bake test
