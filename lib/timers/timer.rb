@@ -6,6 +6,7 @@
 # Copyright, 2014, by Utenmiki.
 # Copyright, 2014, by Lin Jen-Shin.
 # Copyright, 2017, by Vít Ondruch.
+# Copyright, 2025, by Patrik Wenger.
 
 module Timers
 	# An individual timer set to fire a given proc at a given time. A timer is
@@ -102,9 +103,9 @@ module Timers
 				@offset = offset
 			end
 			
-			@block.call(offset, self)
-			
+			result = @block.call(offset, self)
 			cancel unless recurring
+			result
 		end
 		
 		alias call fire
