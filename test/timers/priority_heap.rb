@@ -2,9 +2,9 @@
 
 # Released under the MIT License.
 # Copyright, 2021, by Wander Hillen.
-# Copyright, 2021-2022, by Samuel Williams.
+# Copyright, 2021-2025, by Samuel Williams.
 
-require 'timers/priority_heap'
+require "timers/priority_heap"
 
 describe Timers::PriorityHeap do
 	let(:priority_heap) {subject.new}

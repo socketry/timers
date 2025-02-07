@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2014-2022, by Samuel Williams.
+# Copyright, 2014-2025, by Samuel Williams.
 # Copyright, 2014-2016, by Tony Arcieri.
 # Copyright, 2015, by Donovan Keme.
 # Copyright, 2021, by Wander Hillen.
@@ -44,7 +44,7 @@
 # Max out events performance (on my computer):
 # Serviced 1142649 events in 11.194903921 seconds, 102068.70405115146 e/s.
 
-require 'timers/group'
+require "timers/group"
 
 describe Timers::Group do
 	let(:group) {subject.new}

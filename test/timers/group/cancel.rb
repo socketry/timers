@@ -3,9 +3,9 @@
 # Released under the MIT License.
 # Copyright, 2014, by Lin Jen-Shin.
 # Copyright, 2014-2016, by Tony Arcieri.
-# Copyright, 2014-2022, by Samuel Williams.
+# Copyright, 2014-2025, by Samuel Williams.
 
-require 'timers/group'
+require "timers/group"
 
 describe Timers::Group do
 	let(:group) {subject.new}

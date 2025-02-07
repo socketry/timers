@@ -12,7 +12,7 @@ Copyright, 2013-2015, by Utenmiki.
 Copyright, 2013, by Jeremy Hinegardner.  
 Copyright, 2014, by Larry Lv.  
 Copyright, 2014, by Bruno Enten.  
-Copyright, 2014-2022, by Samuel Williams.  
+Copyright, 2014-2025, by Samuel Williams.  
 Copyright, 2014, by Mike Bourgeous.  
 Copyright, 2014, by Klaus Trainer.  
 Copyright, 2014, by Lin Jen-Shin.  
@@ -20,15 +20,15 @@ Copyright, 2014, by Lavir the Whiolet.
 Copyright, 2015-2016, by Donovan Keme.  
 Copyright, 2015, by Tommy Ong Gia Phu.  
 Copyright, 2015, by Will Jessop.  
-Copyright, 2016, by Ryunosuke SATO.  
+Copyright, 2016, by Ryunosuke Sato.  
 Copyright, 2016, by Atul Bhosale.  
-Copyright, 2016, by Feram.  
 Copyright, 2017, by Vít Ondruch.  
 Copyright, 2017-2020, by Olle Jonsson.  
 Copyright, 2020, by Tim Smith.  
 Copyright, 2021, by Wander Hillen.  
 Copyright, 2022, by Yoshiki Takagi.  
 Copyright, 2023, by Peter Goldstein.  
+Copyright, 2025, by Patrik Wenger.  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -2,8 +2,9 @@
 
 # Released under the MIT License.
 # Copyright, 2025, by Patrik Wenger.
+# Copyright, 2025, by Samuel Williams.
 
-require 'timers/timer'
+require "timers/timer"
 
 describe Timers::Timer do
 	let(:group) {Timers::Group.new}

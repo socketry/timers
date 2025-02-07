@@ -1,10 +1,20 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2022, by Samuel Williams.
+# Copyright, 2012-2017, by Tony Arcieri.
+# Copyright, 2012, by Jesse Cooke.
+# Copyright, 2012, by Dimitrij Denissenko.
+# Copyright, 2013, by Chuck Remes.
+# Copyright, 2013, by Ron Evans.
+# Copyright, 2013, by Sean Gregory.
+# Copyright, 2013-2014, by Utenmiki.
+# Copyright, 2013, by Jeremy Hinegardner.
+# Copyright, 2014, by Bruno Enten.
+# Copyright, 2014-2025, by Samuel Williams.
+# Copyright, 2017, by Vít Ondruch.
 
-require 'timers/group'
-require 'timer_quantum'
+require "timers/group"
+require "timer_quantum"
 
 describe Timers::Group do
 	let(:group) {subject.new}
